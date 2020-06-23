@@ -1,0 +1,30 @@
+/* 
+  Localizable.strings
+  OTA_Update
+
+  Created by DFung on 2019/8/21.
+  Copyright © 2019 DFung. All rights reserved.
+*/
+"设备升级" = "Update";
+"设备连接" = "Connect";
+"设备状态：" = "Status：";
+"未连接" = "Disconnected";
+"已连接" = "Connected";
+"文件选择" = "Select File";
+"升级" = "Update";
+"正在升级" = "Updating";
+"升级完成" = "Update Successful";
+"升级失败" = "Update Fail";
+"升级超时" = "Update timeout";
+"请先连接设备" = "Please connect a Device.";
+
+"升级文件KEY错误" = "Update File Key Error.";
+"设备准备重启" = "Ready to restart";
+"蓝牙没有打开" = "Bluetooth is Not ON";
+"连接中..."= "Connecting...";
+"你是否要断开设备【%@】？" = "Do you want to disconnect the equipment of【%@】？";
+"取消" = "Cancel";
+"断开" = "Disconnect";
+"校验文件中" = "Preparing";
+"正在校验升级文件" = "Preparing";
+
