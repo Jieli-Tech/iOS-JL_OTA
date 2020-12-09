@@ -2,7 +2,7 @@
 
 - 对应的芯片类型：AC692x，BD29
 - APP开发环境：iOS平台，iOS 10.0以上，Xcode 11.0以上
-- 基于「杰理蓝牙控制库SDK v1.4.0**(单设备版)**」 开发
+- 基于「杰理蓝牙控制库SDK v1.4.0 **(单设备版)**」 开发
 - 对应于苹果商店上的APP: **【OTA Update】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
 
