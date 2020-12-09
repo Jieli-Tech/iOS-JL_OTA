@@ -70,6 +70,7 @@ static char MJRefreshFooterViewKey;
     self.header.beginRefreshingCallback = callback;
 }
 
+
 /**
  *  添加一个下拉刷新头部控件
  *

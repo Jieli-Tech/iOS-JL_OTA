@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *kUI_JL_BLE_STATUS_DEVICE;
 extern NSString *kUI_JL_BLE_PAIR_ERR;
 extern NSString *kUI_JL_UPDATE_STATUS;
+extern NSString *kUI_JL_OTA_UPDATE;
 
 @interface JL_RunSDK : NSObject
 @end

@@ -12,6 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 #define kUI_JL_BLE_FOUND            @"UI_JL_BLE_FOUND"
+#define kUI_JL_BLE_FOUND_SINGLE     @"UI_JL_BLE_FOUND_SINGLE"
 #define kUI_JL_BLE_PAIRED           @"UI_JL_BLE_PAIRED"
 #define kUI_JL_BLE_DISCONNECTED     @"UI_JL_BLE_DISCONNECTED"
 #define kUI_JL_BLE_ON               @"UI_JL_BLE_ON"
@@ -29,15 +30,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign)BOOL             bt_status_connect;          //设备是否连接
 @property(nonatomic,assign)BOOL             bt_status_paired;           //设备是否配对
 +(id)sharedMe;
+-(void)rename:(NSString*)name withUuid:(NSString*)uuid;
 @end
 
 @interface JL_Entity  : NSObject                                //蓝牙设备模型
 @property(assign,nonatomic)int            mIndex;
+@property(assign,nonatomic)NSString       *mUUID;
 @property(assign,nonatomic)float          mDistance;
 @property(strong,nonatomic)NSNumber       *mRSSI;
 @property(strong,nonatomic)NSString       *mItem;
 @property(strong,nonatomic)CBPeripheral   *mPeripheral;
-@property(assign,nonatomic)int            mType;            //0:普通AI音箱 1:蓝牙对耳 2:数码充电仓
+@property(assign,nonatomic)int            mType;            //-1:传统音箱 0:AI音箱 1:蓝牙对耳 2:数码充电仓
 @property(assign,nonatomic)BOOL           isSelectedStatus;
 @property(assign,nonatomic)BOOL           isExclusive;
 @property(assign,nonatomic)BOOL           isBound;

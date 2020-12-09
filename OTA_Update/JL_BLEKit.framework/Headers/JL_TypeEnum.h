@@ -92,6 +92,10 @@ typedef NS_ENUM(UInt8, JL_Partition) {
     JL_PartitionSingle              = 0,    //固件单备份
     JL_PartitionDouble              = 1,    //固件双备份
 };
+typedef NS_ENUM(UInt8, JL_OtaHeadset) {
+    JL_OtaHeadsetNO                 = 0,    //耳机单备份 正常升级
+    JL_OtaHeadsetYES                = 1,    //耳机单备份 强制升级
+};
 typedef NS_ENUM(UInt8, JL_OtaStatus) {
     JL_OtaStatusNormal              = 0,    //正常升级
     JL_OtaStatusForce               = 1,    //强制升级
@@ -104,6 +108,34 @@ typedef NS_ENUM(UInt8, JL_OtaBleAllowConnect) {
     JL_OtaBleAllowConnectYES        = 0,    //OTA 允许BLE连接
     JL_OtaBleAllowConnectNO         = 1,    //OTA 禁止BLE连接
     JL_OtaBleAllowConnectUnknow     = 2,    //未定义
+};
+typedef NS_ENUM(UInt8, JL_BLEOnly) {        //是否仅仅支持BLE
+    JL_BLEOnlyNO                    = 0,    //否
+    JL_BLEOnlyYES                   = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_FasheEnable) {    //是否发射模式
+    JL_FasheEnableNO                = 0,    //否
+    JL_FasheEnableYES               = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_FasheType) {      //当前是否为发射模式
+    JL_FasheTypeNO                  = 0,    //否
+    JL_FasheTypeYES                 = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_MD5Type) {        //是否支持MD5校验
+    JL_MD5TypeNO                    = 0,    //否
+    JL_MD5TypeYES                   = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_GameType) {       //是否为游戏模式
+    JL_GameTypeNO                   = 0,    //否
+    JL_GameTypeYES                  = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_AudioFileType) {  //是否支持音频文件传输
+    JL_AudioFileTypeNO              = 0,    //否
+    JL_AudioFileTypeYES             = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_EQType) {         //EQ段数类型
+    JL_EQType10                     = 0,    //固定10段式
+    JL_EQTypeMutable                = 1,    //动态EQ段
 };
 //---------------------------------------------------------//
 #pragma mark - BT
@@ -240,6 +272,9 @@ typedef NS_ENUM(UInt8, JL_OTAResult) {
     JL_OTAResultFailLenght          = 0xf6, //升级过程长度出错
     JL_OTAResultFailFlash           = 0xf7, //升级过程flash读写失败
     JL_OTAResultFailCmdTimeout      = 0xf8, //升级过程指令超时
+    JL_OTAResultFailSameVersion     = 0xf9, //相同版本
+    JL_OTAResultFailTWSDisconnect   = 0xfa, //TWS耳机未连接
+    JL_OTAResultFailNotInBin        = 0xfb, //耳机未在充电仓
     JL_OTAResultUnknown,                    //OTA未知错误
 };
 typedef NS_ENUM(UInt8, JL_OTAUrlResult) {
@@ -263,7 +298,8 @@ typedef void(^JL_FILE_BK)(NSArray* __nullable array,JL_BrowseReason reason);
 typedef void(^JL_OTA_BK)(NSArray* __nullable array);
 typedef void(^JL_OTA_URL)(JL_OTAUrlResult result,
                           NSString* __nullable version,
-                          NSString* __nullable url);
+                          NSString* __nullable url,
+                          NSString* __nullable explain);
 typedef void(^JL_OTA_RT)(JL_OTAResult result, float progress);
 typedef void(^JL_IMAGE_RT)(NSMutableDictionary* __nullable dict);
 
@@ -272,3 +308,4 @@ typedef void(^JL_FILE_DATA_BK)(NSData* __nullable data,
                                NSString* __nullable path,
                                uint16_t size,
                                JL_FileDataType type);
+typedef void(^JL_LOW_DELAY_BK)(uint16_t mtu, uint32_t delay);
