@@ -18,7 +18,6 @@
 #define kJL_SYS_INFO_SET            0x0008
 #define kJL_SYS_INFO_AUTO_UPDATE    0x0009
 #define kJL_PHONE_CALL_REQUEST      0x000a
-#define kJL_SWITCH_DEVICE_REQUEST   0x000b  //保留
 #define kJL_FILE_BROWSE_START       0x000c
 #define kJL_FILE_BROWSE_STOP        0x000d
 #define kJL_FUNCTION_CMD            0x000e
@@ -48,11 +47,11 @@
 #define kJL_ADV_NOTIFY_DEVICE       0x00C2
 #define kJL_ADV_NOTIFY_ENABLE       0x00C3
 #define kJL_ADV_NOTIFY_TIPS         0x00C4  //主要用于ADV设置同步后需要主机操作的行为。
-#define kJL_QCY_OPERATE             0x00C5  //QCY操作码
 
 #define kJL_SET_APP_INFO            0x00D0
 #define kJL_SET_MTU                 0x00D1
-
+#define kJL_GET_MD5                 0x00D4
+#define kJL_GET_LOW_DELAY           0x00D5
 
 NS_ASSUME_NONNULL_BEGIN
 

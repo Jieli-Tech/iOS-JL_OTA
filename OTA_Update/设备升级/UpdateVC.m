@@ -17,6 +17,7 @@
 @property (weak,nonatomic) IBOutlet UILabel     *subLabel;
 @property (weak, nonatomic) IBOutlet UIView     *fileView;
 @property (weak, nonatomic) IBOutlet UILabel    *fileLb;
+@property (weak, nonatomic) IBOutlet UILabel    *handshakeLb;
 
 @property (weak, nonatomic) IBOutlet UITableView*fileTableView;
 @property (weak, nonatomic) IBOutlet UILabel    *linkStatusLb;
@@ -45,11 +46,13 @@
     NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:nil File:nil];
     _dataArray = [DFFile subPaths:docPath];
     
-    [JL_Tools add:kUI_JL_UPDATE_STATUS Action:@selector(noteOtaUpdate:) Own:self];
+    [JL_Tools add:kUI_JL_OTA_UPDATE Action:@selector(noteOtaUpdate:) Own:self];
     [JL_Tools add:@"OTA_BLE_ALLOW_NO" Action:@selector(noteOtaBleAllowNO:) Own:self];
-    [JL_Tools add:kUI_JL_BLE_STATUS_DEVICE Action:@selector(noteBLEStatusAndDevices:) Own:self];
-
+    [JL_Tools add:UIApplicationWillEnterForegroundNotification
+           Action:@selector(noteAppForeground:) Own:self];
+    [JL_Tools add:kUI_JL_BLE_DISCONNECTED Action:@selector(noteBleDisconnect:) Own:self];
     [self setupUI];
+    
 }
 
 
@@ -87,10 +90,15 @@
 -(void)viewDidAppear:(BOOL)animated{
     JL_ug = [JL_BLEUsage sharedMe];
     if (JL_ug.bt_status_connect) {
-        _linkLb.text = kJL_TXT("已连接");
+        NSString *txt = [NSString stringWithFormat:@"%@ %@",kJL_TXT("已连接"),JL_ug.bt_name];
+        _linkLb.text = txt;
     }else{
         _linkLb.text = kJL_TXT("未连接");
     }
+}
+
+-(void)noteBleDisconnect:(NSNotification*)note{
+    _linkLb.text = kJL_TXT("未连接");
 }
 
 -(void)noteOtaBleAllowNO:(NSNotification*)note{
@@ -112,12 +120,15 @@
     static NSString *IDCell = @"BTCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:IDCell];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:IDCell];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                      reuseIdentifier:IDCell];
     }
     cell.textLabel.text = _dataArray[indexPath.row];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.tintColor = [UIColor blueColor];
+    cell.backgroundColor = [UIColor whiteColor];
+
     
     if (_selectIndex == indexPath.row) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -134,6 +145,8 @@
                               File:_dataArray[indexPath.row]];
     [tableView reloadData];
 }
+
+
 
 - (IBAction)btn_update:(id)sender {
     
@@ -159,7 +172,6 @@
 
                 [JL_Tools post:@"OTA_BLE_ALLOW_NO" Object:nil];
             }else{
-                
                 [self isUpdatingUI:YES];
                 self.updateSeek.text = @"";
                 self.updateProgress.progress = 0;
@@ -191,10 +203,20 @@
             if (result == JL_OTAResultUpgrading) self.updateTxt.text = kJL_TXT("正在升级");
 
             [self otaTimeCheck];//增加超时检测
+        }else if(result == JL_OTAResultPrepared){
+            NSLog(@"OTA is ResultPrepared...");
+            [self otaTimeCheck];//增加超时检测
+        }else if(result == JL_OTAResultReconnect){
+            [self otaTimeClose];//关闭超时检测
+            
+            //1、前提：若没有使用SDK内的蓝牙连接流程。
+            //   则需用外部蓝牙API连接设备，再走获取设备信息，然后判断到强制升级的标志
+            //   继续调用此API进行OTA升级。(此处必须重连设备，否则升级无法成功!!!)
+          
+            //2、前提：若使用了SDK内部的蓝牙连接流程，则此处无需做任何连接操作。
         }else{
             [self otaTimeClose];//关闭超时检测
         }
-
         
         if (result == JL_OTAResultSuccess) {
             NSLog(@"OTA 升级完成.");
@@ -208,9 +230,10 @@
             self.updateTxt.text = kJL_TXT("升级完成");
             [DFUITools showText:kJL_TXT("升级完成") onView:self.view delay:1.0];
 
-            [DFAction delay:2.5 Task:^{
+            [DFAction delay:1.5 Task:^{
                 [self isUpdatingUI:NO];
-                [JL_Tools post:@"UI_CHANEG_VC" Object:@(1)];
+                //[JL_Tools post:@"UI_CHANEG_VC" Object:@(1)];
+                [JL_Manager bleConnectLastDevice];
             }];
         }
         
@@ -218,7 +241,7 @@
             self.updateTxt.text = kJL_TXT("升级失败");
             [DFUITools showText:kJL_TXT("升级失败") onView:self.view delay:1.0];
 
-            [DFAction delay:2.5 Task:^{
+            [DFAction delay:1.5 Task:^{
                 [self isUpdatingUI:NO];
             }];
         }
@@ -227,7 +250,16 @@
             self.updateTxt.text = kJL_TXT("升级文件KEY错误");
             [DFUITools showText:kJL_TXT("升级文件KEY错误") onView:self.view delay:1.0];
 
-            [DFAction delay:2.5 Task:^{
+            [DFAction delay:1.5 Task:^{
+                [self isUpdatingUI:NO];
+            }];
+        }
+        
+        if (result == JL_OTAResultFailErrorFile) {
+            self.updateTxt.text = kJL_TXT("升级失败");
+            [DFUITools showText:kJL_TXT("升级失败") onView:self.view delay:1.0];
+
+            [DFAction delay:1.5 Task:^{
                 [self isUpdatingUI:NO];
             }];
         }
@@ -248,19 +280,6 @@
     }
 }
 
--(void)noteBLEStatusAndDevices:(NSNotification*)note{
-    NSDictionary *dic = [note object];
-    JL_BLEStatus st = [dic[@"STATUS"] intValue];
-    
-    if (st == JL_BLEStatusDisconnected || st == JL_BLEStatusOff) {
-            
-
-    }
-}
-
-
-
-
 #pragma mark - OTA升级失败
 static NSTimer  *otaTimer = nil;
 static int      otaTimeout= 0;
@@ -280,12 +299,23 @@ static int      otaTimeout= 0;
 
 -(void)otaTimeAdd{
     otaTimeout++;
+    //NSLog(@"OTA ---> otaTimeAdd！");
+
     if (otaTimeout == 10) {
         [self otaTimeClose];
         NSLog(@"OTA ---> 超时了！！！");
         self.updateTxt.text = @"";
         [DFUITools showText:kJL_TXT("升级超时") onView:self.view delay:1.0];
         [self isUpdatingUI:NO];
+    }
+}
+
+-(void)noteAppForeground:(NSNotification*)note{
+    JL_ug = [JL_BLEUsage sharedMe];
+    if (JL_ug.bt_status_paired == NO) {
+        NSLog(@"---> App Foreground.");
+        [self isUpdatingUI:NO];
+        [self otaTimeClose];//关闭超时检测
     }
 }
 

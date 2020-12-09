@@ -47,6 +47,10 @@
 #pragma mark - 日志收集
 - (void)recordNSlog
 {
+    //如果已经连接Xcode调试则不输出到文件
+    if(isatty(STDOUT_FILENO)) {
+        return;
+    }
     NSString *documentDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
  
     NSDateFormatter *dateformat = [[NSDateFormatter  alloc]init];

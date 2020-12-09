@@ -33,12 +33,12 @@ extern const CGFloat MJRefreshSlowAnimationDuration;
 extern NSString *const MJRefreshBundleName;
 #define MJRefreshSrcName(file) [MJRefreshBundleName stringByAppendingPathComponent:file]
 
-extern NSString *const MJRefreshFooterPullToRefresh;
-extern NSString *const MJRefreshFooterReleaseToRefresh;
+extern NSString *MJRefreshFooterPullToRefresh;
+extern NSString *MJRefreshFooterReleaseToRefresh;
 extern NSString *const MJRefreshFooterRefreshing;
 
-extern NSString *const MJRefreshHeaderPullToRefresh;
-extern NSString *const MJRefreshHeaderReleaseToRefresh;
+extern NSString *MJRefreshHeaderPullToRefresh;
+extern NSString *MJRefreshHeaderReleaseToRefresh;
 extern NSString *const MJRefreshHeaderRefreshing;
 extern NSString *const MJRefreshHeaderTimeKey;
 
