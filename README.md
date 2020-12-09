@@ -31,14 +31,14 @@
 
 将*JL_BLEKit.framework*导入Xcode工程项目里，添加*Privacy - Bluetooth Peripheral Usage Description*和*Privacy - Bluetooth Always Usage Description*两个权限。
 
-##2、SDK具体使用的两种方式
+## 2、SDK具体使用的两种方式
 ​        第一种，使用SDK内的蓝牙连接API进行OTA：完全使用SDK。
 
 ​        第二种，使用自定义的蓝牙连接API进行OTA：所有BLE的操作都自行实现，SDK只负责对OTA数据包解析
 
 从而实现OTA功能。
 
-###2.1、使用SDK内的蓝牙连接API进行OTA
+### 2.1、使用SDK内的蓝牙连接API进行OTA
 
 **1、支持的功能**：
 
@@ -63,7 +63,7 @@
 - **JL_Entity**：BLE设备的模型类，记录设备的相关信息（如名字、UUID、UID、PID等）；
 
 - **JL_Manager**：BLE扫描、连接、断开、回连、获取设备信息、OTA操作；
-####2.1.1、过滤BLE外设机制
+#### 2.1.1、过滤BLE外设机制
 ```objective-c
         /*--- YES开启过滤，NO关闭过滤 ---*/
         JL_BLEUsage *usage = [JL_BLEUsage sharedMe];
@@ -73,7 +73,7 @@
         usage.bt_ble.filterKey = nil;//一般情况赋值nil即可
 ```
 
-####2.1.2、与BLE外设握手机制
+#### 2.1.2、与BLE外设握手机制
 
 ```objective-c
         /*--- YES开启握手，NO关闭握手BLE直接连接 ---*/
@@ -84,7 +84,7 @@
         usage.bt_ble.pairKey = nil;//一般情况赋值nil即可
 ```
 
-####2.1.3、回连BLE外设机制
+#### 2.1.3、回连BLE外设机制
 
 ```objective-c
         /*--- 1、BLE外设自己断开后，APP的主动回连 ---*/
@@ -95,7 +95,7 @@
         usage.bt_ble.BLE_RELINK = YES;//一般情况赋值NO即可
 ```
 
-####2.1.4、BLE连接服务和特征值
+#### 2.1.4、BLE连接服务和特征值
 
 ```objective-c
         //一般情况以下设置不用更改，不设置就是默认这些值。
@@ -109,7 +109,7 @@
 ```
 
 
-####2.1.5、初始化SDK
+#### 2.1.5、初始化SDK
 
 ```objective-c
         //根据需求，按照文档的1、2、3、4点设置SDK
@@ -124,7 +124,7 @@
         usage.bt_ble.pairKey = nil;
 ```
 
-####2.1.6、扫描设备
+#### 2.1.6、扫描设备
 
 ```objective-c
         //API通过【JL_Manager】使用
@@ -142,7 +142,7 @@
     NSArray     *btEnityList = JL_ug.bt_EntityList;
 ```
 
-####2.1.7、连接和断开设备
+#### 2.1.7、连接和断开设备
 
 ```objective-c
         //API通过【JL_Manager】使用
@@ -185,7 +185,7 @@
          */
 ```
 
-####2.1.8、获取设备信息(必须)
+#### 2.1.8、获取设备信息(必须)
 
 ```objective-c
         //注意：API通过【JL_Manager】使用，连上设备必须先获取设备的信息！
@@ -224,7 +224,7 @@
         }];
 ```
 
-####2.1.9、开始OTA升级
+#### 2.1.9、开始OTA升级
 
 ```objective-c
         _otaData = [NSData dataWithContentsOfFile:@"升级文件的路径"];
@@ -297,7 +297,7 @@
     }];
 ```
 
-###2.2、使用自定义的蓝牙连接API进行OTA
+### 2.2、使用自定义的蓝牙连接API进行OTA
 
 **1、支持的功能**：
 
@@ -321,13 +321,13 @@
 - **【写】特征值**：AE01
 - **【读 】特征值**：AE02
 
-####2.2.1、初始化SDK (跟2.1.5有点区别)
+#### 2.2.1、初始化SDK (跟2.1.5有点区别)
 ```objective-c
     //安装JLSDK即可，无其他设置，因为蓝牙控制权都不在SDK内部。
     //这种情况SDK相当于OTA数据的解析器的角色。
     [JL_Manager installManager];
 ```
-####2.2.2、为SDK部署蓝牙传输通路
+#### 2.2.2、为SDK部署蓝牙传输通路
 ```objective-c
         //1、外部蓝牙连成功的回调处，Post以下通知给SDK；
         [JL_Tools post:kUI_JL_BLE_PAIRED Object:nil];//详情看2.2.3
@@ -344,7 +344,7 @@
         //4、外部蓝牙断开的回调处，Post以下通知给SDK；
         [JL_Tools post:kUI_JL_BLE_DISCONNECTED Object:nil];
 ```
-####2.2.3、BLE握手连接
+#### 2.2.3、BLE握手连接
 
 ```objective-c
 /**
@@ -382,9 +382,9 @@
 
 
 
-####2.2.4、获取设备信息 (同2.1.8)
+#### 2.2.4、获取设备信息 (同2.1.8)
 
-####2.2.5、开始OTA升级 (与2.1.9有点区别)
+#### 2.2.5、开始OTA升级 (与2.1.9有点区别)
 ```objective-c
     //注意：由于使用的是外部的蓝牙连接流程，OTA过程可能需要断开重连BLE外设，
         //必须在以下回调【JL_OTAResultReconnect】中实现，否则流程会走不下！！！
