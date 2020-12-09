@@ -7,6 +7,7 @@
 //
 
 #import "JL_RunSDK.h"
+#import <CoreLocation/CoreLocation.h>
 
 NSString *kUI_JL_BLE_STATUS_DEVICE = @"UI_JL_BLE_STATUS_DEVICE";
 NSString *kUI_JL_BLE_PAIR_ERR      = @"UI_JL_BLE_PAIR_ERR";
@@ -21,13 +22,30 @@ NSString *kUI_JL_OTA_UPDATE        = @"UI_JL_OTA_UPDATE";
 {
     self = [super init];
     if (self) {
+
+        
         /*--- 初始化JL_SDK ---*/
         [JL_Manager setManagerDelegate:self];
         
-        /*--- 关闭认证流程 ---*/
-        //JL_BLEUsage *usage = [JL_BLEUsage sharedMe];
-        //usage.bt_ble.BLE_PAIR_ENABLE = NO;
-        //usage.bt_ble.BLE_RELINK = NO;
+        /*--- 关闭回连 ---*/
+        JL_BLEUsage *usage = [JL_BLEUsage sharedMe];
+        usage.bt_ble.BLE_PAIR_ENABLE   = YES;
+        usage.bt_ble.BLE_FILTER_ENABLE = YES;
+        usage.bt_ble.BLE_RELINK_ACTIVE = NO;
+        usage.bt_ble.BLE_RELINK        = NO;
+        
+        usage.bt_ble.filterKey = nil;
+        usage.bt_ble.pairKey   = nil;
+
+        usage.bt_ble.JL_BLE_SERVICE = @"AE00"; //服务号
+        usage.bt_ble.JL_BLE_RCSP_W  = @"AE01"; //命令“写”通道
+        usage.bt_ble.JL_BLE_RCSP_R  = @"AE02"; //命令“读”通道
+        usage.bt_ble.JL_BLE_PAIR_W  = @"AE03"; //暂无使用
+        usage.bt_ble.JL_BLE_PAIR_R  = @"AE04"; //暂无使用
+        usage.bt_ble.JL_BLE_AUIDO_W = @"AE05"; //暂无使用
+        usage.bt_ble.JL_BLE_AUIDO_R = @"AE06"; //暂无使用
+        
+        
     }
     return self;
 }
@@ -65,9 +83,15 @@ NSString *kUI_JL_OTA_UPDATE        = @"UI_JL_OTA_UPDATE";
                     JL_OtaStatus upSt = md.otaStatus;
                     if (upSt == JL_OtaStatusForce) {
                         NSLog(@"---> 进入强制升级.");
-                        [JL_Tools post:kUI_JL_UPDATE_STATUS Object:nil];
+                        [JL_Tools post:kUI_JL_OTA_UPDATE Object:nil];
+                    }else{
+                        JL_OtaHeadset hdSt = md.otaHeadset;
+                        if (hdSt == JL_OtaHeadsetYES) {
+                            UIWindow *win = [DFUITools getWindow];
+                            [DFUITools showText:@"耳机需再次升级." onView:win delay:1.5];
+                            [JL_Tools post:kUI_JL_OTA_UPDATE Object:nil];
+                        }
                     }
-                    
                 }else{
                     NSLog(@"---> 错误提示：%d",st);
                 }

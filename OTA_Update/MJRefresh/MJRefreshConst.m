@@ -18,12 +18,12 @@ const CGFloat MJRefreshSlowAnimationDuration = 0.4;
 
 NSString *const MJRefreshBundleName = @"MJRefresh.bundle";
 
-NSString *const MJRefreshFooterPullToRefresh = @"Pull To Search.";
-NSString *const MJRefreshFooterReleaseToRefresh = @"Release To Search.";
+NSString *MJRefreshFooterPullToRefresh = @"Pull To Search.";
+NSString *MJRefreshFooterReleaseToRefresh = @"Release To Search.";
 NSString *const MJRefreshFooterRefreshing = @"Searching...";
 
-NSString *const MJRefreshHeaderPullToRefresh = @"Pull To Search.";
-NSString *const MJRefreshHeaderReleaseToRefresh = @"Release To Search.";
+NSString *MJRefreshHeaderPullToRefresh = @"Pull To Search.";
+NSString *MJRefreshHeaderReleaseToRefresh = @"Release To Search.";
 NSString *const MJRefreshHeaderRefreshing = @"Searching...";
 NSString *const MJRefreshHeaderTimeKey = @"MJRefreshHeaderView";
 

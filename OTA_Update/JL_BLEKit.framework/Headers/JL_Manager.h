@@ -12,8 +12,8 @@
 #import "JL_BLEUsage.h"
 #import "JL_TypeEnum.h"
 
-/*--- SDK Version : v1.3.3    ---*/
-/*--- SDK Date    : 2019-10-15 ---*/
+/*--- SDK Version : v1.4.0    ---*/
+/*--- SDK Date    : 2020-07-15 ---*/
 
 NS_ASSUME_NONNULL_BEGIN
 @class JLDeviceModel;
@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class JLFMModel;
 @class JLHeadsetModel;
 @class JLBTModel;
+@class JLEQModel;
 @protocol JL_ManagerDelegate <NSObject>
 @optional
 /**
@@ -168,20 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param params EQ参数(10个参数,仅适用于JL_EQModeCUSTOM情况)
  */
 +(void)cmdSetSystemEQ:(JL_EQMode)eqMode Params:(NSArray* __nullable)params;
-/**
- 【QYC适用】设置系统EQ
- @param eqMode EQ模式
- @param type     EQ读写设置    0：读      1：写
- @param params EQ参数(10个参数,仅适用于JL_EQModeCUSTOM情况)
- */
-+(void)cmdSetQYCSystemEQ:(uint8_t)eqMode Type:(uint8_t)type Params:(NSArray* __nullable)params;
 
-/**
- 【QYC适用】请求设备操作
- @param operate     0：保留    1：恢复设置      2：清除配对
- @param result       0：成功    非0：失败
- */
-+(void)cmdSetQYCOperate:(uint8_t)operate Result:(JL_CMD_VALUE_BK __nullable)result;
 /**
  设置系统时间
  @param date 时间类
@@ -260,6 +248,19 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)cmdGetOtaFileKey:(NSString*)key
                    Code:(NSString*)code
                  Result:(JL_OTA_URL __nullable)result;
+
+/**
+OTA升级文件下载【MD5】
+@param key 授权key
+@param code 授权code
+@param hash  MD5值
+@param result 回复
+*/
++(void)cmdGetOtaFileKey:(NSString*)key
+                   Code:(NSString*)code
+                   hash:(NSString*)hash
+                 Result:(JL_OTA_URL __nullable)result;
+
 /**
  OTA升级设备
  @param data 升级数据
@@ -277,6 +278,11 @@ NS_ASSUME_NONNULL_BEGIN
  重启设备
  */
 +(void)cmdRebootDevice;
+
+/**
+强制重启设备
+*/
++(void)cmdRebootForceDevice;
 
 /**
  设置/增加闹钟
@@ -314,6 +320,7 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
 +(void)cmdRequestDeviceImageVid:(NSString*)vid
                             Pid:(NSString*)pid
                          Result:(JL_IMAGE_RT __nullable)result;
++(NSDictionary*)localDeviceImage:(NSString*)jsonFile;
 #pragma mark - 对耳相关API
 /**
  设置EDR名字
@@ -364,8 +371,8 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
 
 /**
  工作模式(耳机)
- @param mode 0： 普通模式
-             1： 游戏模式
+ @param mode 1： 普通模式
+             2： 游戏模式
  */
 +(void)cmdHeatsetWorkSettingMode:(uint8_t)mode;
 
@@ -433,10 +440,13 @@ extern NSString *kJL_HEADSET_ADV;
  */
 +(void)cmdHeatsetAdvEnable:(BOOL)enable;
 
+#pragma mark kJL_HEADSET_TIPS
 /**
  用于ADV设置同步后需要主机操作的行为。
   1：更新配置信息，需要重启生效。
-  2：经典蓝牙连上
+  2：同步时间戳
+  3：请求手机回连BLE
+  4：同步设备信息
  */
 extern NSString *kJL_HEADSET_TIPS;
 
@@ -445,6 +455,12 @@ extern NSString *kJL_HEADSET_TIPS;
 @param fmtx  频点
 */
 +(void)cmdSetFMTX:(uint16_t)fmtx;
+
+/**
+主动设置ID3播放状态
+*/
++(void)setID3_Status:(uint8_t)st;
+
 
 #pragma mark - 智能充电仓
 /// 通知固件App的信息
@@ -480,7 +496,28 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 /// @param result  0：成功  1：失败
 +(void)cmdBTConnectAddress:(NSData*)addr Result:(JL_CMD_VALUE_BK __nullable)result;
 
-#pragma mark -【文件传输 固件-->APP】
+#pragma mark ID3 播放/暂停
++(void)cmdID3_PP;
+
+#pragma mark ID3 上一曲
++(void)cmdID3_Before;
+
+#pragma mark ID3 下一曲
++(void)cmdID3_Next;
+
+#pragma mark ID3 开启/暂停 音乐信息推送
++(void)cmdID3_PushEnable:(BOOL)enable;
+
+#pragma mark 设置高低音 [-12,+12]
++(void)cmdSetLowPitch:(int)p_low HighPitch:(int)p_high;
+
+#pragma mark 获取MD5数据
++(void)cmdGetMD5_Result:(JL_CMD_BK __nullable)result;
+
+#pragma mark 获取低延时参数
++(void)cmdGetLowDelay:(JL_LOW_DELAY_BK __nullable)result;
+
+#pragma mark 【文件传输 固件-->APP】
 #pragma mark 1.监听文件数据
 +(void)cmdFileDataMonitorResult:(JL_FILE_DATA_BK __nullable)result;
 
@@ -493,7 +530,7 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 #pragma mark 4.停止传输文件数据
 +(void)cmdStopFileData;
 
-#pragma mark -【文件传输 APP-->固件】
+#pragma mark 【文件传输 APP-->固件】
 #pragma mark 5.请求传输文件给设备
 +(void)cmdFileDataSize:(uint8_t)size
               SavePath:(NSString*)path;
@@ -520,11 +557,20 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 @property (copy,  nonatomic) NSString           *versionUBoot;  //uboot版本
 @property (assign,nonatomic) JL_Partition       partitionType;  //设备单、双备份
 @property (assign,nonatomic) JL_OtaStatus       otaStatus;      //OTA状态
+@property (assign,nonatomic) JL_OtaHeadset      otaHeadset;     //耳机单备份 是否需要强制升级
 @property (copy,  nonatomic) NSString           *pidvid;        //厂商ID
 @property (copy,  nonatomic) NSString           *authKey;       //授权Key
 @property (copy,  nonatomic) NSString           *proCode;       //授权Code
 @property (assign,nonatomic) JL_BootLoader      bootLoaderType; //是否下载BootLoader
 @property (assign,nonatomic) JL_OtaBleAllowConnect otaBleAllowConnect;  //OTA是否允许BLE连接
+@property (assign,nonatomic) JL_BLEOnly         bleOnly;        //是否仅仅支持BLE
+@property (assign,nonatomic) JL_FasheEnable     fasheEnable;    //是否支持发射模式
+@property (assign,nonatomic) JL_FasheType       fasheType;      //当前是否为发射模式
+@property (assign,nonatomic) JL_MD5Type         md5Type;        //是否支持MD5固件校验
+@property (assign,nonatomic) JL_GameType        gameType;       //是否为游戏模式
+@property (assign,nonatomic) JL_AudioFileType   audioFileType;  //是否支持音频文件传输功能
+@property (assign,nonatomic) int                pitchLow;       //低音
+@property (assign,nonatomic) int                pitchHigh;      //高音
 
 /*--- 公用INFO ---*/
 @property (copy,  nonatomic) NSArray            *cardArray;     //卡的数组
@@ -534,11 +580,26 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 @property (copy,  nonatomic) NSString           *handleFlash;   //Flash handle
 @property (assign,nonatomic) JL_EQMode          eqMode;         //EQ模式
 @property (copy,  nonatomic) NSArray            *eqArray;       //EQ参数值（只适用于EQ Mode == CUSTOM情况）
+@property (copy,  nonatomic) NSArray            *eqCustomArray; //自定义EQ
+@property (copy,  nonatomic) NSArray            *eqFrequencyArray; //EQ频率
+@property (assign,nonatomic) JL_EQType          eqType;         //EQ段数类型F
+@property (strong,nonatomic) NSArray            *eqDefaultArray;//EQ的预设值数组 数组元素类型-->【JLEQModel】
 @property (copy,  nonatomic) NSString           *errReason;     //错误原因
 @property (assign,nonatomic) uint16_t           fmtxPoint;      //发射频点
-@property (assign,nonatomic) uint8_t            mTWS_Mode;      //0x00:充电模式 0x01:发射模式
+@property (assign,nonatomic) uint8_t            mTWS_Mode;      //0x00:普通模式 0x01:发射模式
 @property (assign,nonatomic) uint8_t            mTWS_Status;    //0x00:未连接   0x01:已连接
-@property (copy  ,nonatomic) NSString           *mTWS_Addr;   //发射模式中，连接的外设地址
+@property (copy  ,nonatomic) NSString           *mTWS_Addr;     //发射模式中，连接的外设地址
+
+/*--- BT INFO ---*/
+@property (strong,nonatomic) NSString           *ID3_Title;
+@property (strong,nonatomic) NSString           *ID3_Artist;
+@property (strong,nonatomic) NSString           *ID3_AlBum;
+@property (assign,nonatomic) uint8_t            ID3_Number;
+@property (assign,nonatomic) uint16_t           ID3_Total;
+@property (strong,nonatomic) NSString           *ID3_Genre;
+@property (assign,nonatomic) uint32_t           ID3_Time;
+@property (assign,nonatomic) uint8_t            ID3_Status;     // 0x01:播放 0x00:暂停
+@property (assign,nonatomic) uint32_t           ID3_CurrentTime;
 
 /*--- Music INFO ---*/
 @property (assign,nonatomic) JL_MusicStatus     playStatus;     //播放状态
@@ -625,5 +686,11 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 @property(strong,nonatomic)NSData *__nullable mBtAddress;
 @property(assign,nonatomic)uint8_t        mBtRssi;
 @property(strong,nonatomic)NSString *__nullable mBtName;
+@end
+
+#pragma mark - EQ MODEL
+@interface JLEQModel : NSObject
+@property(assign,nonatomic)JL_EQMode        mMode;
+@property(strong,nonatomic)NSArray *__nullable mEqArray;
 @end
 NS_ASSUME_NONNULL_END

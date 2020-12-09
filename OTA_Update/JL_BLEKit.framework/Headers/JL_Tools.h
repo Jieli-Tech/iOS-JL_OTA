@@ -80,6 +80,8 @@ typedef void(^JL_Action)(void);
  @return 自然数
  */
 +(int)getNaturalNumber:(NSData*)aByte;
++(int)getNaturalNumber_u32:(NSData*)u32Bytes;
+
 /**
  发出通知事件
  
@@ -220,6 +222,13 @@ typedef void(^JL_Action)(void);
           MiddlePath:(NSString*)mPath
                 File:(NSString*)file;
 
+/**
+*  用途:从Project资源里寻找文件。
+* （先把资源文件添加至工程内的Copy Bundle Resources内。）
+*  @param   file      文件名
+*  @return 该文件的路径。
+*/
++(NSString*)find:(NSString *)file;
 /**
  删除文件
  

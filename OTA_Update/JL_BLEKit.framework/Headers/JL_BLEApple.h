@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  BLE状态通知
  */
 extern NSString *kJL_BLE_FOUND;         //发现设备
+extern NSString *kJL_BLE_FOUND_SINGLE;  //发现单个设备
 extern NSString *kJL_BLE_PAIRED;        //已配对
 extern NSString *kJL_BLE_CONNECTED;     //已连接
 extern NSString *kJL_BLE_DISCONNECTED;  //断开连接
@@ -49,31 +50,47 @@ extern NSString *kJL_UPDATE_SEND;       //Update数据【发送】
 /**
  *  BLE特征值
  */
-extern NSString *JL_BLE_SERVICE;        //服务号
-extern NSString *JL_BLE_PAIR_W;         //配对【写】通道
-extern NSString *JL_BLE_PAIR_R;         //配对【读】通道
-extern NSString *JL_BLE_AUIDO_W;        //音频【写】通道
-extern NSString *JL_BLE_AUIDO_R;        //音频【读】通道
-extern NSString *JL_BLE_RCSP_W;         //命令【写】通道
-extern NSString *JL_BLE_RCSP_R;         //命令【读】通道
+//extern NSString *JL_BLE_SERVICE;        //服务号
+//extern NSString *JL_BLE_PAIR_W;         //配对【写】通道
+//extern NSString *JL_BLE_PAIR_R;         //配对【读】通道
+//extern NSString *JL_BLE_AUIDO_W;        //音频【写】通道
+//extern NSString *JL_BLE_AUIDO_R;        //音频【读】通道
+//extern NSString *JL_BLE_RCSP_W;         //命令【写】通道
+//extern NSString *JL_BLE_RCSP_R;         //命令【读】通道
+
+extern NSString *JL_EDR_CHANGE;         //经典蓝牙变化
+extern NSString *JL_BLE_CHANGE_MASTER;  //耳机主从切换成功
+
 
 /**
  *  记录上次BLE设备的UUID，准备重连！
  */
-#define kJL_BLE_UUID    @"JL_BLE_UUID"
+#define kJL_BLE_UUID        @"JL_BLE_UUID"
 
 /**
  *  记录手机的虚拟地址
  */
-#define kJL_IOS_ADDR    @"JL_IOS_ADDR"
+#define kJL_IOS_ADDR        @"JL_IOS_ADDR"
 
 @interface JL_BLEApple : NSObject
 @property(nonatomic,strong)NSData *__nullable filterKey;    //过滤码
 @property(nonatomic,strong)NSData *__nullable pairKey;      //配对码
 @property(nonatomic,assign)BOOL BLE_FILTER_ENABLE;          //是否【开启过滤】
 @property(nonatomic,assign)BOOL BLE_PAIR_ENABLE;            //是否【开启配对】
-@property(nonatomic,assign)BOOL BLE_RELINK;                 //是否【开启重连】
+@property(nonatomic,assign)BOOL BLE_RELINK;                 //是否【被动重连】
+@property(nonatomic,assign)BOOL BLE_RELINK_ACTIVE;          //是否【主动重连】
 @property(nonatomic,assign)int  BLE_TIMEOUT;                //连接超时时间
+@property(nonatomic,strong)NSMutableArray *bleHistoryPeripherals;//历史记录
+@property(nonatomic,assign)BOOL isOpenHistory;
+
+@property(nonatomic,strong) NSString *JL_BLE_SERVICE;        //服务号
+@property(nonatomic,strong) NSString *JL_BLE_PAIR_W;         //配对【写】通道
+@property(nonatomic,strong) NSString *JL_BLE_PAIR_R;         //配对【读】通道
+@property(nonatomic,strong) NSString *JL_BLE_AUIDO_W;        //音频【写】通道
+@property(nonatomic,strong) NSString *JL_BLE_AUIDO_R;        //音频【读】通道
+@property(nonatomic,strong) NSString *JL_BLE_RCSP_W;         //命令【写】通道
+@property(nonatomic,strong) NSString *JL_BLE_RCSP_R;         //命令【读】通道
+
 /**
  开始搜索
  */
@@ -128,12 +145,22 @@ extern NSString *JL_BLE_RCSP_R;         //命令【读】通道
 -(BOOL)writeRcspData:(NSData*)data;
 
 /**
+调整发数参数
+
+@param isGame 是否为游戏模式
+@param mtu 每包发数字节数
+@param delay 延时时间
+*/
+-(void)setGameMode:(BOOL)isGame MTU:(NSUInteger)mtu Delay:(int)delay;
+
+/**
  返回经典蓝牙信息
  @return @{@"ADDRESS":@"7c9a1da7330e",
            @"TYPE"   :@"BluetoothA2DPOutput",
            @"NAME"   :@"earphone"}
  */
 +(NSDictionary*)outputEdrInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END
