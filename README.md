@@ -363,7 +363,7 @@
     //NSLog(@"-----> %@ %d",characteristic.UUID.UUIDString,characteristic.isNotifying);
     
     if (characteristic.isNotifying) {
-        if ([characteristic.UUID.UUIDString containsString:JL_BLE_RCSP_R])
+        if ([characteristic.UUID.UUIDString containsString:@"AE01"])
         {
             [[JL_BLEAction sharedMe] bluetoothPairingKey:nil Result:^(BOOL ret) {
                                 if (ret == YES) {
