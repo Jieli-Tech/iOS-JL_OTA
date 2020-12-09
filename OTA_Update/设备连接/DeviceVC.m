@@ -10,7 +10,7 @@
 #import "MJRefresh.h"
 #import "ItemCell.h"
 
-//#import <Security/Security.h>
+#import "MJRefreshConst.h"
 
 @interface DeviceVC ()<UITableViewDelegate,
                        UITableViewDataSource>
@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView   *subTitleView;
 @property (weak, nonatomic) IBOutlet UILabel  *subLabel;
 @property (weak, nonatomic) IBOutlet UITableView *subTableview;
+@property (weak, nonatomic) IBOutlet UILabel *subHandLb;
 @property (assign,nonatomic) float sw;
 @property (assign,nonatomic) float sh;
 @property (assign,nonatomic) float sGap_h;
@@ -33,11 +34,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addNote];
-    [self setupUI];
-    
     JL_ug = [JL_BLEUsage sharedMe];
     btEnityList = JL_ug.bt_EntityList;
     
+    [self setupUI];
+
     if (JL_ug.bt_status_connect) {
         [self noteBLEStatusAndDevices:nil];
     }else{
@@ -47,8 +48,14 @@
 }
 
 
+
 -(void)viewDidAppear:(BOOL)animated{
-    [self refrash_btn:nil];
+    if (!JL_ug.bt_status_phone) {
+        [DFUITools showText:kJL_TXT("蓝牙没有打开") onView:self.view delay:1.0];
+        return;
+    }
+    /*--- 搜索蓝牙设备 ---*/
+    [JL_Manager bleStartScan];
 }
 
 -(void)setupUI{
@@ -65,20 +72,45 @@
     _subLabel.center    = CGPointMake(_sw/2.0, _sGap_h - 25.0);
     _subLabel.text = kJL_TXT("设备连接");
     _subLabel.textColor = [UIColor blackColor];
+    _subHandLb.frame = CGRectMake(0, _sGap_h, _sw, 20.0);
 
-    _subTitleView.frame = CGRectMake(0, 0, _sw, _sGap_h);
-    _subTableview.frame = CGRectMake(0, _sGap_h+1, _sw, _sh-_sGap_h-_sGap_t);
+    _subTableview.frame = CGRectMake(0, _sGap_h+2.0, _sw, _sh-_sGap_h-_sGap_t-2.0);
     _subTableview.tableFooterView = [UIView new];
     _subTableview.dataSource= self;
     _subTableview.delegate  = self;
     _subTableview.rowHeight = 50.0;
-    
+        
     __weak typeof(self) wSelf = self;
     [_subTableview addHeaderWithCallback:^{
         NSLog(@"--->开始刷新...");
         [wSelf refrash_btn:nil];
     }];
+    
+    BOOL ispair = JL_ug.bt_ble.BLE_PAIR_ENABLE;
+    if (ispair) {
+        [_subTableview setHeaderReleaseToRefreshText:@"APP会过滤部分不吻合的BLE外设。"];
+    }else{
+        [_subTableview setHeaderReleaseToRefreshText:@"APP会扫描所有BLE外设。"];
+    }
+    [_subTableview setHeaderPullToRefreshText:@"松手扫描设备"];
 }
+
+- (IBAction)tapSwitch:(UISwitch *)sender {
+    NSString *txt = @"";
+    JL_BLEUsage *usage = [JL_BLEUsage sharedMe];
+    if (sender.isOn) {
+        txt = @"APP会过滤部分不吻合的BLE外设。";
+        usage.bt_ble.BLE_FILTER_ENABLE = YES;
+    }else{
+        txt = @"APP会扫描所有BLE外设。";
+        usage.bt_ble.BLE_FILTER_ENABLE = NO;
+    }
+    [_subTableview setHeaderReleaseToRefreshText:txt];
+    [DFUITools showText:txt onView:self.view delay:1.0];
+    
+    [self refrash_btn:nil];
+}
+
 
 - (void)refrash_btn:(id)sender {
     
@@ -128,8 +160,8 @@
     JL_Entity *selectedItem = btEnityList[indexPath.row];
     CBPeripheral *item = selectedItem.mPeripheral;
     
-    if (JL_ug.bt_status_paired == YES && item.state == CBPeripheralStateConnected) {
-                NSString *txt = [NSString stringWithFormat:kJL_TXT("你是否要断开设备【%@】？"),item.name];
+    if (item.state == CBPeripheralStateConnected || item.state == CBPeripheralStateConnecting) {
+        NSString *txt = [NSString stringWithFormat:kJL_TXT("你是否要断开设备【%@】？"),item.name];
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:txt
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("取消") style:UIAlertActionStyleCancel handler:nil]];
@@ -148,9 +180,29 @@
             [JL_Manager bleDisconnect];
             [JL_Manager bleClean];
         }
-        NSLog(@"蓝牙正在连接... ==> %@",item.name);
-        [self startLoadingView:kJL_TXT("连接中...") Delay:5.0];
-        [JL_Manager bleConnectToDevice:item];
+        JL_BLEUsage *usage = [JL_BLEUsage sharedMe];
+        NSString *txt = @"APP是否通过认证方式连接BLE设备？";
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:txt
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"认证连接" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action)
+        {
+            usage.bt_ble.BLE_PAIR_ENABLE = YES;
+            NSLog(@"蓝牙正在连接... ==> %@",item.name);
+            [self startLoadingView:kJL_TXT("连接中...") Delay:5.0];
+            [JL_Manager bleConnectToDevice:item];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"直接连接" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+            
+            usage.bt_ble.BLE_PAIR_ENABLE = NO;
+            NSLog(@"蓝牙正在连接... ==> %@",item.name);
+            [self startLoadingView:kJL_TXT("连接中...") Delay:5.0];
+            [JL_Manager bleConnectToDevice:item];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDestructive
+                                                          handler:nil]];
+        [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
 }
@@ -170,7 +222,7 @@
                 firstBle.mItem           = JL_ug.bt_Entity.mPeripheral.name;
                 firstBle.isSelectedStatus= YES;
                 firstBle.mIndex          = 0;
-                
+
                 int flag = 0;
                 for (JL_Entity *item in btEnityList) {
                     if (item.mPeripheral.identifier == firstBle.mPeripheral.identifier ) {
@@ -212,12 +264,14 @@
     }
 }
 
+
+
+
 -(void)addNote{
     [JL_Tools add:kUI_JL_BLE_STATUS_DEVICE
            Action:@selector(noteBLEStatusAndDevices:)
               Own:self];
     [JL_Tools add:@"OTA_BLE_ALLOW_NO" Action:@selector(noteOtaBleAllowNO:) Own:self];
-
 }
 
 -(void)startLoadingView:(NSString*)text Delay:(NSTimeInterval)delay{
