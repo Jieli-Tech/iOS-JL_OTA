@@ -92,10 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
  @param uuid 设备的UUID
  */
 +(void)bleConnectDeviceWithUUID:(NSString*)uuid;
-/**
- 断开当前连接的蓝牙设备，不会影响下次的自动连接
- */
-+(void)bleDisconnect;
+    /**
+     断开当前连接的蓝牙设备，不会影响下次的自动连接
+     */
+    +(void)bleDisconnect;
 /**
  断开当前连接，并清除连接记录，下次开机后不会自动连接
  */
@@ -150,6 +150,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 +(void)cmdGetSystemInfo:(JL_FunctionCode)function
                  Result:(JL_CMD_BK __nullable)result;
++(void)cmdGetSystemInfoResult;
+
 /**
  获取系统信息（选择性获取）
  @param function JL_FunctionCode
@@ -158,11 +160,13 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)cmdGetSystemInfo:(JL_FunctionCode)function
            SelectionBit:(uint32_t)bits
                  Result:(JL_CMD_BK __nullable)result;
++(void)cmdGetSystemInfoResult_1;
 /**
  设置系统音量
  @param volume 音量值
  */
 +(void)cmdSetSystemVolume:(UInt8)volume;
++(void)cmdSetSystemVolume:(UInt8)volume Result:(JL_CMD_BK __nullable)result;
 /**
  设置系统EQ
  @param eqMode EQ模式
@@ -262,6 +266,11 @@ OTA升级文件下载【MD5】
                  Result:(JL_OTA_URL __nullable)result;
 
 /**
+OTA单备份，是否正在回连
+*/
++(BOOL)cmdOtaIsRelinking;
+
+/**
  OTA升级设备
  @param data 升级数据
  @param result 升级结果
@@ -347,16 +356,20 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
                       Function:(uint8_t)fuc;
 /**
  LED设置(对耳)
- @param scene   0x01    未配对
-                0x02    未连接
-                0x03    连接
+ @param scene  0x01   未配对
+              0x02    未连接
+              0x03    连接
+              0x04:   播放设备音乐
+              0x05：暂停设备音乐
+              0x06：外部音源播放
+              0x07：外部音源暂停
  @param effect  0x00    全灭
-                0x01    红灯常亮
-                0x02    蓝灯常亮
-                0x03    红灯呼吸
-                0x04    蓝灯呼吸
-                0x05    红蓝交替快闪
-                0x06    红蓝交替慢闪
+               0x01    红灯常亮
+               0x02    蓝灯常亮
+               0x03    红灯呼吸
+               0x04    蓝灯呼吸
+               0x05    红蓝交替快闪
+               0x06    红蓝交替慢闪
  */
 +(void)cmdHeatsetLedSettingScene:(uint8_t)scene
                           Effect:(uint8_t)effect;
@@ -384,7 +397,7 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
 
 /**
  获取设备信息(耳机)
- @param flag BIT0    小机电量获取 格式为3个字节 参考广播包格式
+ @param flag  BIT0    小机电量获取 格式为3个字节 参考广播包格式
              BIT1    Edr 名称
              BIT2    按键功能
              BIT3    LED 显示状态
@@ -392,7 +405,8 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
              BIT5    工作模式
              BIT6    产品信息
              BIT7    连接时间
- 
+             BIT8    入耳检测
+             BIT9    语言类型
  @param result 返回字典：
                 @"ISCHARGING_L"
                 @"ISCHARGING_R"
@@ -412,6 +426,8 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
                 @"UID"
                 @"PID"
                 @"LINK_TIME"
+                @""IN_EAR_TEST"
+                @"DEVICE_LANGUAGE"
  */
 +(void)cmdHeatsetGetAdvFlag:(uint32_t)flag
                      Result:(JL_HEADSET_BK __nullable)result;
@@ -430,9 +446,18 @@ extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
     @"POWER_C": ,
     @"CHIP_TYPE": ,
     @"PROTOCOL_TYPE": ,
-    @"SEQ": };
+    @"SEQ":};
  */
 extern NSString *kJL_HEADSET_ADV;
+
+/**
+ 设置命令成功/错误回复(耳机)
+    0x00：成功
+    0x01：游戏模式导致设置失效
+    0x02：蓝牙名字长度超出限制
+    0x03：非蓝牙模式设置闪灯失败
+ */
+extern NSString *kJL_SET_HEADSET_ERR;
 
 /**
  关闭或开启设备广播(耳机)
@@ -456,10 +481,32 @@ extern NSString *kJL_HEADSET_TIPS;
 */
 +(void)cmdSetFMTX:(uint16_t)fmtx;
 
+/// 耳机主动降噪ANC
+/// @param mode 模式 (0x01:普通模式 0x02:降噪模式 0x03:通透 模式)
++(void)cmdSetAncMode:(uint8_t)mode;
+
+/// 耳机主动降噪ANC (模式使能)
+/// @param modeTypes 支持的模式 @[@(JL_ANCType_Normal),@(JL_ANCType_NoiseReduction).....]
+/// JL_ANCType_Normal                      = 0,    //普通模式
+/// JL_ANCType_NoiseReduction        = 1,    //降噪模式
+/// JL_ANCType_Transparent              = 2,    //通透模式
++(void)cmdSetAncModeTypes:(NSArray *)modeTypes;
+
 /**
 主动设置ID3播放状态
 */
 +(void)setID3_Status:(uint8_t)st;
+
+///**
+//清除ID3播放信息
+//*/
+//+(void)cleanID3Info_1;
+//+(void)cleanID3Info_2;
+//+(void)cleanID3Info_3;
+extern NSString *kJL_ID3_INFO_Title;
+extern NSString *kJL_ID3_INFO_Artist;
+extern NSString *kJL_ID3_INFO_AlBum;
+extern NSString *kJL_ID3_INFO_Time;
 
 
 #pragma mark - 智能充电仓
@@ -511,6 +558,10 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 #pragma mark 设置高低音 [-12,+12]
 +(void)cmdSetLowPitch:(int)p_low HighPitch:(int)p_high;
 
+#pragma mark 设置混响值[深度和强度][0,100]、限幅值[-60,0]
++(void)cmdSetReverberation:(int)depthValue IntensityValue:(int)intensityValue
+       DynamicLimiterValue:(int)dynamicLimiterValue SwtichReverState:(int) reverOn FunType:(int) type;
+
 #pragma mark 获取MD5数据
 +(void)cmdGetMD5_Result:(JL_CMD_BK __nullable)result;
 
@@ -538,6 +589,23 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 #pragma mark 6.推送文件数据给设备
 +(void)cmdPushFileData:(NSData*)data;
 
+#pragma mark 7.查找设备
+/// 设备查找手机的通知
+/// 携带了响铃时长🔔
+/// dict = @{@"op":@(操作类型),@"timeout":@(超时时间)};
+extern NSString *kJL_BT_FIND_PHONE;
+/// 手机查找设备
+/// 携带是否停止响铃
+/// dict = @{@"op":@(操作类型),@"timeout":@(超时时间)};
+extern NSString *kJL_BT_FIND_DEVICE;
+/// 查找设备命令
+/// @param isVoice 是否发声
+/// @param timeout 超时时间
+/// @param isIphone 是否设备查找手机（默认是手机找设备）
++(void)cmdFindDevice:(BOOL)isVoice timeOut:(uint16_t)timeout findIphone:(BOOL)isIphone;
+
+#pragma mark 8.设备通话状态
+extern NSString *kJL_CALL_STATUS;
 @end
 
 #pragma mark - 设备信息MODEL
@@ -554,6 +622,7 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 @property (assign,nonatomic) JL_DeviceBTStatus  btStatus;       //经典蓝牙状态
 @property (assign,nonatomic) uint32_t           function;       //BIT(0):BT BIT(1):MUSIC BIT(2):RTC
 @property (assign,nonatomic) JL_FunctionCode    currentFunc;    //当前处于的模式
+@property (assign,nonatomic) uint8_t            funcOnlineStatus;//USb,SD,LineIn是否在线
 @property (copy,  nonatomic) NSString           *versionUBoot;  //uboot版本
 @property (assign,nonatomic) JL_Partition       partitionType;  //设备单、双备份
 @property (assign,nonatomic) JL_OtaStatus       otaStatus;      //OTA状态
@@ -568,9 +637,14 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 @property (assign,nonatomic) JL_FasheType       fasheType;      //当前是否为发射模式
 @property (assign,nonatomic) JL_MD5Type         md5Type;        //是否支持MD5固件校验
 @property (assign,nonatomic) JL_GameType        gameType;       //是否为游戏模式
+@property (assign,nonatomic) JL_SearchType      searchType;     //是否支持查找设备
 @property (assign,nonatomic) JL_AudioFileType   audioFileType;  //是否支持音频文件传输功能
 @property (assign,nonatomic) int                pitchLow;       //低音
 @property (assign,nonatomic) int                pitchHigh;      //高音
+@property (assign,nonatomic) int                reverberationSwitchState;   //混响的开关
+@property (assign,nonatomic) int                depthValue;                 //深度值
+@property (assign,nonatomic) int                intensityValue;             //强度值
+@property (assign,nonatomic) int                dynamicLimiterValue;        //限幅值
 
 /*--- 公用INFO ---*/
 @property (copy,  nonatomic) NSArray            *cardArray;     //卡的数组
@@ -589,6 +663,10 @@ extern NSString *kJL_BT_SCAN_STOP_NOTE;
 @property (assign,nonatomic) uint8_t            mTWS_Mode;      //0x00:普通模式 0x01:发射模式
 @property (assign,nonatomic) uint8_t            mTWS_Status;    //0x00:未连接   0x01:已连接
 @property (copy  ,nonatomic) NSString           *mTWS_Addr;     //发射模式中，连接的外设地址
+@property (assign,nonatomic) uint8_t            mAncMode;       //耳机降噪模式
+@property (strong,nonatomic) NSArray            *mAncModeTypes; //耳机主动降噪所支持模式
+@property (strong,nonatomic) NSArray            *reverberationTypes; //混响所支持的类型
+@property (assign,nonatomic) JL_CALLType        mCallType;     //通话状态
 
 /*--- BT INFO ---*/
 @property (strong,nonatomic) NSString           *ID3_Title;

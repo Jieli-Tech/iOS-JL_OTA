@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 typedef NS_ENUM(NSInteger, JL_BLEStatus) {
     JL_BLEStatusFound,                      //发现设备，对应 kUI_JL_BLE_FOUND
     JL_BLEStatusPaired,                     //已配对，  对应 kUI_JL_BLE_PAIRED
@@ -71,6 +72,11 @@ typedef NS_ENUM(UInt8, JL_SpeakType) {
     JL_SpeakTypeDoing               = 2,    //正在录音
     JL_SpeakTypeDoneFail            = 0x0f, //结束失败
 };
+typedef NS_ENUM(UInt8, JL_SpeakDataType) {
+    JL_SpeakDataTypePCM             = 0,    //PCM数据
+    JL_SpeakDataTypeSPEEX           = 1,    //SPEEX数据
+    JL_SpeakDataTypeOPUS            = 2,    //OPUS数据
+};
 typedef NS_ENUM(UInt8, JL_FileDataType) {
     JL_FileDataTypeDo               = 0,    //开始传输文件数据
     JL_FileDataTypeDone             = 1,    //结束传输文件数据
@@ -129,6 +135,22 @@ typedef NS_ENUM(UInt8, JL_GameType) {       //是否为游戏模式
     JL_GameTypeNO                   = 0,    //否
     JL_GameTypeYES                  = 1,    //是
 };
+typedef NS_ENUM(UInt8, JL_SearchType) {     //是否支持查找设备
+    JL_SearchTypeNO                 = 0,    //否
+    JL_SearchTypeYES                = 1,    //是
+};
+typedef NS_ENUM(UInt8, JL_KaraokeType) {    //是否支持卡拉OK
+    JL_KaraokeTypeNO                = 0,    //否
+    JL_KaraokeTypeYES               = 1,    //是
+};
+typedef NS_ENUM(UInt8,JL_KaraokeEQType){    //是否禁止app调节设备音效
+    JL_KaraokeEQTypeNO              = 0,    //不禁止
+    JL_KaraokeEQTypeYES             = 1,    //禁止
+};
+typedef NS_ENUM(UInt8,JL_FlashType){        //是否支持外挂Flash
+    JL_FlashTypeNO                  = 0,    //不支持
+    JL_FlashTypeYES                 = 1,    //支持
+};
 typedef NS_ENUM(UInt8, JL_AudioFileType) {  //是否支持音频文件传输
     JL_AudioFileTypeNO              = 0,    //否
     JL_AudioFileTypeYES             = 1,    //是
@@ -136,6 +158,19 @@ typedef NS_ENUM(UInt8, JL_AudioFileType) {  //是否支持音频文件传输
 typedef NS_ENUM(UInt8, JL_EQType) {         //EQ段数类型
     JL_EQType10                     = 0,    //固定10段式
     JL_EQTypeMutable                = 1,    //动态EQ段
+};
+typedef NS_ENUM(UInt8,JL_ANCType) {
+    JL_ANCType_Normal               = 0,    //普通模式
+    JL_ANCType_NoiseReduction       = 1,    //降噪模式
+    JL_ANCType_Transparent          = 2,    //通透模式
+};
+typedef NS_ENUM(UInt8,JL_CALLType) {
+    JL_CALLType_OFF                 = 0,    //空闲
+    JL_CALLType_ON                  = 1,    //通话中
+};
+typedef NS_ENUM(UInt8,JL_ReverberationType) {
+    JL_ReverberationTypeNormal      = 0,     //混响
+    JL_ReverberationTypeDynamic     = 1,     //限幅器
 };
 //---------------------------------------------------------//
 #pragma mark - BT

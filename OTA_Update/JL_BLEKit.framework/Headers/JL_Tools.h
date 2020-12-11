@@ -23,6 +23,7 @@ typedef void(^JL_Action)(void);
  @return 截取后的数据
  */
 +(NSData*)data:(NSData*)data R:(NSInteger)index L:(NSInteger)length;
++(NSDictionary*)dictionaryData:(NSData*)data R:(NSInteger)index L:(NSInteger)length;
 
 /**
  NSData 转成 10进制
@@ -80,6 +81,7 @@ typedef void(^JL_Action)(void);
  @return 自然数
  */
 +(int)getNaturalNumber:(NSData*)aByte;
++(int)getNaturalNumber_u16:(NSData*)u16Bytes;
 +(int)getNaturalNumber_u32:(NSData*)u32Bytes;
 
 /**
@@ -264,6 +266,15 @@ typedef void(^JL_Action)(void);
  @param path 文件路径
  */
 +(void)writeData:(NSData*)data endFile:(NSString*)path;
+
+/**
+ 数据写进文件的偏移位置
+ 
+ @param data 数据
+ @param seek 偏移
+ @param path 文件路径
+ */
++(void)writeData:(NSData*)data Seek:(unsigned long long)seek File:(NSString*)path;
 
 /**
  *  UNICODE 编码字符串(小端)

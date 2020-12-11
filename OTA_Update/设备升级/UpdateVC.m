@@ -13,6 +13,8 @@
                        UITableViewDataSource>{
     JL_BLEUsage *JL_ug;
 }
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headBar;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *footBar;
 @property (weak,nonatomic) IBOutlet UIView      *subTitleView;
 @property (weak,nonatomic) IBOutlet UILabel     *subLabel;
 @property (weak, nonatomic) IBOutlet UIView     *fileView;
@@ -50,6 +52,7 @@
     [JL_Tools add:@"OTA_BLE_ALLOW_NO" Action:@selector(noteOtaBleAllowNO:) Own:self];
     [JL_Tools add:UIApplicationWillEnterForegroundNotification
            Action:@selector(noteAppForeground:) Own:self];
+    [JL_Tools add:kUI_JL_BLE_PAIRED Action:@selector(noteBlePaired:) Own:self];
     [JL_Tools add:kUI_JL_BLE_DISCONNECTED Action:@selector(noteBleDisconnect:) Own:self];
     [self setupUI];
     
@@ -60,6 +63,9 @@
     _selectIndex = -1;
     _sw = [DFUITools screen_2_W];
     _sh = [DFUITools screen_2_H];
+    
+    self.headBar.constant = kJL_BarHead;
+    self.footBar.constant = kJL_BarFoot+20.0;
     
     if (_sh < 812.0f) {//兼容iPhoneX尺寸以下手机
         _sGap_h = 74.0;
@@ -87,7 +93,7 @@
     _fileTableView.rowHeight  = 50.0;
 }
 
--(void)viewDidAppear:(BOOL)animated{
+-(void)noteBlePaired:(NSNotification*)note{
     JL_ug = [JL_BLEUsage sharedMe];
     if (JL_ug.bt_status_connect) {
         NSString *txt = [NSString stringWithFormat:@"%@ %@",kJL_TXT("已连接"),JL_ug.bt_name];
@@ -220,19 +226,20 @@
         
         if (result == JL_OTAResultSuccess) {
             NSLog(@"OTA 升级完成.");
-            self.updateTxt.text = kJL_TXT("升级完成");
+            self.updateSeek.text = @"100%";
             self.updateProgress.progress = 1.0;
+            self.updateTxt.text = kJL_TXT("升级完成");
+            
+            [DFAction delay:1.5 Task:^{
+                [self isUpdatingUI:NO];
+            }];
         }
         
         if (result == JL_OTAResultReboot) {
             NSLog(@"OTA 设备准备重启.");
-            //self.updateTxt.text = kJL_TXT("设备准备重启");
-            self.updateTxt.text = kJL_TXT("升级完成");
-            [DFUITools showText:kJL_TXT("升级完成") onView:self.view delay:1.0];
+            [DFUITools showText:kJL_TXT("设备准备重启") onView:self.view delay:1.0];
 
             [DFAction delay:1.5 Task:^{
-                [self isUpdatingUI:NO];
-                //[JL_Tools post:@"UI_CHANEG_VC" Object:@(1)];
                 [JL_Manager bleConnectLastDevice];
             }];
         }

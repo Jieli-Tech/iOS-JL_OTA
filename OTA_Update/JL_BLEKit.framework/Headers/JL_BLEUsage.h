@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_Entity  : NSObject                                //蓝牙设备模型
 @property(assign,nonatomic)int            mIndex;
-@property(assign,nonatomic)NSString       *mUUID;
+@property(strong,nonatomic)NSString       *mUUID;
 @property(assign,nonatomic)float          mDistance;
 @property(strong,nonatomic)NSNumber       *mRSSI;
 @property(strong,nonatomic)NSString       *mItem;

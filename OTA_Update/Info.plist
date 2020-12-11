@@ -24,10 +24,6 @@
 	<string>APP与设备交互需要用到蓝牙数据传输，是否允许？</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>APP与设备交互需要用到蓝牙数据传输，是否允许？</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>bluetooth-central</string>
-	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

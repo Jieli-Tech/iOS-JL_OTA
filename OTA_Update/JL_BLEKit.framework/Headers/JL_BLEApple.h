@@ -47,17 +47,6 @@ extern NSString *kJL_PAIR_RECEIVE;      //Pair数据【接收】
 extern NSString *kJL_PAIR_SEND;         //Pair数据【发送】
 extern NSString *kJL_UPDATE_SEND;       //Update数据【发送】
 
-/**
- *  BLE特征值
- */
-//extern NSString *JL_BLE_SERVICE;        //服务号
-//extern NSString *JL_BLE_PAIR_W;         //配对【写】通道
-//extern NSString *JL_BLE_PAIR_R;         //配对【读】通道
-//extern NSString *JL_BLE_AUIDO_W;        //音频【写】通道
-//extern NSString *JL_BLE_AUIDO_R;        //音频【读】通道
-//extern NSString *JL_BLE_RCSP_W;         //命令【写】通道
-//extern NSString *JL_BLE_RCSP_R;         //命令【读】通道
-
 extern NSString *JL_EDR_CHANGE;         //经典蓝牙变化
 extern NSString *JL_BLE_CHANGE_MASTER;  //耳机主从切换成功
 
@@ -160,6 +149,9 @@ extern NSString *JL_BLE_CHANGE_MASTER;  //耳机主从切换成功
            @"NAME"   :@"earphone"}
  */
 +(NSDictionary*)outputEdrInfo;
+
+/// 查询是否在连接蓝牙中
+-(BOOL)wetherConnecting;
 
 @end
 

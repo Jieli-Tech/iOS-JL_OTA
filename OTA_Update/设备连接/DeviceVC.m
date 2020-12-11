@@ -15,14 +15,16 @@
 @interface DeviceVC ()<UITableViewDelegate,
                        UITableViewDataSource>
 {
-    DFTips      *loadingTip;
-    JL_BLEUsage *JL_ug;
-    NSArray     *btEnityList;
+    DFTips              *loadingTip;
+    JL_BLEUsage         *JL_ug;
+    NSArray             *btEnityList;
+    NSMutableArray      *uiEnityList;
 }
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headBar;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *footBar;
 @property (weak, nonatomic) IBOutlet UIView   *subTitleView;
 @property (weak, nonatomic) IBOutlet UILabel  *subLabel;
 @property (weak, nonatomic) IBOutlet UITableView *subTableview;
-@property (weak, nonatomic) IBOutlet UILabel *subHandLb;
 @property (assign,nonatomic) float sw;
 @property (assign,nonatomic) float sh;
 @property (assign,nonatomic) float sGap_h;
@@ -35,7 +37,7 @@
     [super viewDidLoad];
     [self addNote];
     JL_ug = [JL_BLEUsage sharedMe];
-    btEnityList = JL_ug.bt_EntityList;
+    uiEnityList = [NSMutableArray new];
     
     [self setupUI];
 
@@ -59,22 +61,13 @@
 }
 
 -(void)setupUI{
-    _sw = [DFUITools screen_2_W];
-    _sh = [DFUITools screen_2_H];
-    if (_sh < 812.0f) {//兼容iPhoneX尺寸以下手机
-        _sGap_h = 74.0;
-        _sGap_t = 44.0;
-    }else{
-        _sGap_h = 88.0;
-        _sGap_t = 64.0;
-    }
-    _subTitleView.frame = CGRectMake(0, 0, _sw, _sGap_h);
-    _subLabel.center    = CGPointMake(_sw/2.0, _sGap_h - 25.0);
+    
+    self.headBar.constant = kJL_BarHead;
+    self.footBar.constant = kJL_BarFoot+20;
+    
     _subLabel.text = kJL_TXT("设备连接");
     _subLabel.textColor = [UIColor blackColor];
-    _subHandLb.frame = CGRectMake(0, _sGap_h, _sw, 20.0);
 
-    _subTableview.frame = CGRectMake(0, _sGap_h+2.0, _sw, _sh-_sGap_h-_sGap_t-2.0);
     _subTableview.tableFooterView = [UIView new];
     _subTableview.dataSource= self;
     _subTableview.delegate  = self;
@@ -204,16 +197,20 @@
                                                           handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
         return;
+    }else{
+        
     }
 }
 
 
 -(void)noteBLEStatusAndDevices:(NSNotification*)note{
     NSDictionary *dic = [note object];
-    NSArray * arr = dic[@"DEVICE"];
+    NSArray * btArray = dic[@"DEVICE"];
     JL_BLEStatus st = [dic[@"STATUS"] intValue];
     
     if (st == JL_BLEStatusFound) {
+        btEnityList = btArray;
+        
         /*--- 暂存已连接的BLE ---*/
         if (JL_ug.bt_status_connect) {
             if (JL_ug.bt_Entity) {
@@ -236,8 +233,6 @@
                     btEnityList = [mutableBtEnityList copy];
                 }
             }
-        }else{
-            btEnityList = arr;
         }
         [_subTableview reloadData];
         [self endLoadingView];
