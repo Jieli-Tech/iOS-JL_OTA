@@ -1,5 +1,4 @@
 # iOS-JL_OTA
-[toc]
 # iOS杰理蓝牙OTA开发说明v1.2.0
 
 - 对应的芯片类型：AC692x，BD29
@@ -92,7 +91,7 @@
 
 ```objective-c
         /*--- 1、BLE外设自己断开后，APP的主动回连 ---*/
-        JL_BLEUsage *usage = [JL_BLEUsage sharedMeNO
+        JL_BLEUsage *usage = [JL_BLEUsage sharedMe];
         usage.bt_ble.BLE_RELINK_ACTIVE = YES; //一般情况赋值NO即可
         
         /*--- 2、iPhone关闭蓝牙后，开启蓝牙，APP的主动回连 ---*/
@@ -336,20 +335,20 @@
 ```
 #### 2.2.2、为SDK部署蓝牙传输通路
 ```objective-c
-        //1、外部蓝牙连成功的回调处，Post以下通知给SDK；
-        [JL_Tools post:kUI_JL_BLE_PAIRED Object:nil];//详情看2.2.3
+//1、外部蓝牙连成功的回调处，Post以下通知给SDK；
+[JL_Tools post:kUI_JL_BLE_PAIRED Object:nil];//详情看2.2.3
         
-        //2、外部蓝牙数据接收回调处，将数据一起Post以下通知给SDK；
-        [JL_Tools post:kJL_RCSP_RECEIVE Object:data];
+//2、外部蓝牙数据接收回调处，将数据一起Post以下通知给SDK；
+[JL_Tools post:kJL_RCSP_RECEIVE Object:data];
         
-        //3、SDK请求外部蓝牙帮忙发送数据，请监听通知【kJL_RCSP_SEND】
-        if ([name isEqual:kJL_RCSP_SEND]) {
-        NSData *bleData = [note object];
-        [bt_ble writeRcspData:bleData];//此处用外部蓝牙发数API，将数据发给设备即可。
-    }
+//3、SDK请求外部蓝牙帮忙发送数据，请监听通知【kJL_RCSP_SEND】
+if ([name isEqual:kJL_RCSP_SEND]) {
+    NSData *bleData = [note object];
+    [bt_ble writeRcspData:bleData];//此处用外部蓝牙发数API，将数据发给设备即可。
+}
 
-        //4、外部蓝牙断开的回调处，Post以下通知给SDK；
-        [JL_Tools post:kUI_JL_BLE_DISCONNECTED Object:nil];
+//4、外部蓝牙断开的回调处，Post以下通知给SDK；
+[JL_Tools post:kUI_JL_BLE_DISCONNECTED Object:nil];
 ```
 #### 2.2.3、BLE握手连接
 
