@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A15F70624E6668E009B0BB6 /* update_custom.ufw in Resources */ = {isa = PBXBuildFile; fileRef = 4A15F70524E66680009B0BB6 /* update_custom.ufw */; };
-		4A249F242580BF460086102A /* update_watch.ufw in Resources */ = {isa = PBXBuildFile; fileRef = 4A249F232580BF380086102A /* update_watch.ufw */; };
 		4A295EBE2421CEF000F87318 /* QCY_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A295EBD2421CEF000F87318 /* QCY_json.txt */; };
 		4A53D51A2420660800B419C6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A53D5192420660800B419C6 /* AppDelegate.m */; };
 		4A53D5252420660C00B419C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A53D5242420660C00B419C6 /* Assets.xcassets */; };
@@ -21,15 +19,10 @@
 		4A53D5612420713400B419C6 /* TwoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A53D55F2420713400B419C6 /* TwoVC.m */; };
 		4A53D5622420713400B419C6 /* TwoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A53D5602420713400B419C6 /* TwoVC.xib */; };
 		4A53D56B24207BC300B419C6 /* QCY_BLEApple.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A53D56A24207BC300B419C6 /* QCY_BLEApple.m */; };
-		4A847E0E248F9402002D4908 /* update(1).ufw in Resources */ = {isa = PBXBuildFile; fileRef = 4A847E0D248F93F8002D4908 /* update(1).ufw */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4A15F70524E66680009B0BB6 /* update_custom.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = update_custom.ufw; sourceTree = "<group>"; };
-		4A249F232580BF380086102A /* update_watch.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = update_watch.ufw; sourceTree = "<group>"; };
 		4A295EBD2421CEF000F87318 /* QCY_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = QCY_json.txt; sourceTree = "<group>"; };
-		4A4208C225E785B5009F96F6 /* 696HID2.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = 696HID2.ufw; sourceTree = "<group>"; };
-		4A4208C325E785B5009F96F6 /* 696HID1.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = 696HID1.ufw; sourceTree = "<group>"; };
 		4A53D5152420660800B419C6 /* QCY_Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QCY_Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A53D5182420660800B419C6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4A53D5192420660800B419C6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,7 +40,6 @@
 		4A53D5602420713400B419C6 /* TwoVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwoVC.xib; sourceTree = "<group>"; };
 		4A53D56924207BC300B419C6 /* QCY_BLEApple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QCY_BLEApple.h; sourceTree = "<group>"; };
 		4A53D56A24207BC300B419C6 /* QCY_BLEApple.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QCY_BLEApple.m; sourceTree = "<group>"; };
-		4A847E0D248F93F8002D4908 /* update(1).ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = "update(1).ufw"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,11 +58,6 @@
 		4A53D50C2420660800B419C6 = {
 			isa = PBXGroup;
 			children = (
-				4A4208C325E785B5009F96F6 /* 696HID1.ufw */,
-				4A4208C225E785B5009F96F6 /* 696HID2.ufw */,
-				4A847E0D248F93F8002D4908 /* update(1).ufw */,
-				4A15F70524E66680009B0BB6 /* update_custom.ufw */,
-				4A249F232580BF380086102A /* update_watch.ufw */,
 				4A53D5172420660800B419C6 /* QCY_Demo */,
 				4A53D5242420660C00B419C6 /* Assets.xcassets */,
 				4A53D5292420660C00B419C6 /* Info.plist */,
@@ -173,9 +160,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A249F242580BF460086102A /* update_watch.ufw in Resources */,
-				4A15F70624E6668E009B0BB6 /* update_custom.ufw in Resources */,
-				4A847E0E248F9402002D4908 /* update(1).ufw in Resources */,
 				4A53D5282420660C00B419C6 /* LaunchScreen.storyboard in Resources */,
 				4A53D5622420713400B419C6 /* TwoVC.xib in Resources */,
 				4A53D5252420660C00B419C6 /* Assets.xcassets in Resources */,

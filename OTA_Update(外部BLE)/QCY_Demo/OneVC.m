@@ -276,7 +276,7 @@
 
 
 -(void)noteOtaUpdate:(NSNotification*)note{
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"696HID1" ofType:@"ufw"];
+    NSString *filePath = @"OTA升级文件路径";//[[NSBundle mainBundle] pathForResource:@"696HID1" ofType:@"ufw"];
     NSData *otaData = [[NSData alloc] initWithContentsOfFile:filePath];
     
     [JL_Manager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
