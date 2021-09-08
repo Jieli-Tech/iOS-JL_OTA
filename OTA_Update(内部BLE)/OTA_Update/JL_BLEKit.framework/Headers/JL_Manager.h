@@ -92,10 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
  @param uuid 设备的UUID
  */
 +(void)bleConnectDeviceWithUUID:(NSString*)uuid;
-    /**
-     断开当前连接的蓝牙设备，不会影响下次的自动连接
-     */
-    +(void)bleDisconnect;
+/**
+ 断开当前连接的蓝牙设备，不会影响下次的自动连接
+ */
++(void)bleDisconnect;
 /**
  断开当前连接，并清除连接记录，下次开机后不会自动连接
  */
@@ -480,17 +480,6 @@ extern NSString *kJL_HEADSET_TIPS;
 @param fmtx  频点
 */
 +(void)cmdSetFMTX:(uint16_t)fmtx;
-
-/// 耳机主动降噪ANC
-/// @param mode 模式 (0x01:普通模式 0x02:降噪模式 0x03:通透 模式)
-+(void)cmdSetAncMode:(uint8_t)mode;
-
-/// 耳机主动降噪ANC (模式使能)
-/// @param modeTypes 支持的模式 @[@(JL_ANCType_Normal),@(JL_ANCType_NoiseReduction).....]
-/// JL_ANCType_Normal                      = 0,    //普通模式
-/// JL_ANCType_NoiseReduction        = 1,    //降噪模式
-/// JL_ANCType_Transparent              = 2,    //通透模式
-+(void)cmdSetAncModeTypes:(NSArray *)modeTypes;
 
 /**
 主动设置ID3播放状态

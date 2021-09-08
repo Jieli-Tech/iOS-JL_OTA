@@ -56,6 +56,23 @@
 #define kJL_GET_FLASH_INFO          0x00D6
 #define kJL_GET_FLASH_W_R           0x001A
 
+#define kJL_BIGFILE_START           0x001B
+#define kJL_BIGFILE_END             0x001C
+#define kJL_BIGFILE_GET_FILE        0x001D
+#define kJL_BIGFILE_STOP            0x001E
+#define kJL_FILE_DELETE             0x001F
+#define kJL_GET_FILENAME            0x0020
+#define kJL_PRE_ENVIRONMENT         0x0021
+#define kJL_FILE_FORMAT             0x0022
+#define kJL_FILE_NAME_DEL           0x0023
+#define kJL_FILE_READ_CONTENT       0x0024
+
+#define kJL_RTC_PLUS                0x0025
+#define kJL_BATCH_OPERATE           0x0026
+#define kJL_FILE_GET_CRC            0x0027
+
+#define kJL_PHONE_NUMBER_WAY        0x00F1
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class JL_PKG;

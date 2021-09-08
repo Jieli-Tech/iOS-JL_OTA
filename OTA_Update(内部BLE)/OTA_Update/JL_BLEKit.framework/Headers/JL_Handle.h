@@ -17,7 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSString *kJL_CMD_RECEIVE;       //XM_RCSP【接收】
 
+@protocol JL_HandleDelegate <NSObject>
+@optional
+-(void)onHandleOutputPKG:(JL_PKG*)pkg;
+@end
+
 @interface JL_Handle : NSObject
+@property(nonatomic,weak)id<JL_HandleDelegate>delegate;
 
 +(id)sharedMe;
 
@@ -35,6 +41,22 @@ extern NSString *kJL_CMD_RECEIVE;       //XM_RCSP【接收】
  @return 数据
  */
 +(NSData*)handlePackage:(JL_PKG*)pkg;
+
+/**
+输入BLE数据
+@param data  设备过来的数据
+*/
+-(void)inputHandleData:(NSData*)data;
+
+/**[实例]
+向设备发送JL_PKG数据包。
+@param pkg JL_PKG数据模型
+@param name 设备名字
+*/
+-(NSData*)sendPackage:(JL_PKG*)pkg WithName:(NSString*)name;
+
++(void)logPackage:(JL_PKG*)pkg WithName:(NSString *__nullable)name IsSend:(BOOL)isSend;
+
 @end
 
 NS_ASSUME_NONNULL_END
