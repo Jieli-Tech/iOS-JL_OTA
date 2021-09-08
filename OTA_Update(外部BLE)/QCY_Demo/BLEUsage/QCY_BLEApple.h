@@ -54,8 +54,9 @@ extern NSString *QCY_BLE_PAIR_R;         //配对【读】通道
 
 @class QCY_Entity;
 @interface QCY_BLEApple : NSObject
-@property(strong,nonatomic)NSString       *lastUUID;
-
+@property(strong,nonatomic)NSString     *lastUUID;
+@property(strong,nonatomic)CBPeripheral *__nullable mBlePeripheral;
+@property(strong,nonatomic)JL_Assist    *mAssist;
 /**
  开始搜索
  */
@@ -82,13 +83,7 @@ extern NSString *QCY_BLE_PAIR_R;         //配对【读】通道
 */
 -(void)connectPeripheralWithUUID:(NSString*)uuid;
 
-/**
- 发送配对数据
- 
- @param data 数据
- @return 是否已发送
- */
--(BOOL)writeRcspData:(NSData*)data;
+
 @end
 
 @interface QCY_Entity  : NSObject                                //蓝牙设备模型

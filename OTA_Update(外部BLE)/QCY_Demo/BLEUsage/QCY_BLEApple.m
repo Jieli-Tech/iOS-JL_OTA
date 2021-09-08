@@ -23,8 +23,6 @@ NSString *QCY_BLE_RCSP_W  = @"AE01"; //命令“写”通道
 NSString *QCY_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 
-static NSUInteger QCY_BLE_LEN_45 = 45;
-
 @interface QCY_BLEApple()<CBCentralManagerDelegate,
                          CBPeripheralDelegate>
 {
@@ -34,9 +32,7 @@ static NSUInteger QCY_BLE_LEN_45 = 45;
     NSMutableArray      *blePeripheralArr;
     CBPeripheral        *bleCurrentPeripheral;
     NSString            *bleCurrentName;
-    
-    CBCharacteristic    *charRcspWrite;
-    CBCharacteristic    *charRcspRead;
+
 }
 
 @end
@@ -48,6 +44,14 @@ static NSUInteger QCY_BLE_LEN_45 = 45;
     self = [super init];
     if (self) {
         bleManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+        
+        /*--- JLSDK ADD ---*/
+        self.mAssist = [[JL_Assist alloc] init];
+        self.mAssist.mNeedPaired = YES;             //是否需要握手配对
+        self.mAssist.mPairKey    = nil;             //配对秘钥
+        self.mAssist.mService    = QCY_BLE_SERVICE; //服务号
+        self.mAssist.mRcsp_W     = QCY_BLE_RCSP_W;  //特征「写」
+        self.mAssist.mRcsp_R     = QCY_BLE_RCSP_R;  //特征「读」
     }
     return self;
 }
@@ -104,30 +108,7 @@ static NSUInteger QCY_BLE_LEN_45 = 45;
     }
 }
 
-#pragma mark - 发送【命令数据】
--(BOOL)writeRcspData:(NSData*)data{
-    if (bleCurrentPeripheral && charRcspWrite && data.length > 0) {
-        
-        NSInteger len = data.length;
-        while (len>0) {
-            if (len == 0) break;
-            if (len <= QCY_BLE_LEN_45) {
-                [bleCurrentPeripheral writeValue:[data subdataWithRange:NSMakeRange(0, data.length)]
-                               forCharacteristic:charRcspWrite
-                                            type:CBCharacteristicWriteWithoutResponse];
-                len -= data.length;
-            }else{
-                [bleCurrentPeripheral writeValue:[data subdataWithRange:NSMakeRange(0, QCY_BLE_LEN_45)]
-                               forCharacteristic:charRcspWrite
-                                            type:CBCharacteristicWriteWithoutResponse];
-                len -= QCY_BLE_LEN_45;
-                data = [data subdataWithRange:NSMakeRange(QCY_BLE_LEN_45, len)];
-            }
-        }
-        return YES;
-    }
-    return NO;
-}
+
 
 #pragma mark - 使用UUID，重连设备。
 -(void)connectPeripheralWithUUID:(NSString*)uuid{
@@ -164,6 +145,14 @@ static NSUInteger QCY_BLE_LEN_45 = 45;
 {
     NSInteger st = central.state;
     bleManagerState = st;
+    
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistUpdateState:central.state];
+    
+    if (bleManagerState != CBManagerStatePoweredOn) {
+        self.mBlePeripheral = nil;
+    }
+    
     switch (central.state) {
         case CBManagerStatePoweredOn:
             NSLog(@"BLE--> CBManagerStatePoweredOn....");
@@ -276,24 +265,9 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
 {
     if (error) { NSLog(@"Err: Discovered Characteristics fail."); return; }
     
-    for (CBCharacteristic *character in service.characteristics) {
-        /*--- RCSP ---*/
-        if ([character.UUID.UUIDString containsString:QCY_BLE_RCSP_W]) {
-            NSLog(@"BLE Get Rcsp(Write) Channel ---> %@",character.UUID.UUIDString);
-            charRcspWrite = character;
-        }
-        
-        if ([character.UUID.UUIDString containsString:QCY_BLE_RCSP_R]) {
-            NSLog(@"BLE Get Rcsp(Read) Channel ---> %@",character.UUID.UUIDString);
-            charRcspRead = character;
-            [peripheral setNotifyValue:YES forCharacteristic:character];
-            
-            if(charRcspRead.properties == CBCharacteristicPropertyRead){
-                [peripheral readValueForCharacteristic:character];
-                NSLog(@"BLE  Rcsp(Read) Read Value For Characteristic.");
-            }
-        }
-    }
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistDiscoverCharacteristicsForService:service Peripheral:peripheral];
+
 }
 
 
@@ -302,27 +276,21 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
              error:(nullable NSError *)error
 {
     if (error) { NSLog(@"Err: Update NotificationState For Characteristic fail."); return; }
-    if (characteristic.isNotifying) {
-        if ([characteristic.UUID.UUIDString containsString:QCY_BLE_RCSP_R])
-        {
-            QCY_BLE_LEN_45 = [peripheral maximumWriteValueLengthForType:CBCharacteristicWriteWithoutResponse];
-            NSLog(@"BLE ---> MTU:%lu",(unsigned long)QCY_BLE_LEN_45);
+    
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistUpdateCharacteristic:characteristic
+                                  Peripheral:peripheral
+                                      Result:^(BOOL isPaired) {
+        if (isPaired == YES) {
+            self.lastUUID = peripheral.identifier.UUIDString;
             
-
-            NSData *pairKey = nil;//使用内置默认
-            [[JL_BLEAction sharedMe] bluetoothPairingKey:pairKey Result:^(BOOL ret) {
-                if (ret) {
-                    self.lastUUID = peripheral.identifier.UUIDString;
-                    [JL_Tools setUser:self.lastUUID forKey:kUUID_BLE_LAST];
-                    /*--- 配对成功 ---*/
-                    [DFNotice post:kQCY_BLE_PAIRED Object:peripheral];
-                }else{
-                    NSLog(@"Err: bluetooth pairing fail.");
-                    [self->bleManager cancelPeripheralConnection:peripheral];
-                }
-            }];
+            self->_mBlePeripheral = peripheral;
+            /*--- UI配对成功 ---*/
+            [JL_Tools post:kQCY_BLE_PAIRED Object:peripheral];
+        }else{
+            [self->bleManager cancelPeripheralConnection:peripheral];
         }
-    }
+    }];
 }
 
 
@@ -331,16 +299,9 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
              error:(NSError *)error
 {
     if (error) { NSLog(@"Err: receive data fail."); return; }
-    
-    NSData *data = characteristic.value;
-    if (data.length <= 0) { return; }
-    
-    /*--- 【命令】通道返回的数据 ---*/
-    if ([characteristic.UUID.UUIDString containsString:QCY_BLE_RCSP_R])
-    {
-        //NSLog(@"--->RCSP:%@",data);
-        [DFNotice post:kQCY_RCSP_RECEIVE Object:data];
-    }
+
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistUpdateValueForCharacteristic:characteristic];
 }
 
 #pragma mark - 设备断开连接
@@ -348,7 +309,13 @@ didDiscoverPeripheral:(CBPeripheral *)peripheral
                  error:(nullable NSError *)error
 {
     NSLog(@"BLE Disconnect ---> Device %@ error:%d",peripheral.name,(int)error.code);
-    [DFNotice post:kQCY_BLE_DISCONNECTED Object:peripheral];
+    self.mBlePeripheral = nil;
+    
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistDisconnectPeripheral:peripheral];
+    
+    /*--- UI刷新，设备断开 ---*/
+    [JL_Tools post:kQCY_BLE_DISCONNECTED Object:peripheral];
 }
 
 @end

@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
 typedef void(^JL_Action)(void);
+typedef void(^JL_Timer_BK)(void);
 
+@class JL_Timer;
 @interface JL_Tools : NSObject
-
 /**
  Data自定义截取。
  
@@ -23,6 +23,7 @@ typedef void(^JL_Action)(void);
  @return 截取后的数据
  */
 +(NSData*)data:(NSData*)data R:(NSInteger)index L:(NSInteger)length;
++(NSDictionary*)dictionaryData:(NSData*)data R:(NSInteger)index L:(NSInteger)length;
 
 /**
  NSData 转成 10进制
@@ -39,6 +40,14 @@ typedef void(^JL_Action)(void);
  @return 字符串
  */
 +(NSString*)dataChangeToString:(NSData*)data;
+
+/**
+ uint8_t 转成 NSData
+ 
+ @param value uint8_t类型
+ @return NSData
+ */
++(NSData*)uInt8_data:(uint8_t)value;
 
 /**
  uint16_t 转成 NSData
@@ -73,13 +82,17 @@ typedef void(^JL_Action)(void);
  @return NSData类型 => <ffff 0000>
  */
 +(NSMutableData*)HexToData:(NSString*)hex;
-
+/**
+ *  去除结束符
+ */
++(NSData*)cleanEOF:(NSData*)data;
 /**
  求自然数：aByte ==> -2 -1 0 1 2 3...
  @param aByte 数据
  @return 自然数
  */
 +(int)getNaturalNumber:(NSData*)aByte;
++(int)getNaturalNumber_u16:(NSData*)u16Bytes;
 +(int)getNaturalNumber_u32:(NSData*)u32Bytes;
 
 /**
@@ -223,19 +236,31 @@ typedef void(^JL_Action)(void);
                 File:(NSString*)file;
 
 /**
-*  用途:从Project资源里寻找文件。
-* （先把资源文件添加至工程内的Copy Bundle Resources内。）
-*  @param   file      文件名
-*  @return 该文件的路径。
-*/
+ *  用途:从Project资源里寻找文件。
+ * （先把资源文件添加至工程内的Copy Bundle Resources内。）
+ *  @param   file      文件名
+ *  @return 该文件的路径。
+ */
 +(NSString*)find:(NSString *)file;
+
+/**
+ *  是否存在某个路径。
+ *  @param   path   文件路径
+ *  @return  YES or NO。
+ */
++(BOOL)isExistsPath:(NSString*)path;
 /**
  删除文件
- 
  @param path 完整路径
  @return 成功与否
  */
 +(BOOL)removePath:(NSString*)path;
+
+/**
+ *  用途:文件夹内文件元素。
+ *  @param   path      文件夹路径
+ */
++(NSArray*)subPaths:(NSString*)path;
 
 /**
  *  用途:解析JSON文件。
@@ -266,6 +291,15 @@ typedef void(^JL_Action)(void);
 +(void)writeData:(NSData*)data endFile:(NSString*)path;
 
 /**
+ 数据写进文件的偏移位置
+ 
+ @param data 数据
+ @param seek 偏移
+ @param path 文件路径
+ */
++(void)writeData:(NSData*)data Seek:(unsigned long long)seek File:(NSString*)path;
+
+/**
  *  UNICODE 编码字符串(小端)
  */
 +(NSString*)stringUnicode:(NSData*)data;
@@ -286,10 +320,42 @@ typedef void(^JL_Action)(void);
 +(NSString*)stringGBK:(NSData*)data;
 
 /**
+ *  大文件传输，长短文件名（移除不必要字符）
+ */
++(NSData*)stringBigFileWithNeedRemoveUnnecessaryPunctuationCharactersWithString:(NSString*)name withFileNameIndex:(int)fileNameIndex;
+
+/**
+ * 移除不必要字符  \ / : " < > . space
+ */
++(NSString *)removeUnnecessaryPunctuationCharactersWithString:(NSString *)textString;
+
+/**
+ *  大文件传输，长短文件名
+ */
++(NSData*)stringBigFile:(NSString*)name withFileNameIndex:(int)fileNameIndex;
+
+/**
+ *  去除特殊字符串
+ */
++(NSString*)removeSpecialStrings:(NSString*)name;
+/**
  *  返回时间戳（单位：秒）
  */
 +(long)dateCurrent;
+/**
+ *  开启打印
+ */
++(void)openLogTextFile;
 
+@end
+
+@interface JL_Timer : NSObject
+@property(nonatomic,assign)NSInteger            subTimeout; //超时时间(默认5s)
+@property(nonatomic,assign)NSTimeInterval       subScale;   //默认1.0s
+-(void)waitForTimeoutResult:(JL_Timer_BK)result;
+-(void)cancelTimeout;
+-(void)threadWait;
+-(void)threadContinue;
 @end
 
 NS_ASSUME_NONNULL_END

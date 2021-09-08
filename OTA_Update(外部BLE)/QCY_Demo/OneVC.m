@@ -16,6 +16,7 @@
     DFTips          *loadingTip;
     QCY_BLEApple    *bt_ble;
     NSMutableArray  *bt_EntityList;
+    JL_ManagerM     *mCmdManager;
 }
 @property (weak  ,nonatomic) IBOutlet UIView   *subTitleView;
 @property (weak  ,nonatomic) IBOutlet UILabel  *subLabel;
@@ -36,8 +37,6 @@
     [self setupBLE];
     [self addNote];
 
-    //安装JLSDK
-    [JL_Manager installManager];
 }
 -(void)setupUI{
     _sw = [DFUITools screen_2_W];
@@ -62,8 +61,10 @@
 }
 
 -(void)setupBLE{
-    bt_EntityList = [NSMutableArray new];
+    
     bt_ble = [QCY_BLEApple new];
+    bt_EntityList = [NSMutableArray new];
+    mCmdManager = bt_ble.mAssist.mCmdManager;
 }
 
 - (void)refresh {
@@ -87,16 +88,33 @@
 
 - (IBAction)info_btn:(id)sender {
     /*--- 获取设备信息 ---*/
-    [JL_Manager cmdTargetFeatureResult:^(NSArray *array) {
+    [mCmdManager cmdTargetFeatureResult:^(NSArray * _Nullable array) {
         JL_CMDStatus st = [array[0] intValue];
         if (st == JL_CMDStatusSuccess) {
-            JLDeviceModel *md = [JL_Manager outputDeviceModel];
-            if (md.otaStatus == JL_OtaStatusForce) {
-                NSLog(@"--->【单备份】重连强制升级！");
+            
+            JLModel_Device *model = [self->mCmdManager outputDeviceModel];
+            
+            JL_OtaStatus upSt = model.otaStatus;
+            if (upSt == JL_OtaStatusForce) {
+                NSLog(@"---> 进入强制升级.");
                 [self noteOtaUpdate:nil];
+                return;
+            }else{
+                if (model.otaHeadset == JL_OtaHeadsetYES) {
+                    NSLog(@"---> 进入强制升级: OTA另一只耳机.");
+                    [self noteOtaUpdate:nil];
+                    return;
+                }
             }
+            NSLog(@"---> 设备正常使用...");
+            [JL_Tools mainTask:^{
+                [DFUITools showText:@"设备正常使用" onView:self.view delay:1.0];
+                
+                /*--- 获取公共信息 ---*/
+                [self->mCmdManager cmdGetSystemInfo:JL_FunctionCodeCOMMON Result:nil];
+            }];
         }else{
-            NSLog(@"---> 错误提示：%d",st);
+            NSLog(@"---> ERROR：设备信息获取错误!");
         }
     }];
 }
@@ -166,22 +184,6 @@
 
 -(void)allNoteListen:(NSNotification*)note{
     NSString *name = note.name;
-    
-    /*---【杰理SDK】请求蓝牙API发送数据 ---*/
-    if ([name isEqual:kJL_RCSP_SEND]) {
-        NSData *bleData = [note object];
-        if (_bt_status_phone && _bt_status_connect) {
-            [bt_ble writeRcspData:bleData];
-        }
-    }
-    
-    /*--- 蓝牙收到的数据！---*/
-    if ([name isEqual:kQCY_RCSP_RECEIVE]) {
-        /*--- 转发给【杰理SDK】解析 ---*/
-        NSData *data = [note object];
-        [JL_Tools post:kJL_RCSP_RECEIVE Object:data];
-    }
-    
         
     if ([name isEqual:kQCY_BLE_FOUND])
     {
@@ -220,7 +222,6 @@
     
     if ([name isEqual:kQCY_BLE_PAIRED])
     {
-        [JL_Tools post:kUI_JL_BLE_PAIRED Object:nil];
         [self startLoadingView:@"连接成功." Delay:1.0];
         
         CBPeripheral *pl = [note object];
@@ -239,7 +240,7 @@
     
     if ([name isEqual:kQCY_BLE_DISCONNECTED]){
 
-        [JL_Tools post:kUI_JL_BLE_DISCONNECTED Object:nil];
+
         _bt_status_connect = NO;
         [_subTableview reloadData];
     }
@@ -279,43 +280,60 @@
     NSString *filePath = @"OTA升级文件路径";//[[NSBundle mainBundle] pathForResource:@"696HID1" ofType:@"ufw"];
     NSData *otaData = [[NSData alloc] initWithContentsOfFile:filePath];
     
-    [JL_Manager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
-        if (result == JL_OTAResultUpgrading ||
-            result == JL_OTAResultPreparing)
-        {
-
-            if (result == JL_OTAResultPreparing) NSLog(@"校验文件中:%.2f",progress*100.0f);
-            if (result == JL_OTAResultUpgrading) NSLog(@"正在升级:%.2f",progress*100.0f);
-        }else{
-            
+    [self->mCmdManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress)
+    {
+        if (result == JL_OTAResultFail) {
+            NSLog(@"--->OTA升级失败");
         }
-        
+        if (result == JL_OTAResultDataIsNull) {
+            NSLog(@"--->OTA升级数据为空!");
+        }
+        if (result == JL_OTAResultCommandFail) {
+            NSLog(@"--->OTA指令失败!");
+        }
+        if (result == JL_OTAResultSeekFail) {
+            NSLog(@"--->OTA标示偏移查找失败!");
+        }
+        if (result == JL_OTAResultInfoFail) {
+            NSLog(@"--->OTA升级固件信息错误!");
+        }
+        if (result == JL_OTAResultLowPower) {
+            NSLog(@"--->OTA升级设备电压低!");
+        }
+        if (result == JL_OTAResultEnterFail) {
+            NSLog(@"--->未能进入OTA升级模式!");
+        }
+        if (result == JL_OTAResultUnknown) {
+            NSLog(@"--->OTA未知错误!");
+        }
+        if (result == JL_OTAResultFailSameVersion) {
+            NSLog(@"--->相同版本！");
+        }
+        if (result == JL_OTAResultFailTWSDisconnect) {
+            NSLog(@"--->TWS耳机未连接");
+        }
+        if (result == JL_OTAResultFailNotInBin) {
+            NSLog(@"--->耳机未在充电仓");
+        }
+        if (result == JL_OTAResultPreparing ||
+            result == JL_OTAResultUpgrading)
+        {
+            if (result == JL_OTAResultUpgrading) NSLog(@"---> 正在升级：%.1f",progress*100.0f);
+            if (result == JL_OTAResultPreparing) NSLog(@"---> 检验文件：%.1f",progress*100.0f);
+        }
+        if (result == JL_OTAResultPrepared) {
+            NSLog(@"---> 检验文件【完成】");
+        }
         if (result == JL_OTAResultReconnect) {
-            NSLog(@"正在回连...");
-            /*--- 需要重连 ---*/
-            NSString *lastUUID = self->bt_ble.lastUUID;
-            [self->bt_ble connectPeripheralWithUUID:lastUUID];
+            NSLog(@"---> OTA正在回连设备... %@",self->bt_ble.mBlePeripheral.name);
+            [self->bt_ble connectPeripheralWithUUID:self->bt_ble.lastUUID];
         }
         
         if (result == JL_OTAResultSuccess) {
-            NSLog(@"OTA 升级完成.");
+            NSLog(@"--->升级成功.");
         }
-        
         if (result == JL_OTAResultReboot) {
-            NSLog(@"OTA 设备准备重启.");
-            //self.updateTxt.text = kJL_TXT("设备准备重启");
-            [DFAction delay:2.5 Task:^{
-                [JL_Tools post:@"UI_CHANEG_VC" Object:@(1)];
-            }];
-        }
-        
-        if (result == JL_OTAResultFailCompletely) {
-            NSLog(@"升级失败");
-        }
-        
-        if (result == JL_OTAResultFailKey) {
-            NSLog(@"升级文件KEY错误");
-
+            NSLog(@"--->设备重启.");
         }
     }];
 }

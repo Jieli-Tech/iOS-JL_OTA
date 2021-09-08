@@ -84,10 +84,6 @@ extern NSString *JL_BLE_CHANGE_MASTER;  //耳机主从切换成功
 @property(nonatomic,assign)BOOL isOpenHistory;
 
 @property(nonatomic,strong) NSString *JL_BLE_SERVICE;        //服务号
-@property(nonatomic,strong) NSString *JL_BLE_PAIR_W;         //配对【写】通道
-@property(nonatomic,strong) NSString *JL_BLE_PAIR_R;         //配对【读】通道
-@property(nonatomic,strong) NSString *JL_BLE_AUIDO_W;        //音频【写】通道
-@property(nonatomic,strong) NSString *JL_BLE_AUIDO_R;        //音频【读】通道
 @property(nonatomic,strong) NSString *JL_BLE_RCSP_W;         //命令【写】通道
 @property(nonatomic,strong) NSString *JL_BLE_RCSP_R;         //命令【读】通道
 
@@ -129,14 +125,6 @@ extern NSString *JL_BLE_CHANGE_MASTER;  //耳机主从切换成功
 -(void)cleanBLE;
 
 /**
- 发送配对数据
- 
- @param data 数据
- @return 是否已发送
- */
--(BOOL)writePairData:(NSData*)data;
-
-/**
  发送RCSP数据
  
  @param data 数据
@@ -160,6 +148,9 @@ extern NSString *JL_BLE_CHANGE_MASTER;  //耳机主从切换成功
            @"NAME"   :@"earphone"}
  */
 +(NSDictionary*)outputEdrInfo;
+
+/// 查询是否在连接蓝牙中
+-(BOOL)wetherConnecting;
 
 @end
 
