@@ -1,9 +1,10 @@
-# iOS-JL_OTA
-# iOS杰理蓝牙OTA开发说明v1.2.0
+[toc]
+
+# iOS杰理蓝牙OTA开发说明v1.5.0
 
 - 对应的芯片类型：AC692x，BD29
 - APP开发环境：iOS平台，iOS 10.0以上，Xcode 11.0以上
-- 基于「杰理蓝牙控制库SDK v1.4.0 **(单设备版)**」 开发
+- 基于「杰理蓝牙控制库SDK v1.5.0 **(多设备版)**」 开发
 - 对应于苹果商店上的APP: **【OTA Update】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
 
@@ -19,6 +20,7 @@
 
 | 版本 | 日期           | 编辑    | 修改内容                                       |
 | ---- | -------------- | ------- | ---------------------------------------------- |
+| v1.5.0 | 2021年09月08日 | 冯 洪鹏 | 优化自定义蓝牙SDK的接入方式 |
 | v1.2 | 2020年12月09日 | 冯 洪鹏 | 更新文档 |
 | v1.1 | 2020年04月20日 | 冯 洪鹏 | 增加升级的错误回调                             |
 | v1.0 | 2019年09月09日 | 冯 洪鹏 | OTA升级功能                                    |
@@ -316,9 +318,9 @@
 
 **2、会用到的类**：
 
-- **JL_BLEAction**：实现BLE设备握手连接；(可选)
-
-- **JL_Manager**：只能用**获取设备信息、OTA升级**的APIs；
+- **JL_Assist**：部署SDK类；(必须)
+- **JL_ManagerM**：命令处理中心，所有的命令操作都集中于此；(必须)
+- **JLModel_Device**：设备信息存储的数据模型；(必须)
 
 **3、BLE参数**：
 
@@ -327,149 +329,181 @@
 - **【读 】特征值**：AE02
 
 
-#### 2.2.1、初始化SDK (跟2.1.5有点区别)
+### 2.2.1、初始化SDK 
 ```objective-c
-    //安装JLSDK即可，无其他设置，因为蓝牙控制权都不在SDK内部。
-    //这种情况SDK相当于OTA数据的解析器的角色。
-    [JL_Manager installManager];
+        /*--- JLSDK ADD ---*/
+        self.mAssist = [[JL_Assist alloc] init];
+        self.mAssist.mNeedPaired = YES;             //是否需要握手配对
+        self.mAssist.mPairKey    = nil;             //配对秘钥
+        self.mAssist.mService    = @"AE00";                 //服务号
+        self.mAssist.mRcsp_W     = @"AE01";                  //特征「写」
+        self.mAssist.mRcsp_R     = @"AE02";                  //特征「读」
+
 ```
-#### 2.2.2、为SDK部署蓝牙传输通路
+### 2.2.2、BLE设备特征回调
+
 ```objective-c
-//1、外部蓝牙连成功的回调处，Post以下通知给SDK；
-[JL_Tools post:kUI_JL_BLE_PAIRED Object:nil];//详情看2.2.3
-        
-//2、外部蓝牙数据接收回调处，将数据一起Post以下通知给SDK；
-[JL_Tools post:kJL_RCSP_RECEIVE Object:data];
-        
-//3、SDK请求外部蓝牙帮忙发送数据，请监听通知【kJL_RCSP_SEND】
-if ([name isEqual:kJL_RCSP_SEND]) {
-    NSData *bleData = [note object];
-    [bt_ble writeRcspData:bleData];//此处用外部蓝牙发数API，将数据发给设备即可。
+#pragma mark - 设备特征回调
+- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service
+             error:(nullable NSError *)error
+{
+    if (error) { NSLog(@"Err: Discovered Characteristics fail."); return; }
+    
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistDiscoverCharacteristicsForService:service Peripheral:peripheral];
 }
-
-//4、外部蓝牙断开的回调处，Post以下通知给SDK；
-[JL_Tools post:kUI_JL_BLE_DISCONNECTED Object:nil];
 ```
-#### 2.2.3、BLE握手连接
 
+
+### 2.2.3、BLE更新通知特征的状态
 ```objective-c
-/**
- 蓝牙设备配对
- @param pKey 配对码（默认传nil）
- @param bk   配对回调YES：成功 NO：失败
- */
--(void)bluetoothPairingKey:(NSData*)pKey Result:(ATC_Block)bk
-  
-//外部蓝牙更新通知特征的状态的回调处实现，以下：
 #pragma mark - 更新通知特征的状态
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(nonnull CBCharacteristic *)characteristic
              error:(nullable NSError *)error
 {
-    if (error) { NSLog(@"Err: Update NotificationState For Characteristic fail.");}
-    //NSLog(@"-----> %@ %d",characteristic.UUID.UUIDString,characteristic.isNotifying);
+    if (error) { NSLog(@"Err: Update NotificationState For Characteristic fail."); return; }
     
-    if (characteristic.isNotifying) {
-        if ([characteristic.UUID.UUIDString containsString:@"AE02"])
-        {
-            [[JL_BLEAction sharedMe] bluetoothPairingKey:nil Result:^(BOOL ret) {
-                                if (ret == YES) {
-                     NSLog(@"---->握手成功，发出蓝牙连接成功的通知。");
-                     [JL_Tools post:kUI_JL_BLE_PAIRED Object:nil];
-                }else{
-                       NSLog(@"---->握手失败，断开蓝牙。");
-                }
-            }];
-          
-              //若设备不需要握手流程，则此处直接[JL_Tools post:kUI_JL_BLE_PAIRED Object:nil]即可。
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistUpdateCharacteristic:characteristic
+                                  Peripheral:peripheral
+                                      Result:^(BOOL isPaired) {
+        if (isPaired == YES) {
+            self->_mBlePeripheral = peripheral;
+            
+              //配对成功，可以继续从此处操作设备；
+        }else{
+            [self->bleManager cancelPeripheralConnection:peripheral];
         }
-    }
+    }];
 }
+
+
 ```
 
-
-
-#### 2.2.4、获取设备信息 (同2.1.8)
-
-#### 2.2.5、开始OTA升级 (与2.1.9有点区别)
+### 2.2.4、BLE**设备返回的数据**
 ```objective-c
-    //注意：由于使用的是外部的蓝牙连接流程，OTA过程可能需要断开重连BLE外设，
-        //必须在以下回调【JL_OTAResultReconnect】中实现，否则流程会走不下！！！
+#pragma mark - 设备返回的数据 GET
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
+             error:(NSError *)error
+{
+    if (error) { NSLog(@"Err: receive data fail."); return; }
 
-        _otaData = [NSData dataWithContentsOfFile:@"升级文件的路径"];
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistUpdateValueForCharacteristic:characteristic];
+}
+```
+### 2.2.5、BLE**设备断开连接**
+```objective-c
+#pragma mark - 设备断开连接
+- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral
+                 error:(nullable NSError *)error
+{
+    NSLog(@"BLE Disconnect ---> Device %@ error:%d",peripheral.name,(int)error.code);
+    self.mBlePeripheral = nil;
     
-    [JL_Manager cmdOTAData:self.otaData Result:^(JL_OTAResult result, float progress) {
-        if (result == JL_OTAResultUpgrading ||
-            result == JL_OTAResultPreparing)
-        {
-            [self isUpdatingUI:YES];
-            //NSLog(@"%.1f%%",progress*100.0f);
-            NSString *txt = [NSString stringWithFormat:@"%.1f%%",progress*100.0f];
-            self.updateSeek.text = txt;
-            self.updateProgress.progress = progress;
-            
-            if (result == JL_OTAResultPreparing) self.updateTxt.text = kJL_TXT("校验文件中");
-            if (result == JL_OTAResultUpgrading) self.updateTxt.text = kJL_TXT("正在升级");
-
-            [self otaTimeCheck];//增加超时检测
-        }else if(result == JL_OTAResultPrepared){
-            NSLog(@"OTA is ResultPrepared...");
-            [self otaTimeCheck];//增加超时检测
-          
-        }else if(result == JL_OTAResultReconnect){
-            [self otaTimeCheck];//增加超时检测
-            //1、前提：若没有使用SDK内的蓝牙连接流程。
-              //   则需用外部蓝牙API连接设备，再走获取设备信息，然后判断到强制升级的标志
-            //   继续调用此API进行OTA升级。(此处必须重连设备，否则升级无法成功!!!)
-          
-            //2、前提：若使用了SDK内部的蓝牙连接流程，则此处无需做任何连接操作。
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistDisconnectPeripheral:peripheral];
+}
+```
+### 2.2.6、手机蓝牙状态更新
+```objective-c
+//外部蓝牙，手机蓝牙状态回调处，实现以下：
+#pragma mark - 蓝牙初始化 Callback
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central
+{
+    NSInteger st = central.state;
+  
+    /*--- JLSDK ADD ---*/
+    [self.mAssist assistUpdateState:st];
+}
+```
+### 2.2.7、功能实现
+#### 2.2.7.1、获取设备信息 （BLE连接且配对后必须执行一次）
+```objective-c
+[self.mAssist.mCmdManager cmdTargetFeatureResult:^(NSArray * _Nullable array) {
+        JL_CMDStatus st = [array[0] intValue];
+        if (st == JL_CMDStatusSuccess) {
+            JL_OtaStatus upSt = model.otaStatus;
+            if (upSt == JL_OtaStatusForce) {
+                NSLog(@"---> 进入强制升级.");
+                [self noteOtaUpdate:nil];
+                return;
+            }else{
+                if (model.otaHeadset == JL_OtaHeadsetYES) {
+                    NSLog(@"---> 进入强制升级: OTA另一只耳机.");
+                    [self noteOtaUpdate:nil];
+                    return;
+                }
+            }
+            NSLog(@"---> 设备正常使用...");
+            [JL_Tools mainTask:^{
+                [DFUITools showText:@"设备正常使用" onView:self.view delay:1.0];
+                
+                /*--- 获取公共信息 ---*/
+                [self.mAssist.mCmdManager cmdGetSystemInfo:JL_FunctionCodeCOMMON Result:nil];
+            }];
         }else{
-            [self otaTimeClose];//关闭超时检测
+            NSLog(@"---> ERROR：设备信息获取错误!");
         }
-        
+    }];
+```
+#### 2.2.7.2、固件OTA升级
+```objective-c
+   //升级流程：连接设备-->获取设备信息-->是否强制升级-->(是)则必须调用该API去OTA升级;
+     //                                                                        |_______>(否)则可以正常使用APP;
+                                                                            
+        NSData *otaData = [[NSData alloc] initWithContentsOfFile:@"OTA升级文件路径"];
+    [self.mAssist.mCmdManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
         if (result == JL_OTAResultSuccess) {
-            NSLog(@"OTA 升级完成.");
-            self.updateTxt.text = kJL_TXT("升级完成");
-            self.updateProgress.progress = 1.0;
+            NSLog(@"--->升级成功.");
+        }
+        if (result == JL_OTAResultFail) {
+            NSLog(@"--->OTA升级失败");
+        }
+        if (result == JL_OTAResultDataIsNull) {
+            NSLog(@"--->OTA升级数据为空!");
+        }
+        if (result == JL_OTAResultCommandFail) {
+            NSLog(@"--->OTA指令失败!");
+        }
+        if (result == JL_OTAResultSeekFail) {
+            NSLog(@"--->OTA标示偏移查找失败!");
+        }
+        if (result == JL_OTAResultInfoFail) {
+            NSLog(@"--->OTA升级固件信息错误!");
+        }
+        if (result == JL_OTAResultLowPower) {
+            NSLog(@"--->OTA升级设备电压低!");
+        }
+        if (result == JL_OTAResultEnterFail) {
+            NSLog(@"--->未能进入OTA升级模式!");
+        }
+        if (result == JL_OTAResultUnknown) {
+            NSLog(@"--->OTA未知错误!");
+        }
+        if (result == JL_OTAResultFailSameVersion) {
+            NSLog(@"--->相同版本！");
+        }
+        if (result == JL_OTAResultFailTWSDisconnect) {
+            NSLog(@"--->TWS耳机未连接");
+        }
+        if (result == JL_OTAResultFailNotInBin) {
+            NSLog(@"--->耳机未在充电仓");
         }
         
-        if (result == JL_OTAResultReboot) {
-            NSLog(@"OTA 设备准备重启.");
-            //self.updateTxt.text = kJL_TXT("设备准备重启");
-            self.updateTxt.text = kJL_TXT("升级完成");
-            [DFUITools showText:kJL_TXT("升级完成") onView:self.view delay:1.0];
-
-            [DFAction delay:1.5 Task:^{
-                [self isUpdatingUI:NO];
-                //[JL_Tools post:@"UI_CHANEG_VC" Object:@(1)];
-                [JL_Manager bleConnectLastDevice];
-            }];
+        if (result == JL_OTAResultPreparing ||
+            result == JL_OTAResultUpgrading)
+        {
+            if (result == JL_OTAResultUpgrading) NSLog(@"---> 正在升级：%.1f",progress*100.0f);
+            if (result == JL_OTAResultPreparing) NSLog(@"---> 检验文件：%.1f",progress*100.0f);
         }
         
-        if (result == JL_OTAResultFailCompletely) {
-            self.updateTxt.text = kJL_TXT("升级失败");
-            [DFUITools showText:kJL_TXT("升级失败") onView:self.view delay:1.0];
-
-            [DFAction delay:1.5 Task:^{
-                [self isUpdatingUI:NO];
-            }];
+        if (result == JL_OTAResultPrepared) {
+            NSLog(@"---> 检验文件【完成】");
         }
-        
-        if (result == JL_OTAResultFailKey) {
-            self.updateTxt.text = kJL_TXT("升级文件KEY错误");
-            [DFUITools showText:kJL_TXT("升级文件KEY错误") onView:self.view delay:1.0];
-
-            [DFAction delay:1.5 Task:^{
-                [self isUpdatingUI:NO];
-            }];
-        }
-        
-        if (result == JL_OTAResultFailErrorFile) {
-            self.updateTxt.text = kJL_TXT("升级失败");
-            [DFUITools showText:kJL_TXT("升级失败") onView:self.view delay:1.0];
-
-            [DFAction delay:1.5 Task:^{
-                [self isUpdatingUI:NO];
-            }];
+        if (result == JL_OTAResultReconnect) {
+            NSLog(@"---> OTA正在回连设备... %@",self->bt_ble.mBleName);
+            [self->bt_ble connectPeripheralWithUUID:self->bt_ble.lastUUID];//自行实现回连
         }
     }];
 ```
