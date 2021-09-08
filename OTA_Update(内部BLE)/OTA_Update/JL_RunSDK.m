@@ -40,12 +40,6 @@ NSString *kUI_JL_OTA_UPDATE        = @"UI_JL_OTA_UPDATE";
         usage.bt_ble.JL_BLE_SERVICE = @"AE00"; //服务号
         usage.bt_ble.JL_BLE_RCSP_W  = @"AE01"; //命令“写”通道
         usage.bt_ble.JL_BLE_RCSP_R  = @"AE02"; //命令“读”通道
-        usage.bt_ble.JL_BLE_PAIR_W  = @"AE03"; //暂无使用
-        usage.bt_ble.JL_BLE_PAIR_R  = @"AE04"; //暂无使用
-        usage.bt_ble.JL_BLE_AUIDO_W = @"AE05"; //暂无使用
-        usage.bt_ble.JL_BLE_AUIDO_R = @"AE06"; //暂无使用
-        
-        
     }
     return self;
 }
