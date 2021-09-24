@@ -22,7 +22,12 @@ NSString *kUI_JL_OTA_UPDATE        = @"UI_JL_OTA_UPDATE";
 {
     self = [super init];
     if (self) {
-
+        /*--- 自定义配对码(16个字节配对码) ---*/
+        //char pairkey[16] = {0x01,0x02,0x03,0x04,
+        //                    0x01,0x02,0x03,0x04,
+        //                    0x01,0x02,0x03,0x04,
+        //                    0x01,0x02,0x03,0x04};
+        //NSData *pairData = [NSData dataWithBytes:pairkey length:16];
         
         /*--- 初始化JL_SDK ---*/
         [JL_Manager setManagerDelegate:self];
@@ -35,7 +40,7 @@ NSString *kUI_JL_OTA_UPDATE        = @"UI_JL_OTA_UPDATE";
         usage.bt_ble.BLE_RELINK        = NO;
         
         usage.bt_ble.filterKey = nil;
-        usage.bt_ble.pairKey   = nil;
+        usage.bt_ble.pairKey   = nil;//pairData;自定义配对码
 
         usage.bt_ble.JL_BLE_SERVICE = @"AE00"; //服务号
         usage.bt_ble.JL_BLE_RCSP_W  = @"AE01"; //命令“写”通道

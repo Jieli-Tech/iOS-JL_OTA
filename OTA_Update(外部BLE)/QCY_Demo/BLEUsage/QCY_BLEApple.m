@@ -45,10 +45,17 @@ NSString *QCY_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     if (self) {
         bleManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
         
+        /*--- 自定义配对码(16个字节配对码) ---*/
+        //char pairkey[16] = {0x01,0x02,0x03,0x04,
+        //                    0x01,0x02,0x03,0x04,
+        //                    0x01,0x02,0x03,0x04,
+        //                    0x01,0x02,0x03,0x04};
+        //NSData *pairData = [NSData dataWithBytes:pairkey length:16];
+        
         /*--- JLSDK ADD ---*/
         self.mAssist = [[JL_Assist alloc] init];
         self.mAssist.mNeedPaired = YES;             //是否需要握手配对
-        self.mAssist.mPairKey    = nil;             //配对秘钥
+        self.mAssist.mPairKey    = nil;             //配对秘钥（或者自定义配对码pairData）
         self.mAssist.mService    = QCY_BLE_SERVICE; //服务号
         self.mAssist.mRcsp_W     = QCY_BLE_RCSP_W;  //特征「写」
         self.mAssist.mRcsp_R     = QCY_BLE_RCSP_R;  //特征「读」
