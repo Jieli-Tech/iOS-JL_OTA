@@ -1,0 +1,803 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE8A22EB271538DC00589FB3 /* JLDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22EA271538DC00589FB3 /* JLDeviceViewController.m */; };
+		BE8A22EE271538F000589FB3 /* JLUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22ED271538F000589FB3 /* JLUpdateViewController.m */; };
+		BE8A22F127153A2C00589FB3 /* JLMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22F027153A2C00589FB3 /* JLMainViewController.m */; };
+		BE8A22F227153A2C00589FB3 /* JLMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22F027153A2C00589FB3 /* JLMainViewController.m */; };
+		BE8A22F627156DD300589FB3 /* JLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22F527156DD300589FB3 /* JLBaseViewController.m */; };
+		BE8A22F727156DD300589FB3 /* JLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22F527156DD300589FB3 /* JLBaseViewController.m */; };
+		BECEACBE271132DE0090027A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEACBD271132DE0090027A /* AppDelegate.m */; };
+		BECEACC9271132E20090027A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BECEACC8271132E20090027A /* Assets.xcassets */; };
+		BECEACCC271132E20090027A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BECEACCA271132E20090027A /* LaunchScreen.storyboard */; };
+		BECEACCF271132E20090027A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEACCE271132E20090027A /* main.m */; };
+		BECEACE82711372E0090027A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BECEACE72711372E0090027A /* Assets.xcassets */; };
+		BECEACEB2711372E0090027A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BECEACE92711372E0090027A /* LaunchScreen.storyboard */; };
+		BECEACEE2711372E0090027A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEACED2711372E0090027A /* main.m */; };
+		BECEACFE2711416F0090027A /* DFUnits.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BECEACFC2711416E0090027A /* DFUnits.framework */; };
+		BECEAD002711416F0090027A /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BECEACFD2711416F0090027A /* JL_BLEKit.framework */; };
+		BECEAD03271141840090027A /* DFUnits.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BECEACFC2711416E0090027A /* DFUnits.framework */; };
+		BECEAD05271141840090027A /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BECEACFD2711416F0090027A /* JL_BLEKit.framework */; };
+		BECEAD0A2711466B0090027A /* JL_RunSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD092711466B0090027A /* JL_RunSDK.m */; };
+		BECEAD1227118E7D0090027A /* JLUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1027118E7D0090027A /* JLUpdateViewController.m */; };
+		BECEAD1327118E7E0090027A /* JLUpdateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD1127118E7D0090027A /* JLUpdateViewController.xib */; };
+		BECEAD1727118E940090027A /* JLDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1527118E940090027A /* JLDeviceViewController.m */; };
+		BECEAD1827118E940090027A /* JLDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD1627118E940090027A /* JLDeviceViewController.xib */; };
+		BECEAD2A2713C1010090027A /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1C2713C1010090027A /* UIScrollView+MJRefresh.m */; };
+		BECEAD2B2713C1010090027A /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1C2713C1010090027A /* UIScrollView+MJRefresh.m */; };
+		BECEAD2C2713C1010090027A /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1D2713C1010090027A /* MJRefreshConst.m */; };
+		BECEAD2D2713C1010090027A /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1D2713C1010090027A /* MJRefreshConst.m */; };
+		BECEAD2E2713C1010090027A /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1F2713C1010090027A /* MJRefreshHeaderView.m */; };
+		BECEAD2F2713C1010090027A /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD1F2713C1010090027A /* MJRefreshHeaderView.m */; };
+		BECEAD302713C1010090027A /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD222713C1010090027A /* MJRefreshBaseView.m */; };
+		BECEAD312713C1010090027A /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD222713C1010090027A /* MJRefreshBaseView.m */; };
+		BECEAD322713C1010090027A /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD232713C1010090027A /* UIScrollView+MJExtension.m */; };
+		BECEAD332713C1010090027A /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD232713C1010090027A /* UIScrollView+MJExtension.m */; };
+		BECEAD342713C1010090027A /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD252713C1010090027A /* MJRefreshFooterView.m */; };
+		BECEAD352713C1020090027A /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD252713C1010090027A /* MJRefreshFooterView.m */; };
+		BECEAD362713C1020090027A /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD292713C1010090027A /* UIView+MJExtension.m */; };
+		BECEAD372713C1020090027A /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD292713C1010090027A /* UIView+MJExtension.m */; };
+		BECEAD3C2713C2200090027A /* JLDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD3A2713C2200090027A /* JLDeviceCell.m */; };
+		BECEAD3E2713C2200090027A /* JLDeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD3B2713C2200090027A /* JLDeviceCell.xib */; };
+		BECEAD3F2713C2200090027A /* JLDeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD3B2713C2200090027A /* JLDeviceCell.xib */; };
+		BECEAD432713CFD40090027A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD462713CFD40090027A /* Localizable.strings */; };
+		BECEAD442713CFD40090027A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD462713CFD40090027A /* Localizable.strings */; };
+		BECEAD502713D1E90090027A /* JLBleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD4F2713D1E90090027A /* JLBleManager.m */; };
+		BECEAD582713E5AF0090027A /* JLBleEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD572713E5AF0090027A /* JLBleEntity.m */; };
+		BECEAD5A27140F940090027A /* JLDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD3A2713C2200090027A /* JLDeviceCell.m */; };
+		BECEAD60271422610090027A /* 2.ufw in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD5D271422610090027A /* 2.ufw */; };
+		BECEAD61271422610090027A /* 2.ufw in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD5D271422610090027A /* 2.ufw */; };
+		BECEAD62271422610090027A /* 1.ufw in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD5E271422610090027A /* 1.ufw */; };
+		BECEAD63271422610090027A /* 1.ufw in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD5E271422610090027A /* 1.ufw */; };
+		BECEAD64271422610090027A /* 0.ufw in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD5F271422610090027A /* 0.ufw */; };
+		BECEAD65271422610090027A /* 0.ufw in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD5F271422610090027A /* 0.ufw */; };
+		BECEAD66271423590090027A /* JLDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD1627118E940090027A /* JLDeviceViewController.xib */; };
+		BECEAD672714235C0090027A /* JLUpdateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECEAD1127118E7D0090027A /* JLUpdateViewController.xib */; };
+		BECEAD6A271423C90090027A /* JLOtaFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD69271423C90090027A /* JLOtaFileManager.m */; };
+		BECEAD6B271423C90090027A /* JLOtaFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD69271423C90090027A /* JLOtaFileManager.m */; };
+		BECEAD6D27142B350090027A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEACDC271137270090027A /* AppDelegate.m */; };
+		BECEAD74271441B70090027A /* UITableViewCell+JLCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */; };
+		BECEAD75271441B70090027A /* UITableViewCell+JLCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BE8A22E9271538DC00589FB3 /* JLDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLDeviceViewController.h; sourceTree = "<group>"; };
+		BE8A22EA271538DC00589FB3 /* JLDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLDeviceViewController.m; sourceTree = "<group>"; };
+		BE8A22EC271538F000589FB3 /* JLUpdateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLUpdateViewController.h; sourceTree = "<group>"; };
+		BE8A22ED271538F000589FB3 /* JLUpdateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLUpdateViewController.m; sourceTree = "<group>"; };
+		BE8A22EF27153A2C00589FB3 /* JLMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLMainViewController.h; sourceTree = "<group>"; };
+		BE8A22F027153A2C00589FB3 /* JLMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLMainViewController.m; sourceTree = "<group>"; };
+		BE8A22F427156DD300589FB3 /* JLBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLBaseViewController.h; sourceTree = "<group>"; };
+		BE8A22F527156DD300589FB3 /* JLBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLBaseViewController.m; sourceTree = "<group>"; };
+		BECEACB9271132DE0090027A /* JL_OTA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JL_OTA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BECEACBC271132DE0090027A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BECEACBD271132DE0090027A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BECEACC8271132E20090027A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BECEACCB271132E20090027A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BECEACCD271132E20090027A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BECEACCE271132E20090027A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BECEACD9271137270090027A /* JL_OTA_InnerBle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JL_OTA_InnerBle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BECEACDB271137270090027A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BECEACDC271137270090027A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BECEACE72711372E0090027A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BECEACEA2711372E0090027A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BECEACEC2711372E0090027A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BECEACED2711372E0090027A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BECEACFC2711416E0090027A /* DFUnits.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DFUnits.framework; sourceTree = "<group>"; };
+		BECEACFD2711416F0090027A /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
+		BECEAD082711466B0090027A /* JL_RunSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JL_RunSDK.h; sourceTree = "<group>"; };
+		BECEAD092711466B0090027A /* JL_RunSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JL_RunSDK.m; sourceTree = "<group>"; };
+		BECEAD0F27118E7D0090027A /* JLUpdateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLUpdateViewController.h; sourceTree = "<group>"; };
+		BECEAD1027118E7D0090027A /* JLUpdateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLUpdateViewController.m; sourceTree = "<group>"; };
+		BECEAD1127118E7D0090027A /* JLUpdateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JLUpdateViewController.xib; sourceTree = "<group>"; };
+		BECEAD1427118E940090027A /* JLDeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLDeviceViewController.h; sourceTree = "<group>"; };
+		BECEAD1527118E940090027A /* JLDeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLDeviceViewController.m; sourceTree = "<group>"; };
+		BECEAD1627118E940090027A /* JLDeviceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JLDeviceViewController.xib; sourceTree = "<group>"; };
+		BECEAD1B2713C1010090027A /* MJRefreshFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshFooterView.h; sourceTree = "<group>"; };
+		BECEAD1C2713C1010090027A /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
+		BECEAD1D2713C1010090027A /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
+		BECEAD1E2713C1010090027A /* UIScrollView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MJExtension.h"; sourceTree = "<group>"; };
+		BECEAD1F2713C1010090027A /* MJRefreshHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshHeaderView.m; sourceTree = "<group>"; };
+		BECEAD202713C1010090027A /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
+		BECEAD212713C1010090027A /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
+		BECEAD222713C1010090027A /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
+		BECEAD232713C1010090027A /* UIScrollView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJExtension.m"; sourceTree = "<group>"; };
+		BECEAD242713C1010090027A /* MJRefreshConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshConst.h; sourceTree = "<group>"; };
+		BECEAD252713C1010090027A /* MJRefreshFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshFooterView.m; sourceTree = "<group>"; };
+		BECEAD262713C1010090027A /* UIScrollView+MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+MJRefresh.h"; sourceTree = "<group>"; };
+		BECEAD272713C1010090027A /* MJRefreshHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshHeaderView.h; sourceTree = "<group>"; };
+		BECEAD282713C1010090027A /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
+		BECEAD292713C1010090027A /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
+		BECEAD392713C2200090027A /* JLDeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLDeviceCell.h; sourceTree = "<group>"; };
+		BECEAD3A2713C2200090027A /* JLDeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLDeviceCell.m; sourceTree = "<group>"; };
+		BECEAD3B2713C2200090027A /* JLDeviceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JLDeviceCell.xib; sourceTree = "<group>"; };
+		BECEAD452713CFD40090027A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BECEAD4A2713D0330090027A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		BECEAD4C2713D0350090027A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		BECEAD4D2713D0360090027A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		BECEAD4E2713D1E90090027A /* JLBleManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLBleManager.h; sourceTree = "<group>"; };
+		BECEAD4F2713D1E90090027A /* JLBleManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLBleManager.m; sourceTree = "<group>"; };
+		BECEAD532713D4B30090027A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		BECEAD562713E5AF0090027A /* JLBleEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLBleEntity.h; sourceTree = "<group>"; };
+		BECEAD572713E5AF0090027A /* JLBleEntity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLBleEntity.m; sourceTree = "<group>"; };
+		BECEAD5D271422610090027A /* 2.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2.ufw; sourceTree = "<group>"; };
+		BECEAD5E271422610090027A /* 1.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.ufw; sourceTree = "<group>"; };
+		BECEAD5F271422610090027A /* 0.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = 0.ufw; sourceTree = "<group>"; };
+		BECEAD68271423C90090027A /* JLOtaFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLOtaFileManager.h; sourceTree = "<group>"; };
+		BECEAD69271423C90090027A /* JLOtaFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLOtaFileManager.m; sourceTree = "<group>"; };
+		BECEAD72271441B70090027A /* UITableViewCell+JLCustom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+JLCustom.h"; sourceTree = "<group>"; };
+		BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+JLCustom.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BECEACB6271132DE0090027A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECEAD03271141840090027A /* DFUnits.framework in Frameworks */,
+				BECEAD05271141840090027A /* JL_BLEKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BECEACD6271137270090027A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECEACFE2711416F0090027A /* DFUnits.framework in Frameworks */,
+				BECEAD002711416F0090027A /* JL_BLEKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BECEACB0271132DE0090027A = {
+			isa = PBXGroup;
+			children = (
+				BECEACBB271132DE0090027A /* JL_OTA */,
+				BECEACDA271137270090027A /* JL_OTA_InnerBle */,
+				BECEAD5C271422610090027A /* OTAFiles */,
+				BECEACF327113A320090027A /* Xib */,
+				BECEAD382713C1E70090027A /* CommonView */,
+				BECEAD542713DC280090027A /* Resource */,
+				BECEAD192713C1010090027A /* ThirdParty */,
+				BECEACBA271132DE0090027A /* Products */,
+				BECEACFB2711416E0090027A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		BECEACBA271132DE0090027A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BECEACB9271132DE0090027A /* JL_OTA.app */,
+				BECEACD9271137270090027A /* JL_OTA_InnerBle.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BECEACBB271132DE0090027A /* JL_OTA */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD552713E5910090027A /* BleManager */,
+				BECEACBC271132DE0090027A /* AppDelegate.h */,
+				BECEACBD271132DE0090027A /* AppDelegate.m */,
+				BECEAD1427118E940090027A /* JLDeviceViewController.h */,
+				BECEAD1527118E940090027A /* JLDeviceViewController.m */,
+				BECEAD0F27118E7D0090027A /* JLUpdateViewController.h */,
+				BECEAD1027118E7D0090027A /* JLUpdateViewController.m */,
+				BECEACC8271132E20090027A /* Assets.xcassets */,
+				BECEACCA271132E20090027A /* LaunchScreen.storyboard */,
+				BECEACCD271132E20090027A /* Info.plist */,
+				BECEACCE271132E20090027A /* main.m */,
+			);
+			path = JL_OTA;
+			sourceTree = "<group>";
+		};
+		BECEACDA271137270090027A /* JL_OTA_InnerBle */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD082711466B0090027A /* JL_RunSDK.h */,
+				BECEAD092711466B0090027A /* JL_RunSDK.m */,
+				BECEACDB271137270090027A /* AppDelegate.h */,
+				BECEACDC271137270090027A /* AppDelegate.m */,
+				BE8A22E9271538DC00589FB3 /* JLDeviceViewController.h */,
+				BE8A22EA271538DC00589FB3 /* JLDeviceViewController.m */,
+				BE8A22EC271538F000589FB3 /* JLUpdateViewController.h */,
+				BE8A22ED271538F000589FB3 /* JLUpdateViewController.m */,
+				BECEACE72711372E0090027A /* Assets.xcassets */,
+				BECEACE92711372E0090027A /* LaunchScreen.storyboard */,
+				BECEACEC2711372E0090027A /* Info.plist */,
+				BECEACED2711372E0090027A /* main.m */,
+			);
+			path = JL_OTA_InnerBle;
+			sourceTree = "<group>";
+		};
+		BECEACF327113A320090027A /* Xib */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD1627118E940090027A /* JLDeviceViewController.xib */,
+				BECEAD1127118E7D0090027A /* JLUpdateViewController.xib */,
+			);
+			path = Xib;
+			sourceTree = "<group>";
+		};
+		BECEACFB2711416E0090027A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BECEACFC2711416E0090027A /* DFUnits.framework */,
+				BECEACFD2711416F0090027A /* JL_BLEKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BECEAD192713C1010090027A /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD1A2713C1010090027A /* MJRefresh */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		BECEAD1A2713C1010090027A /* MJRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD1B2713C1010090027A /* MJRefreshFooterView.h */,
+				BECEAD1C2713C1010090027A /* UIScrollView+MJRefresh.m */,
+				BECEAD1D2713C1010090027A /* MJRefreshConst.m */,
+				BECEAD1E2713C1010090027A /* UIScrollView+MJExtension.h */,
+				BECEAD1F2713C1010090027A /* MJRefreshHeaderView.m */,
+				BECEAD202713C1010090027A /* MJRefresh.h */,
+				BECEAD212713C1010090027A /* UIView+MJExtension.h */,
+				BECEAD222713C1010090027A /* MJRefreshBaseView.m */,
+				BECEAD232713C1010090027A /* UIScrollView+MJExtension.m */,
+				BECEAD242713C1010090027A /* MJRefreshConst.h */,
+				BECEAD252713C1010090027A /* MJRefreshFooterView.m */,
+				BECEAD262713C1010090027A /* UIScrollView+MJRefresh.h */,
+				BECEAD272713C1010090027A /* MJRefreshHeaderView.h */,
+				BECEAD282713C1010090027A /* MJRefreshBaseView.h */,
+				BECEAD292713C1010090027A /* UIView+MJExtension.m */,
+			);
+			path = MJRefresh;
+			sourceTree = "<group>";
+		};
+		BECEAD382713C1E70090027A /* CommonView */ = {
+			isa = PBXGroup;
+			children = (
+				BE8A22EF27153A2C00589FB3 /* JLMainViewController.h */,
+				BE8A22F027153A2C00589FB3 /* JLMainViewController.m */,
+				BE8A22F427156DD300589FB3 /* JLBaseViewController.h */,
+				BE8A22F527156DD300589FB3 /* JLBaseViewController.m */,
+				BECEAD392713C2200090027A /* JLDeviceCell.h */,
+				BECEAD3A2713C2200090027A /* JLDeviceCell.m */,
+				BECEAD3B2713C2200090027A /* JLDeviceCell.xib */,
+				BECEAD72271441B70090027A /* UITableViewCell+JLCustom.h */,
+				BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */,
+			);
+			path = CommonView;
+			sourceTree = "<group>";
+		};
+		BECEAD542713DC280090027A /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD532713D4B30090027A /* PrefixHeader.pch */,
+				BECEAD462713CFD40090027A /* Localizable.strings */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		BECEAD552713E5910090027A /* BleManager */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD4E2713D1E90090027A /* JLBleManager.h */,
+				BECEAD4F2713D1E90090027A /* JLBleManager.m */,
+				BECEAD562713E5AF0090027A /* JLBleEntity.h */,
+				BECEAD572713E5AF0090027A /* JLBleEntity.m */,
+			);
+			path = BleManager;
+			sourceTree = "<group>";
+		};
+		BECEAD5C271422610090027A /* OTAFiles */ = {
+			isa = PBXGroup;
+			children = (
+				BECEAD68271423C90090027A /* JLOtaFileManager.h */,
+				BECEAD69271423C90090027A /* JLOtaFileManager.m */,
+				BECEAD5D271422610090027A /* 2.ufw */,
+				BECEAD5E271422610090027A /* 1.ufw */,
+				BECEAD5F271422610090027A /* 0.ufw */,
+			);
+			path = OTAFiles;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BECEACB8271132DE0090027A /* JL_OTA */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BECEACD2271132E20090027A /* Build configuration list for PBXNativeTarget "JL_OTA" */;
+			buildPhases = (
+				BECEACB5271132DE0090027A /* Sources */,
+				BECEACB6271132DE0090027A /* Frameworks */,
+				BECEACB7271132DE0090027A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JL_OTA;
+			productName = JL_OTA;
+			productReference = BECEACB9271132DE0090027A /* JL_OTA.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BECEACD8271137270090027A /* JL_OTA_InnerBle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BECEACEF2711372E0090027A /* Build configuration list for PBXNativeTarget "JL_OTA_InnerBle" */;
+			buildPhases = (
+				BECEACD5271137270090027A /* Sources */,
+				BECEACD6271137270090027A /* Frameworks */,
+				BECEACD7271137270090027A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JL_OTA_InnerBle;
+			productName = JL_OTA_InnerBle;
+			productReference = BECEACD9271137270090027A /* JL_OTA_InnerBle.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BECEACB1271132DE0090027A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					BECEACB8271132DE0090027A = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					BECEACD8271137270090027A = {
+						CreatedOnToolsVersion = 13.0;
+					};
+				};
+			};
+			buildConfigurationList = BECEACB4271132DE0090027A /* Build configuration list for PBXProject "JL_OTA" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = BECEACB0271132DE0090027A;
+			productRefGroup = BECEACBA271132DE0090027A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BECEACB8271132DE0090027A /* JL_OTA */,
+				BECEACD8271137270090027A /* JL_OTA_InnerBle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BECEACB7271132DE0090027A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECEACCC271132E20090027A /* LaunchScreen.storyboard in Resources */,
+				BECEAD60271422610090027A /* 2.ufw in Resources */,
+				BECEAD1327118E7E0090027A /* JLUpdateViewController.xib in Resources */,
+				BECEAD3E2713C2200090027A /* JLDeviceCell.xib in Resources */,
+				BECEAD432713CFD40090027A /* Localizable.strings in Resources */,
+				BECEAD62271422610090027A /* 1.ufw in Resources */,
+				BECEAD64271422610090027A /* 0.ufw in Resources */,
+				BECEACC9271132E20090027A /* Assets.xcassets in Resources */,
+				BECEAD1827118E940090027A /* JLDeviceViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BECEACD7271137270090027A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECEAD63271422610090027A /* 1.ufw in Resources */,
+				BECEAD672714235C0090027A /* JLUpdateViewController.xib in Resources */,
+				BECEAD442713CFD40090027A /* Localizable.strings in Resources */,
+				BECEAD3F2713C2200090027A /* JLDeviceCell.xib in Resources */,
+				BECEACEB2711372E0090027A /* LaunchScreen.storyboard in Resources */,
+				BECEAD61271422610090027A /* 2.ufw in Resources */,
+				BECEACE82711372E0090027A /* Assets.xcassets in Resources */,
+				BECEAD65271422610090027A /* 0.ufw in Resources */,
+				BECEAD66271423590090027A /* JLDeviceViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BECEACB5271132DE0090027A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECEAD342713C1010090027A /* MJRefreshFooterView.m in Sources */,
+				BECEAD502713D1E90090027A /* JLBleManager.m in Sources */,
+				BECEACBE271132DE0090027A /* AppDelegate.m in Sources */,
+				BECEAD6A271423C90090027A /* JLOtaFileManager.m in Sources */,
+				BECEAD1727118E940090027A /* JLDeviceViewController.m in Sources */,
+				BE8A22F627156DD300589FB3 /* JLBaseViewController.m in Sources */,
+				BECEAD2E2713C1010090027A /* MJRefreshHeaderView.m in Sources */,
+				BECEAD582713E5AF0090027A /* JLBleEntity.m in Sources */,
+				BECEAD2A2713C1010090027A /* UIScrollView+MJRefresh.m in Sources */,
+				BECEAD322713C1010090027A /* UIScrollView+MJExtension.m in Sources */,
+				BECEAD3C2713C2200090027A /* JLDeviceCell.m in Sources */,
+				BE8A22F127153A2C00589FB3 /* JLMainViewController.m in Sources */,
+				BECEAD74271441B70090027A /* UITableViewCell+JLCustom.m in Sources */,
+				BECEAD2C2713C1010090027A /* MJRefreshConst.m in Sources */,
+				BECEAD362713C1020090027A /* UIView+MJExtension.m in Sources */,
+				BECEAD302713C1010090027A /* MJRefreshBaseView.m in Sources */,
+				BECEACCF271132E20090027A /* main.m in Sources */,
+				BECEAD1227118E7D0090027A /* JLUpdateViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BECEACD5271137270090027A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BECEAD352713C1020090027A /* MJRefreshFooterView.m in Sources */,
+				BECEAD2F2713C1010090027A /* MJRefreshHeaderView.m in Sources */,
+				BECEAD2B2713C1010090027A /* UIScrollView+MJRefresh.m in Sources */,
+				BECEAD6B271423C90090027A /* JLOtaFileManager.m in Sources */,
+				BECEAD332713C1010090027A /* UIScrollView+MJExtension.m in Sources */,
+				BECEAD75271441B70090027A /* UITableViewCell+JLCustom.m in Sources */,
+				BECEAD2D2713C1010090027A /* MJRefreshConst.m in Sources */,
+				BE8A22EB271538DC00589FB3 /* JLDeviceViewController.m in Sources */,
+				BECEAD6D27142B350090027A /* AppDelegate.m in Sources */,
+				BECEAD372713C1020090027A /* UIView+MJExtension.m in Sources */,
+				BE8A22EE271538F000589FB3 /* JLUpdateViewController.m in Sources */,
+				BE8A22F227153A2C00589FB3 /* JLMainViewController.m in Sources */,
+				BECEAD5A27140F940090027A /* JLDeviceCell.m in Sources */,
+				BE8A22F727156DD300589FB3 /* JLBaseViewController.m in Sources */,
+				BECEAD312713C1010090027A /* MJRefreshBaseView.m in Sources */,
+				BECEACEE2711372E0090027A /* main.m in Sources */,
+				BECEAD0A2711466B0090027A /* JL_RunSDK.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BECEACCA271132E20090027A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BECEACCB271132E20090027A /* Base */,
+				BECEAD4A2713D0330090027A /* zh-Hans */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		BECEACE92711372E0090027A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BECEACEA2711372E0090027A /* Base */,
+				BECEAD4C2713D0350090027A /* zh-Hans */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		BECEAD462713CFD40090027A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BECEAD452713CFD40090027A /* en */,
+				BECEAD4D2713D0360090027A /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+			usesTabs = 0;
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BECEACD0271132E20090027A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		BECEACD1271132E20090027A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BECEACD3271132E20090027A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y6RTP7B9HD;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Resource/PrefixHeader.pch";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JL_OTA/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "APP操控设备需用到蓝牙传输数据，是否授权使用蓝牙？";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "APP与设备交互需要用到蓝牙数据传输，是否允许？";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lxf.OtaUpdate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BECEACD4271132E20090027A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y6RTP7B9HD;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Resource/PrefixHeader.pch";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JL_OTA/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "APP操控设备需用到蓝牙传输数据，是否授权使用蓝牙？";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "APP与设备交互需要用到蓝牙数据传输，是否允许？";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lxf.OtaUpdate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BECEACF02711372E0090027A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y6RTP7B9HD;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Resource/PrefixHeader.pch";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JL_OTA_InnerBle/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "APP操控设备需用到蓝牙传输数据，是否授权使用蓝牙？";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "APP与设备交互需要用到蓝牙数据传输，是否允许？";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lxf.JL-OTA-InnerBle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BECEACF12711372E0090027A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y6RTP7B9HD;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Resource/PrefixHeader.pch";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JL_OTA_InnerBle/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "APP操控设备需用到蓝牙传输数据，是否授权使用蓝牙？";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "APP与设备交互需要用到蓝牙数据传输，是否允许？";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lxf.JL-OTA-InnerBle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BECEACB4271132DE0090027A /* Build configuration list for PBXProject "JL_OTA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BECEACD0271132E20090027A /* Debug */,
+				BECEACD1271132E20090027A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BECEACD2271132E20090027A /* Build configuration list for PBXNativeTarget "JL_OTA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BECEACD3271132E20090027A /* Debug */,
+				BECEACD4271132E20090027A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BECEACEF2711372E0090027A /* Build configuration list for PBXNativeTarget "JL_OTA_InnerBle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BECEACF02711372E0090027A /* Debug */,
+				BECEACF12711372E0090027A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BECEACB1271132DE0090027A /* Project object */;
+}
