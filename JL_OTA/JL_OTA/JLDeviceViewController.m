@@ -50,9 +50,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([JLBleManager sharedInstance].mBleManagerState == CBManagerStatePoweredOn) {
-        [self startScanDevice];
-    }
+    [self startScanDevice];
 }
 
 /**

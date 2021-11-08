@@ -43,15 +43,15 @@
         [weakSelf startScanDevice];
     }];
     
+    [JL_Tools add:kJL_BLE_M_FOUND Action:@selector(reloadTableView) Own:self];
+    [JL_Tools add:kJL_BLE_M_FOUND_SINGLE Action:@selector(reloadTableView) Own:self];
     [JL_Tools add:kJL_BLE_M_ENTITY_CONNECTED Action:@selector(noteEntityConnected:) Own:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([JL_RunSDK sharedInstance].mBleMultiple.bleManagerState == CBManagerStatePoweredOn) {
-        [self startScanDevice];
-    }
+    [self startScanDevice];
 }
 
 /**
@@ -88,7 +88,6 @@
         NSLog(@"--->已刷完.");
         [[JL_RunSDK sharedInstance].mBleMultiple scanStop];
         [weakSelf.subTableView headerEndRefreshing];
-        [weakSelf reloadTableView];
     }];
 }
 
