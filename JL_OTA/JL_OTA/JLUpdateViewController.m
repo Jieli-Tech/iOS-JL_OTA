@@ -10,6 +10,9 @@
 #import "JLBleManager.h"
 #import "UITableViewCell+JLCustom.h"
 
+#import "GCDWebKit.h"
+
+
 @interface JLUpdateViewController () <JLBleManagerOtaDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIView *fileView;
@@ -27,6 +30,8 @@
 @property (assign, nonatomic) NSInteger selectIndex;
 @property (strong, nonatomic) NSArray *fileArray;
 
+@property (weak, nonatomic) IBOutlet UILabel *wifiText;
+
 @end
 
 @implementation JLUpdateViewController
@@ -42,9 +47,37 @@
     _fileTableView.delegate   = self;
     _fileTableView.rowHeight  = 50.0;
     
-    // 获取沙盒升级文件
-    NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
-    _fileArray = [DFFile subPaths:docPath];
+    //增加浏览器传文件功能
+    [GCDWebKit startWithResult:^(GCDWebKitStatus status,
+                                 NSString *__nullable ipAdress,
+                                 NSInteger port) {
+        if (status == GCDWebKitStatusStart) {
+            self.wifiText.text = [NSString stringWithFormat:@"提示：电脑与手机处于相同WiFi，浏览器登录http://%@:%zd/  即可导入OTA升级文件。",ipAdress,port];
+            [self reflashFileArray];
+            [self.fileTableView reloadData];
+        }
+        if (status == GCDWebKitStatusFail) {
+            self.wifiText.text = @"提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。";
+        }
+        
+        if (status == GCDWebKitStatusUpload) {
+            [self reflashFileArray];
+            [self.fileTableView reloadData];
+        }
+        if (status == GCDWebKitStatusMove) {
+            [self.fileTableView reloadData];
+        }
+        if (status == GCDWebKitStatusDelete) {
+            [self reflashFileArray];
+            [self.fileTableView reloadData];
+        }
+        if (status == GCDWebKitStatusCreate) {
+            [self.fileTableView reloadData];
+        }
+        if (status == GCDWebKitStatusWifiDisable) {
+            self.wifiText.text = @"提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。";
+        }
+    }];
     
     // 设置ota升级过程状态回调代理
     [JLBleManager sharedInstance].otaDelegate = self;
@@ -56,6 +89,12 @@
     [super viewDidAppear:animated];
     
     [self checkDeviceConnected];
+}
+
+-(void)reflashFileArray{
+    // 获取沙盒升级文件
+    NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
+    _fileArray = [DFFile subPaths:docPath];
 }
 
 /**

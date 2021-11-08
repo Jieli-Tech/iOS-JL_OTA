@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GCDWebKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  转移NSBundle的文件到沙盒
  */
 + (void)initializeOtaFile;
+
 
 @end
 

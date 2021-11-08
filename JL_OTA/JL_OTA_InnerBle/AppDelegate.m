@@ -6,7 +6,7 @@
 //
 
 #import "AppDelegate.h"
-#import "JLOtaFileManager.h"
+//#import "JLOtaFileManager.h"
 #import "JLMainViewController.h"
 
 @implementation AppDelegate
@@ -16,7 +16,7 @@
     // Override point for customization after application launch.
     
     // 初始化OTA升级文件
-    [JLOtaFileManager initializeOtaFile];
+    //[JLOtaFileManager initializeOtaFile];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UITabBarController *mainVC = [JLMainViewController prepareViewControllers];
