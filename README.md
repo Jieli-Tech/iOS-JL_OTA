@@ -39,7 +39,7 @@
 
 从而实现OTA功能。
 
-​		第二种，使用SDK内的蓝牙连接API进行OTA（对应JL_OTA_Inner）：完全使用SDK。
+​		第二种，使用JL_BLEKit.framework内的蓝牙连接API进行OTA（对应JL_OTA_Inner）：完全使用SDK。
 
 
 
