@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "JL_TypeEnum.h"
+#import "JL_ManagerM.h"
 
 @class JL_RCSP;
 @class JL_EntityM;

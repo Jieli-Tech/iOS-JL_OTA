@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSData (ToUnit)
 
--(uint8_t)beUnit8;
+-(uint8_t)beUint8;
 
 -(UInt16)beLittleUint16;
 
@@ -22,7 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(UInt32)beBigendUint32;
 
+-(UInt64)beLittleUint64;
+
+-(UInt64)beBigendUint64;
+
 -(NSString *)dataToAltitude;
+
+-(NSString *)beHexStr;
 
 -(NSDate *)toDate;
 

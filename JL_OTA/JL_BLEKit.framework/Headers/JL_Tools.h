@@ -68,6 +68,24 @@ typedef void(^JL_Timer_BK)(void);
 +(NSData*)uInt32_data:(uint32_t)value Endian:(BOOL)endian;
 
 /**
+ uint64_t 转成 NSData
+ 
+ @param value uint64_t类型
+ @param endian YES：小端  NO：大端
+ @return NSData
+ */
++(NSData*)uInt64_data:(uint64_t)value Endian:(BOOL)endian;
+
+/**
+ int64_t 转成 NSData
+ 
+ @param value int64_t类型
+ @param endian YES：小端  NO：大端
+ @return NSData
+ */
++(NSData*)int64_data:(int64_t)value Endian:(BOOL)endian;
+
+/**
  大小端转换
 
  @param data 数据

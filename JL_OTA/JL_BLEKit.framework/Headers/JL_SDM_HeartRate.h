@@ -12,6 +12,8 @@
 #import "JLSportDataModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+/// 心率相关内容
 @interface JL_SDM_HeartRate : JLSportDataModel
 /// 实时心率
 @property(nonatomic,assign)uint8_t realTime;
@@ -32,8 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param max 是否需要最大心率
 +(JL_SDM_HeartRate*)requireRealTime:(BOOL)rt Resting:(BOOL)rting Max:(BOOL)max;
 
-/// 请求图表📈数据
-+(JL_SDM_HeartRate*)requireDiagram;
+
 
 @end
 

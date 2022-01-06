@@ -10,20 +10,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///实时步数
 @interface JL_SDM_MoveSteps : JLSportDataModel
+/// 实时步数
+@property(nonatomic,assign)NSInteger rtStep;
 
-@property(nonatomic,assign)long long allStep;
-@property(nonatomic,assign)long rtStep;
+/// 热量，单位：千卡
+@property(nonatomic,assign)NSInteger calories;
 
+/// 距离，单位：0.01公里
+@property(nonatomic,assign)NSInteger distance;
 /// 处理回复数据内容
 /// @param value 数据内容
 /// @param submask 功能标记位
 +(JL_SDM_MoveSteps*)responseData:(NSData *)value subMask:(NSData *)submask;
 
 /// 选择性请求内容
-+(JL_SDM_MoveSteps*)requireAll:(BOOL)as rtStep:(BOOL)rts;
-/// 请求内容
-+(JL_SDM_MoveSteps*)require;
++(JL_SDM_MoveSteps*)require:(BOOL)rst distance:(BOOL)dts calories:(BOOL)ca;
+
 
 @end
 

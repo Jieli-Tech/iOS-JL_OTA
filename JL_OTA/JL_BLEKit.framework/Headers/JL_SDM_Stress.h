@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 实时压力
 @interface JL_SDM_Stress : JLSportDataModel
 
 @property(nonatomic,assign)int stress;
@@ -22,8 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// 请求内容
 +(JL_SDM_Stress*)require;
 
-/// 请求图表内容📈
-+(JL_SDM_Stress*)requireDiagram;
 @end
 
 NS_ASSUME_NONNULL_END

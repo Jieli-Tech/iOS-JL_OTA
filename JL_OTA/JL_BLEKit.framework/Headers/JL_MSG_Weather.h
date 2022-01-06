@@ -10,112 +10,111 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum : uint8_t {
-    ///晴天
-    WEATHER_Sunny = 0x00,
+ 
+typedef NS_ENUM(UInt8, JLWeatherType) {
+    ///晴
+    JLWeatherTypeSunny = 0x00,
     ///少云
-    WEATHER_CloudLess,
+    JLWeatherTypeCloudLess,
     ///晴间多云
-    WEATHER_PartlyCloudy,
+    JLWeatherTypePartlyCloudy,
     ///多云
-    WEATHER_Cloudiness,
-    ///阴天
-    WEATHER_OvercastSky,
+    JLWeatherTypeCloudiness,
+    ///阴
+    JLWeatherTypeOvercastSky,
     ///有风/和风/清风/微风
-    WEATHER_Breeze,
+    JLWeatherTypeBreeze,
     ///平静
-    WEATHER_CalmWind,
+    JLWeatherTypeCalmWind,
     ///大风/强风/劲风/疾风
-    WEATHER_HighWind,
+    JLWeatherTypeHighWind,
     ///飓风/狂爆风
-    WEATHER_Hurricane,
+    JLWeatherTypeHurricane,
     ///热带风暴/风暴
-    WEATHER_TropicalStorm,
+    JLWeatherTypeTropicalStorm,
     ///霾/中度霾/重度霾/严重霾
-    WEATHER_Haze,
+    JLWeatherTypeHaze,
     ///阵雨
-    WEATHER_Shower,
+    JLWeatherTypeShower,
     ///雷阵雨
-    WEATHER_ThunderShower,
+    JLWeatherTypeThunderShower,
     ///雷阵雨并伴有冰雹
-    WEATHER_HallThunderShower,
+    JLWeatherTypeHallThunderShower,
     ///雨/小雨/毛毛雨/细雨/小雨-中雨
-    WEATHER_LightRain,
+    JLWeatherTypeLightRain,
     ///中雨/中雨-大雨
-    WEATHER_ModerateRain,
+    JLWeatherTypeModerateRain,
     ///大雨/大雨-暴雨
-    WEATHER_HeavyRain,
+    JLWeatherTypeHeavyRain,
     ///暴雨/暴雨-大暴雨
-    WEATHER_Downpour,
+    JLWeatherTypeDownpour,
     ///大暴雨/大暴雨-特大暴雨
-    WEATHER_ExtraordinaryRainstorm,
+    JLWeatherTypeExtraordinaryRainstorm,
     ///特大暴雨
-    WEATHER_HeavyDownpour,
+    JLWeatherTypeHeavyDownpour,
     ///强阵雨
-    WEATHER_StrongRainShower,
+    JLWeatherTypeStrongRainShower,
     ///强雷阵雨
-    WEATHER_StrongThunderShower,
+    JLWeatherTypeStrongThunderShower,
     ///极端降雨
-    WEATHER_ExtremeRainfall,
+    JLWeatherTypeExtremeRainfall,
     ///雨夹雪/阵雨夹雪/冻雨/雨雪天气
-    WEATHER_RainySnowy,
+    JLWeatherTypeRainySnowy,
     ///雪
-    WEATHER_Snowy,
+    JLWeatherTypeSnowy,
     ///阵雪
-    WEATHER_SnowShower,
+    JLWeatherTypeSnowShower,
     ///小雪/小雪-中雪
-    WEATHER_LightSnow,
+    JLWeatherTypeLightSnow,
     ///中雪/中雪-大雪
-    WEATHER_ModerateSnow,
+    JLWeatherTypeModerateSnow,
     ///大雪/大雪-暴雪
-    WEATHER_HeavySnow,
+    JLWeatherTypeHeavySnow,
     ///暴雪
-    WEATHER_Snowstorm,
+    JLWeatherTypeSnowstorm,
     ///浮尘
-    WEATHER_Dust,
+    JLWeatherTypeDust,
     ///扬沙
-    WEATHER_blowingSand,
+    JLWeatherTypeblowingSand,
     ///沙尘暴
-    WEATHER_dustStorm,
+    JLWeatherTypedustStorm,
     ///强沙尘暴
-    WEATHER_SevereSandstorm,
+    JLWeatherTypeSevereSandstorm,
     ///龙卷风
-    WEATHER_Tornado,
+    JLWeatherTypeTornado,
     ///雾/轻雾/浓雾/强浓雾/特强浓雾
-    WEATHER_Fog,
+    JLWeatherTypeFog,
     ///未知
-    WEATHER_Unknow,
+    JLWeatherTypeUnknow,
     ///冷
-    WEATHER_Cold,
+    JLWeatherTypeCold,
     ///未知2
-    WEATHER_Unknown1,
+    JLWeatherTypeUnknown1,
     
-} WeatherType;
+};
 
-
-typedef enum : NSUInteger {
+typedef NS_ENUM(UInt8, JLWindDirectionType) {
     ///无风向
-    wDirection_None,
-    ///东风
-    wDirection_East,
-    ///南风
-    wDirection_South,
-    ///西风
-    wDirection_West,
-    ///北风
-    wDirection_North,
-    ///东南风
-    wDirection_EastSouth,
-    ///东北风
-    wDirection_EastNorth,
-    ///西北风
-    wDirection_WestNorth,
-    ///西南风
-    wDirection_WestSouth,
+    JLWindDirectionTypeNone = 0x00,
+    ///东
+    JLWindDirectionTypeEast,
+    ///南
+    JLWindDirectionTypeSouth,
+    ///西
+    JLWindDirectionTypeWest,
+    ///北
+    JLWindDirectionTypeNorth,
+    ///东南
+    JLWindDirectionTypeEastSouth,
+    ///东北
+    JLWindDirectionTypeEastNorth,
+    ///西北
+    JLWindDirectionTypeWestNorth,
+    ///西南
+    JLWindDirectionTypeWestSouth,
     ///旋转不定
-    wDirection_Unknow
-    
-} WDirectionType;
+    JLWindDirectionTypeUnknow
+};
 
 @interface JL_MSG_Weather : NSObject
 
@@ -124,13 +123,13 @@ typedef enum : NSUInteger {
 ///城市
 @property(nonatomic,strong)NSString *city;
 ///天气编码
-@property(nonatomic,assign)WeatherType code;
+@property(nonatomic,assign)JLWeatherType code;
 ///温度
 @property(nonatomic,assign)NSInteger temperature;
 ///湿度
 @property(nonatomic,assign)NSInteger humidity;
 ///风向编码
-@property(nonatomic,assign)WDirectionType direction;
+@property(nonatomic,assign)JLWindDirectionType direction;
 ///风力
 @property(nonatomic,assign)NSInteger wind;
 /// 时间
@@ -138,7 +137,6 @@ typedef enum : NSUInteger {
 
 
 -(NSData *)beData;
-
 
 @end
 

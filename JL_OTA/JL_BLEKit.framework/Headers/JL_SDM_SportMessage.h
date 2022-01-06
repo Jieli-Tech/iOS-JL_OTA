@@ -7,13 +7,13 @@
 //
 
 #import "JLSportDataModel.h"
-
+#import "JLWatchEnum.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_SDM_SportMessage : JLSportDataModel
 
 /// 运动模式
-@property(nonatomic,assign)SportPatternModel model;
+@property(nonatomic,assign)JL_SportPattern sportPattern;
 /// 距离，单位：0.01km
 @property(nonatomic,assign)int               distance;
 /// 开始时间

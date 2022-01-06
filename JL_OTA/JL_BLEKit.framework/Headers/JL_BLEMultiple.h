@@ -71,6 +71,11 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
  */
 -(void)connectEntity:(JL_EntityM*)entity Result:(JL_EntityM_STATUS_BK)result;
 
+/// 根据设备Mac去回连
+/// @param mac Mac地址
+/// @param result 回调
+-(void)connectEntityForMac:(NSString *)mac Result:(JL_EntityM_STATUS_BK)result;
+
 /**
  断开连接
  */
@@ -97,7 +102,9 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
  *  @param otaFilePath ota升级文件路径
  *  @param result ota升级过程回调
  */
-- (void)otaFuncWithEntityM:(JL_EntityM *)mBleEntityM withFilePath:(NSString *)otaFilePath Result:(JL_OTA_RT __nullable)result;
+- (void)otaFuncWithEntityM:(JL_EntityM *)mBleEntityM
+              withFilePath:(NSString *)otaFilePath
+                    Result:(JL_OTA_RT __nullable)result;
 
 @end
 

@@ -292,9 +292,8 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 - (void)getDeviceInfo:(GET_DEVICE_CALLBACK _Nonnull)callback {
     __weak typeof(self) weakSelf = self;
     /*--- 获取设备信息 ---*/
-    [self.mAssist.mCmdManager cmdTargetFeatureResult:^(NSArray * _Nullable array) {
-        JL_CMDStatus st = [array[0] intValue];
-        if (st == JL_CMDStatusSuccess) {
+    [self.mAssist.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        if (status == JL_CMDStatusSuccess) {
             JLModel_Device *model = [weakSelf.mAssist.mCmdManager outputDeviceModel];
             JL_OtaStatus upSt = model.otaStatus;
             if (upSt == JL_OtaStatusForce) {
@@ -336,7 +335,12 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     self.selectedOtaFilePath = otaFilePath;
     NSData *otaData = [[NSData alloc] initWithContentsOfFile:otaFilePath];
     __weak typeof(self) weakSelf = self;
-    [[JLBleManager sharedInstance].mAssist.mCmdManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
+    
+    
+    [JLBleManager sharedInstance];
+    JL_OTAManager *otaManager = self.mAssist.mCmdManager.mOTAManager;
+    
+    [otaManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
         if ([weakSelf.otaDelegate respondsToSelector:@selector(otaProgressWithOtaResult:withProgress:)]) {
             [weakSelf.otaDelegate otaProgressWithOtaResult:result withProgress:progress];
         }

@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 压力实时
 @interface JL_SDM_AirPressure : JLSportDataModel
 /// 实时
 @property(nonatomic,assign)int realTime;
@@ -29,8 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param max 是否需要最大气压
 +(JL_SDM_AirPressure*)requireRealTime:(BOOL)rt min:(BOOL)min Max:(BOOL)max;
 
-/// 请求气压图表数据
-+(JL_SDM_AirPressure*)requireDiagram;
+
 
 @end
 

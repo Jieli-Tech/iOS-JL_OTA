@@ -14,7 +14,7 @@
 #import "JL_ManagerM.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class JL_EntityM;
+//@class JL_EntityM;
 typedef NS_ENUM(NSInteger, JL_EntityM_Status) {
     JL_EntityM_StatusBleOFF         = 0,    //BLE蓝牙未开启
     JL_EntityM_StatusConnectFail    = 1,    //BLE连接失败

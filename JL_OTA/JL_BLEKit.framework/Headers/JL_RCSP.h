@@ -70,6 +70,14 @@
 #define kJL_RTC_PLUS                0x0025
 #define kJL_BATCH_OPERATE           0x0026
 #define kJL_FILE_GET_CRC            0x0027
+#define kJL_SMALL_FILE              0x0028
+
+#define kJL_WEAR_REQ_OPCODE         0x00A0   //获取运动信息
+#define kJL_WEAR_SET_OPCODE         0x00A1   //设置运动信息
+#define kJL_WEAR_RES_OPCODE         0x00A2   //设备主动推的运动信息
+#define kJL_WEAR_CMD_LOG            0x00A3   //传感器log传输命令
+#define kJL_WEAR_CMD_SETTING        0x00A5   //健康设备设置命令
+#define kJL_WEAR_SYNC_SPORT         0x00A6   //运动模式相关命令(同步数据）
 
 #define kJL_PHONE_NUMBER_WAY        0x00F1
 

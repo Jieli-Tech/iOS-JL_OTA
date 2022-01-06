@@ -10,7 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 血氧饱和度
 @interface JL_SDM_OxSaturation : JLSportDataModel
+
+/// 饱和度
 @property(nonatomic,assign)int staturation;
 
 /// 血氧饱和度

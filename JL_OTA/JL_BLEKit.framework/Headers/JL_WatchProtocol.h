@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JL_SDM_Header.h"
 
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol JL_WatchProtocol <NSObject>
@@ -57,7 +58,54 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设备回调传感器相关数据
 /// @param type 数据类型
 /// @param data 数据内容
--(void)jlWatchWatchLog:(WATCH_LOG_TYPE) type with:(NSData *)data;
+-(void)jlWatchWatchLog:(JL_WATCH_LOG_TYPE) type with:(NSData *)data;
+
+//MARK: - 健康设置回调
+
+/// 接收整个设置返回的数组
+/// @param models JLwSettingModels
+-(void)jlWatchSetAllFunc:(NSArray<JLwSettingModel *> *)models;
+
+/// 回调传感器相关设置
+/// @param model 传感器功能
+-(void)jlWatchSetSensorFunc:(JLSensorFuncModel *)model;
+
+/// 久坐提醒
+/// @param model 久坐提醒功能
+-(void)jlWatchSetSedentaryRmd:(JLSedentaryRmdModel *)model;
+
+/// 心率测量功能
+/// @param model 心率模块
+-(void)jlWatchSetConsequentHeartRate:(JLConsequentHeartRateModel *)model;
+
+/// 运动心率测试功能
+/// @param model 运动心率
+-(void)jlWatchSetExerciseHeartRateRemind:(JLExerciseHeartRateRemindModel *)model;
+
+/// 自动压力测试
+/// @param model 压力测试
+-(void)jlWatchSetAutoPressure:(JLAutoPressureModel *)model;
+
+/// 睡眠监测
+/// @param model 睡眠
+-(void)jlWatchSetSleepMonitor:(JLSleepMonitorModel *)model;
+
+/// 跌到监测
+/// @param model 跌倒监测
+-(void)jlWatchSetFallDetectionModel:(JLFallDetectionModel *)model;
+
+/// 抬腕监测
+/// @param model 抬腕监测
+-(void)jlWatchSetWristLiftDetectionModel:(JLWristLiftDetectionModel *)model;
+
+/// 个人信息
+/// @param model 个人信息
+-(void)jlWatchSetPersonInfoModel:(JLPersonInfoModel *)model;
+
+/// 蓝牙断开设置
+/// @param model 断开设置
+-(void)jlWatchSetDisconnectRemindModel:(JLDisconnectRemindModel *)model;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///海拔高度相关
 @interface JL_SDM_Altitude : JLSportDataModel
 
 /// 最大值
@@ -31,8 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 +(JL_SDM_Altitude*)requireRealTime:(BOOL)rt min:(BOOL)min Max:(BOOL)max;
 
 
-/// 请求海拔图表数据
-+(JL_SDM_Altitude*)requireDiagram;
 
 @end
 

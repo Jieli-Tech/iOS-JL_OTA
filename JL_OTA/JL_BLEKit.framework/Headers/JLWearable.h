@@ -11,12 +11,14 @@
 #import "JL_EntityM.h"
 #import "JL_SDM_Header.h"
 #import "JL_WatchProtocol.h"
+#import "JLWearSync.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 #define JL_RECIVED_DATA     @"JL_RECIVED_DATA"
 
 
+/// 穿戴设备基础命令控制
 @interface JLWearable : NSObject
 
 @property(nonatomic,assign,readonly)uint8_t version;
@@ -68,10 +70,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 -(void)w_requestSportData:(NSMutableArray<JLSportDataModel *>*)reqModels withEntity:(JL_EntityM *)entity;
 
-/// 运动设置
-/// @param model 运动模式
-/// @param entity 当前的entity
--(void)w_messageSet:(JLSportDataModel *)model withEntity:(JL_EntityM *)entity;
+/// 私有测试接口
+/// @param data 数据
+/// @param entity 当前设备entity
+/// @param opcode 操作
+-(void)pr_requestSportDataMask:(NSData *)data withEntity:(JL_EntityM *)entity opCode:(uint16_t)opcode;
+
 
 /// 收到数据解析
 /// @param pkg 收到的数据包
@@ -82,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param weather 天气内容
 /// @param entity 服务对象
 /// @param block 推送回调
--(void)w_syncWeather:(JL_MSG_Weather *)weather withEntity:(JL_EntityM *)entity result:(JL_CB_Weather)block;
+-(void)w_syncWeather:(JL_MSG_Weather *)weather withEntity:(JL_EntityM *)entity result:(JL_CB_Status)block;
 
 
 /**
@@ -93,7 +97,39 @@ NS_ASSUME_NONNULL_BEGIN
 /// 请求设备传感器的log
 /// @param model 请求类型（Log_Acceleration | Log_HeartRate_BloodOxy）
 /// @param entity 当前的entity
--(void)w_transportLog:(WATCH_LOG_MASK)model withEntity:(JL_EntityM *)entity;
+-(void)w_transportLog:(JL_WATCH_LOG_MASK)model withEntity:(JL_EntityM *)entity;
+
+
+//MARK: - 设备设置命令
+
+/// 查询读取设备信息
+/// @param target JL_WATCH_SETTING枚举，支持|运算同时设置多个设备类型信息
+/// @param entity 当前的entity
+/// /// 本方法的返回结果，需要接收对应的协议：JL_WatchProtocol ，并把遵循协议的对象加入到本单例中
+/// -(void)w_addDelegate:(id<JL_WatchProtocol>)delegate;
+-(void)w_InquireDeviceFuncWith:(JL_WATCH_SETTING)target withEntity:(JL_EntityM *)entity;
+
+/// 向设备写入设置信息
+/// @param models 设置对应的功能模型
+/// @param entity 当前的entity
+/// @param block 回复设置的状态
+/// 使用示例：
+/// 如设置：传感器、久坐提醒、蓝牙断开提醒
+///   NSMutableArray <JLwSettingModel *>* models = [NSMutableArray new];
+/// /*计步相关传感器*/
+/// JLSensorFuncModel *model = [[JLSensorFuncModel alloc] initWhthFuncByte:0x0073];//详情设置可参考相关接口
+/// [models addObject:model];
+/// /*久坐设置*/
+/// JLSedentaryRmdModel *model1 = [[JLSedentaryRmdModel alloc] initWithModel:s_Shake Status:true];
+/// [models addObject:model1];
+/// /*蓝牙断开提醒*/
+/// JLDisconnectRemindModel *model2 = [[JLDisconnectRemindModel alloc] initWithModel:s_BrightScreen Status:true];
+/// [models addObject:model2];
+/// [[JLWearable sharedInstance] w_SettingDeviceFuncWith:models withEntity:requestEntity]
+/// 本方法的返回结果，需要接收对应的协议：JL_WatchProtocol ，并把遵循协议的对象加入到本单例中
+/// -(void)w_addDelegate:(id<JL_WatchProtocol>)delegate;
+-(void)w_SettingDeviceFuncWith:(NSArray <JLwSettingModel *> *)models withEntity:(JL_EntityM *)entity result:(JL_CB_Status)block;
+
 
 @end
 

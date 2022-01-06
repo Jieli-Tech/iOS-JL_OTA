@@ -35,7 +35,6 @@ typedef void(^ATC_Block)(BOOL ret);
  @param advertData 蓝牙广播字典
  @return YES：认证设备 NO：杂余设备
  */
-+(BOOL)bluetoothKey:(NSData*)key Filter:(NSDictionary*)advertData;
 +(NSDictionary*)bluetoothKey_1:(NSData*)key Filter:(NSDictionary*)advertData;
 
 /**
