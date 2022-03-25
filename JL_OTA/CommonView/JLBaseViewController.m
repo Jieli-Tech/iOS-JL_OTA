@@ -20,7 +20,6 @@
 }
 
 #pragma mark - Public Methods
-
 - (void)startLoadingView:(NSString*)text Delay:(NSTimeInterval)delay {
     [_loadingTip hide:YES ];
     _loadingTip = [DFUITools showHUDWithLabel:text onView:self.view color:[UIColor blackColor] labelTextColor:[UIColor whiteColor] activityIndicatorColor:[UIColor whiteColor]];

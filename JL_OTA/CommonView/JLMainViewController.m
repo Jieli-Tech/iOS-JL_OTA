@@ -20,7 +20,7 @@
     UINavigationController *nvc_2 = [[UINavigationController alloc] initWithRootViewController:vc_2];
     
     NSArray *arr_vc = @[nvc_1, nvc_2];
-    NSArray *arr_txt = @[@"设备升级", @"设备连接"];
+    NSArray *arr_txt = @[kJL_TXT("设备升级"), kJL_TXT("设备连接")];
     NSArray *arr_img = @[@"upgrade", @"device"];
     NSArray *arr_img_sel = @[@"upgrade_sel", @"device_sel"];
     
