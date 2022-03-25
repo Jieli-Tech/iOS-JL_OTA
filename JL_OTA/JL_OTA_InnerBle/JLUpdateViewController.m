@@ -55,7 +55,7 @@
             [self.fileTableView reloadData];
         }
         if (status == GCDWebKitStatusFail) {
-            self.wifiText.text = @"提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。";
+            self.wifiText.text = kJL_TXT("提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。");
         }
         
         if (status == GCDWebKitStatusUpload) {
@@ -73,7 +73,7 @@
             [self.fileTableView reloadData];
         }
         if (status == GCDWebKitStatusWifiDisable) {
-            self.wifiText.text = @"提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。";
+            self.wifiText.text = kJL_TXT("提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。");
         }
     }];
     
@@ -85,10 +85,13 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self reflashFileArray];
+    [self.fileTableView reloadData];
+    
     [self checkDeviceConnected];
 }
 
--(void)reflashFileArray{
+- (void)reflashFileArray {
     // 获取沙盒升级文件
     NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
     _fileArray = [DFFile subPaths:docPath];
@@ -100,7 +103,7 @@
 - (IBAction)updateBtnFunc:(id)sender {
     if (![JL_RunSDK sharedInstance].mBleEntityM) {
         self.updateSeekLabel.text = @"";
-        [DFUITools showText:@"请先连接设备" onView:self.view delay:1.0];
+        [DFUITools showText:kJL_TXT("请先连接设备") onView:self.view delay:1.0];
         return;
     }
     
@@ -112,9 +115,9 @@
 
 - (void)checkDeviceConnected {
     if ([JL_RunSDK sharedInstance].mBleEntityM) {
-        _linkStatusLabel.text = @"设备已连接";
+        _linkStatusLabel.text = kJL_TXT("设备已连接");
     } else {
-        _linkStatusLabel.text = @"设备未连接";
+        _linkStatusLabel.text = kJL_TXT("设备未连接");
     }
 }
 
@@ -146,26 +149,30 @@
         self.updateSeekLabel.text = txt;
         self.updateProgressView.progress = progress;
         
-        if (result == JL_OTAResultPreparing) self.updateLabel.text = @"校验文件中";
-        if (result == JL_OTAResultUpgrading) self.updateLabel.text = @"正在升级";
+        if (result == JL_OTAResultPreparing) self.updateLabel.text = kJL_TXT("校验文件中");
+        if (result == JL_OTAResultUpgrading) self.updateLabel.text = kJL_TXT("正在升级");
         
     } else if (result == JL_OTAResultPrepared) {
         NSLog(@"---> 检验文件【完成】");
-        self.updateLabel.text = @"校验文件完成";
+        self.updateLabel.text = kJL_TXT("校验文件完成");
     } else if (result == JL_OTAResultReconnect) {
         NSLog(@"---> OTA正在回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mPeripheral.name);
-
     } else if (result == JL_OTAResultReconnectWithMacAddr) {
         NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mPeripheral.name);
-        
     } else if (result == JL_OTAResultSuccess) {
         NSLog(@"--->升级成功.");
-        self.updateSeekLabel.text = @"100%";
-        self.updateProgressView.progress = 1.0;
-        self.updateLabel.text = @"升级完成";
-        [DFAction delay:1.5 Task:^{
-            [self isUpgradingUI:NO];
-        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.updateSeekLabel.text = @"100%";
+            self.updateProgressView.progress = 1.0;
+            self.updateLabel.text = kJL_TXT("升级完成");
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:kJL_TXT("升级完成") preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alertController addAction:confirmAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+            [DFAction delay:1.5 Task:^{
+                [self isUpgradingUI:NO];
+            }];
+        });
     } else if (result == JL_OTAResultReboot) {
         NSLog(@"--->设备重启.");
         [self checkDeviceConnected];

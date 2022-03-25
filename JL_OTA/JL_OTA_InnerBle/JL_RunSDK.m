@@ -24,8 +24,7 @@
     return singleton;
 }
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         /*--- 初始化JL_SDK ---*/
@@ -38,14 +37,14 @@
 }
 
 + (NSString *)textEntityStatus:(JL_EntityM_Status)status {
-    if (status<0) return @"未知错误";
-    NSArray *arr = @[@"蓝牙未开启",@"连接失败",@"正在连接",@"重复连接",
-                     @"连接超时",@"被拒绝",@"配对失败",@"配对超时",@"已配对",
-                     @"正在主从切换",@"断开成功",@"请打开蓝牙"];
+    if (status < 0) return kJL_TXT("未知错误");
+    NSArray *arr = @[kJL_TXT("蓝牙未开启"), kJL_TXT("连接失败"), kJL_TXT("正在连接"), kJL_TXT("重复连接"),
+                     kJL_TXT("连接超时"), kJL_TXT("被拒绝"), kJL_TXT("配对失败"), kJL_TXT("配对超时"), kJL_TXT("已配对"),
+                     kJL_TXT("正在主从切换"), kJL_TXT("断开成功"), kJL_TXT("请打开蓝牙")];
     if (status+1 <= arr.count) {
         return arr[status];
-    }else{
-        return @"未知错误";
+    } else {
+        return kJL_TXT("未知错误");
     }
 }
 
@@ -68,9 +67,8 @@
 - (void)getDeviceInfo:(GET_DEVICE_CALLBACK _Nonnull)callback {
     __weak typeof(self) weakSelf = self;
     /*--- 获取设备信息 ---*/
-    [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(NSArray * _Nullable array) {
-        JL_CMDStatus st = [array[0] intValue];
-        if (st == JL_CMDStatusSuccess) {
+    [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        if (status == JL_CMDStatusSuccess) {
             JLModel_Device *model = [weakSelf.mBleEntityM.mCmdManager outputDeviceModel];
             JL_OtaStatus upSt = model.otaStatus;
             if (upSt == JL_OtaStatusForce) {

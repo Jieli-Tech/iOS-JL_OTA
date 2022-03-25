@@ -3,7 +3,7 @@
 # iOS杰理蓝牙OTA开发说明v2.0.0
 
 - 对应的芯片类型：AC692x，BD29
-- APP开发环境：iOS平台，iOS 10.0以上，Xcode 11.0以上
+- APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.0以上
 - 对应于苹果商店上的APP: **【OTA Update】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
 

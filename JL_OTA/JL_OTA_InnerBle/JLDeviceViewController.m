@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *switchLabel;
 @property (weak, nonatomic) IBOutlet UITableView *subTableView;
+@property (strong, nonatomic)MJRefreshNormalHeader *header;
 
 @property (strong, nonatomic) NSMutableArray<JL_EntityM *> *btEnityList;
 
@@ -38,10 +39,11 @@
     
     __weak typeof(self) weakSelf = self;
     [JL_RunSDK sharedInstance].mBleMultiple.BLE_FILTER_ENABLE = YES;        // 设置过滤不吻合的ble外设
-    [_subTableView addHeaderWithCallback:^{
+    _header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         NSLog(@"--->开始刷新...");
         [weakSelf startScanDevice];
     }];
+    _subTableView.mj_header = _header;
     
     [JL_Tools add:kJL_BLE_M_FOUND Action:@selector(reloadTableView) Own:self];
     [JL_Tools add:kJL_BLE_M_FOUND_SINGLE Action:@selector(reloadTableView) Own:self];
@@ -60,13 +62,13 @@
 - (IBAction)tapSwitchFunc:(UISwitch *)sender {
     NSString *txt = @"";
     if (sender.isOn) {
-        txt = @"APP会过滤部分不吻合的BLE外设。";
+        txt = kJL_TXT("APP会过滤部分不吻合的BLE外设。");
         [JL_RunSDK sharedInstance].mBleMultiple.BLE_FILTER_ENABLE = YES;
     } else {
-        txt = @"APP会扫描所有BLE外设。";
+        txt = kJL_TXT("APP会扫描所有BLE外设。");
         [JL_RunSDK sharedInstance].mBleMultiple.BLE_FILTER_ENABLE = NO;
     }
-    [_subTableView setHeaderReleaseToRefreshText:txt];
+    [_header setTitle:txt forState:MJRefreshStatePulling];
     [DFUITools showText:txt onView:self.view delay:1.0];
 
     [[JL_RunSDK sharedInstance].mBleMultiple scanStart];
@@ -77,8 +79,8 @@
  */
 - (void)startScanDevice {
     if ([JL_RunSDK sharedInstance].mBleMultiple.bleManagerState != CBManagerStatePoweredOn) {
-        [DFUITools showText:@"蓝牙没有打开" onView:self.view delay:1.0];
-        [self.subTableView headerEndRefreshing];
+        [DFUITools showText:kJL_TXT("蓝牙没有打开") onView:self.view delay:1.0];
+        [self.subTableView.mj_header endRefreshing];
         return;
     }
     /*--- 搜索蓝牙设备 ---*/
@@ -87,7 +89,7 @@
     [JL_Tools delay:2.0 Task:^{
         NSLog(@"--->已刷完.");
         [[JL_RunSDK sharedInstance].mBleMultiple scanStop];
-        [weakSelf.subTableView headerEndRefreshing];
+        [weakSelf.subTableView.mj_header endRefreshing];
     }];
 }
 
@@ -123,7 +125,7 @@
         [[JL_RunSDK sharedInstance] getDeviceInfo:^(BOOL needForcedUpgrade) {
             if (needForcedUpgrade) {
                 NSLog(@"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
-                [self startLoadingView:@"设备需要强制升级，请到升级界面选择ota升级文件进行升级！" Delay:1.0];
+                [self startLoadingView:kJL_TXT("设备需要强制升级，请到升级界面选择ota升级文件进行升级!") Delay:1.0];
             }
         }];
     }];
@@ -132,7 +134,6 @@
 }
 
 #pragma mark - UITableViewDataSource
-
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _btEnityList.count;
 }
@@ -162,7 +163,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.subTableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([JL_RunSDK sharedInstance].mBleMultiple.bleManagerState != CBManagerStatePoweredOn) {
-        [DFUITools showText:@"蓝牙没有打开" onView:self.view delay:1.0];
+        [DFUITools showText:kJL_TXT("蓝牙没有打开") onView:self.view delay:1.0];
         return;
     }
     if (_btEnityList.count == 0) return;
@@ -170,13 +171,13 @@
     CBPeripheral *item = selectedItem.mPeripheral;
     __weak typeof(self) weakSelf = self;
     if (item.state == CBPeripheralStateConnected || item.state == CBPeripheralStateConnecting) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"你是否要断开设备【%@】？", item.name] preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"断开" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@【%@】？",kJL_TXT("你是否要断开设备"),item.name] preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("取消") style:UIAlertActionStyleCancel handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("断开") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [[JL_RunSDK sharedInstance].mBleMultiple disconnectEntity:[JL_RunSDK sharedInstance].mBleEntityM Result:^(JL_EntityM_Status status) {
                 if (JL_EntityM_StatusDisconnectOk == status) {
                     NSLog(@"断开设备成功");
-                    [weakSelf startLoadingView:@"断开设备成功" Delay:1.0];
+                    [weakSelf startLoadingView:kJL_TXT("断开设备成功") Delay:1.0];
                     [JL_RunSDK sharedInstance].mBleEntityM = nil;
                 }
                 [weakSelf reloadTableView];
@@ -186,19 +187,13 @@
         return;
     }
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"APP是否通过认证方式连接BLE设备？" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"认证连接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:kJL_TXT("APP是否通过认证方式连接BLE设备?") preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("取消") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("认证连接") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSLog(@"蓝牙正在连接... ==> %@",item.name);
-        [weakSelf startLoadingView:@"连接中..." Delay:5.0];
+        [weakSelf startLoadingView:kJL_TXT("连接中...") Delay:5.0];
         [weakSelf connectToDevice:selectedItem withFilter:YES];
     }]];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"直接连接" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        [JL_RunSDK sharedInstance].mBleMultiple.BLE_FILTER_ENABLE = NO;
-//        NSLog(@"蓝牙正在连接... ==> %@",item.name);
-//        [weakSelf startLoadingView:@"连接中..." Delay:5.0];
-//        [weakSelf connectToDevice:selectedItem withFilter:NO];
-//    }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

@@ -1,34 +1,42 @@
-// 版权属于原作者
-// http://code4app.com (cn) http://code4app.net (en)
-// 发布代码于最专业的源码分享网站: Code4App.com
+//  代码地址: https://github.com/CoderMJLee/MJRefresh
 
+#import <Foundation/Foundation.h>
+
+#if __has_include(<MJRefresh/MJRefresh.h>)
+FOUNDATION_EXPORT double MJRefreshVersionNumber;
+FOUNDATION_EXPORT const unsigned char MJRefreshVersionString[];
+
+#import <MJRefresh/UIScrollView+MJRefresh.h>
+#import <MJRefresh/UIScrollView+MJExtension.h>
+#import <MJRefresh/UIView+MJExtension.h>
+
+#import <MJRefresh/MJRefreshNormalHeader.h>
+#import <MJRefresh/MJRefreshGifHeader.h>
+
+#import <MJRefresh/MJRefreshBackNormalFooter.h>
+#import <MJRefresh/MJRefreshBackGifFooter.h>
+#import <MJRefresh/MJRefreshAutoNormalFooter.h>
+#import <MJRefresh/MJRefreshAutoGifFooter.h>
+
+#import <MJRefresh/MJRefreshNormalTrailer.h>
+#import <MJRefresh/MJRefreshConfig.h>
+#import <MJRefresh/NSBundle+MJRefresh.h>
+#import <MJRefresh/MJRefreshConst.h>
+#else
 #import "UIScrollView+MJRefresh.h"
-#import "MJRefreshBaseView.h"
-#import "MJRefreshFooterView.h"
-#import "MJRefreshHeaderView.h"
+#import "UIScrollView+MJExtension.h"
+#import "UIView+MJExtension.h"
 
+#import "MJRefreshNormalHeader.h"
+#import "MJRefreshGifHeader.h"
 
-/**
- MJ友情提示：
- 1. 添加头部控件的方法
- [self.tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
- 或者
- [self.tableView addHeaderWithCallback:^{ }];
- 
- 2. 添加尾部控件的方法
- [self.tableView addFooterWithTarget:self action:@selector(footerRereshing)];
- 或者
- [self.tableView addFooterWithCallback:^{ }];
- 
- 3. 可以在MJRefreshConst.h和MJRefreshConst.m文件中自定义显示的文字内容和文字颜色
- 
- 4. 本框架兼容iOS6\iOS7，iPhone\iPad横竖屏
- 
- 5.自动进入刷新状态
- 1> [self.tableView headerBeginRefreshing];
- 2> [self.tableView footerBeginRefreshing];
- 
- 6.结束刷新
- 1> [self.tableView headerEndRefreshing];
- 2> [self.tableView footerEndRefreshing];
-*/
+#import "MJRefreshBackNormalFooter.h"
+#import "MJRefreshBackGifFooter.h"
+#import "MJRefreshAutoNormalFooter.h"
+#import "MJRefreshAutoGifFooter.h"
+
+#import "MJRefreshNormalTrailer.h"
+#import "MJRefreshConfig.h"
+#import "NSBundle+MJRefresh.h"
+#import "MJRefreshConst.h"
+#endif

@@ -1,14 +1,10 @@
-//
+//  代码地址: https://github.com/CoderMJLee/MJRefresh
 //  UIView+Extension.m
-//  MJRefreshExample
+//  MJRefresh
 //
 //  Created by MJ Lee on 14-5-28.
-//  Copyright (c) 2014年 itcast. All rights reserved.
+//  Copyright (c) 2014年 小码哥. All rights reserved.
 //
-
-// 版权属于原作者
-// http://code4app.com (cn) http://code4app.net (en)
-// 发布代码于最专业的源码分享网站: Code4App.com
 
 #import "UIView+MJExtension.h"
 
@@ -37,26 +33,26 @@
     return self.frame.origin.y;
 }
 
-- (void)setMj_width:(CGFloat)mj_width
+- (void)setMj_w:(CGFloat)mj_w
 {
     CGRect frame = self.frame;
-    frame.size.width = mj_width;
+    frame.size.width = mj_w;
     self.frame = frame;
 }
 
-- (CGFloat)mj_width
+- (CGFloat)mj_w
 {
     return self.frame.size.width;
 }
 
-- (void)setMj_height:(CGFloat)mj_height
+- (void)setMj_h:(CGFloat)mj_h
 {
     CGRect frame = self.frame;
-    frame.size.height = mj_height;
+    frame.size.height = mj_h;
     self.frame = frame;
 }
 
-- (CGFloat)mj_height
+- (CGFloat)mj_h
 {
     return self.frame.size.height;
 }

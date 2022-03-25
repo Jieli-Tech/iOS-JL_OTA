@@ -1,31 +1,39 @@
-//
-//  MJRefreshConst.m
-//  MJRefresh
-//
-//  Created by mj on 14-1-3.
-//  Copyright (c) 2014年 itcast. All rights reserved.
-//
-
-// 版权属于原作者
-// http://code4app.com (cn) http://code4app.net (en)
-// 发布代码于最专业的源码分享网站: Code4App.com
-#import <Foundation/Foundation.h>
+//  代码地址: https://github.com/CoderMJLee/MJRefresh
 #import <UIKit/UIKit.h>
 
-const CGFloat MJRefreshViewHeight = 64.0;
+const CGFloat MJRefreshLabelLeftInset = 25;
+const CGFloat MJRefreshHeaderHeight = 54.0;
+const CGFloat MJRefreshFooterHeight = 44.0;
+const CGFloat MJRefreshTrailWidth = 60.0;
 const CGFloat MJRefreshFastAnimationDuration = 0.25;
 const CGFloat MJRefreshSlowAnimationDuration = 0.4;
 
-NSString *const MJRefreshBundleName = @"MJRefresh.bundle";
 
-NSString *MJRefreshFooterPullToRefresh = @"Pull To Search.";
-NSString *MJRefreshFooterReleaseToRefresh = @"Release To Search.";
-NSString *const MJRefreshFooterRefreshing = @"Searching...";
+NSString *const MJRefreshKeyPathContentOffset = @"contentOffset";
+NSString *const MJRefreshKeyPathContentInset = @"contentInset";
+NSString *const MJRefreshKeyPathContentSize = @"contentSize";
+NSString *const MJRefreshKeyPathPanState = @"state";
 
-NSString *MJRefreshHeaderPullToRefresh = @"Pull To Search.";
-NSString *MJRefreshHeaderReleaseToRefresh = @"Release To Search.";
-NSString *const MJRefreshHeaderRefreshing = @"Searching...";
-NSString *const MJRefreshHeaderTimeKey = @"MJRefreshHeaderView";
+NSString *const MJRefreshHeaderLastUpdatedTimeKey = @"MJRefreshHeaderLastUpdatedTimeKey";
 
-NSString *const MJRefreshContentOffset = @"contentOffset";
-NSString *const MJRefreshContentSize = @"contentSize";
+NSString *const MJRefreshHeaderIdleText = @"MJRefreshHeaderIdleText";
+NSString *const MJRefreshHeaderPullingText = @"MJRefreshHeaderPullingText";
+NSString *const MJRefreshHeaderRefreshingText = @"MJRefreshHeaderRefreshingText";
+
+NSString *const MJRefreshTrailerIdleText = @"MJRefreshTrailerIdleText";
+NSString *const MJRefreshTrailerPullingText = @"MJRefreshTrailerPullingText";
+
+NSString *const MJRefreshAutoFooterIdleText = @"MJRefreshAutoFooterIdleText";
+NSString *const MJRefreshAutoFooterRefreshingText = @"MJRefreshAutoFooterRefreshingText";
+NSString *const MJRefreshAutoFooterNoMoreDataText = @"MJRefreshAutoFooterNoMoreDataText";
+
+NSString *const MJRefreshBackFooterIdleText = @"MJRefreshBackFooterIdleText";
+NSString *const MJRefreshBackFooterPullingText = @"MJRefreshBackFooterPullingText";
+NSString *const MJRefreshBackFooterRefreshingText = @"MJRefreshBackFooterRefreshingText";
+NSString *const MJRefreshBackFooterNoMoreDataText = @"MJRefreshBackFooterNoMoreDataText";
+
+NSString *const MJRefreshHeaderLastTimeText = @"MJRefreshHeaderLastTimeText";
+NSString *const MJRefreshHeaderDateTodayText = @"MJRefreshHeaderDateTodayText";
+NSString *const MJRefreshHeaderNoneLastDateText = @"MJRefreshHeaderNoneLastDateText";
+
+NSString *const MJRefreshDidChangeLanguageNotification = @"MJRefreshDidChangeLanguageNotification";
