@@ -6,6 +6,7 @@
 - APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.0以上
 - 对应于苹果商店上的APP: **【OTA Update】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
+- 杰理OTA对外开发文档：https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html
 
 ## 声明
 
@@ -35,7 +36,7 @@
 将JL_OTA项目的*JL_BLEKit.framework*导入Xcode工程项目里，添加*Privacy - Bluetooth Peripheral Usage Description*和*Privacy - Bluetooth Always Usage Description*两个权限。
 
 ## 2、SDK具体使用的两种方式
-​        第一种，使用自定义的蓝牙连接API进行OTA（对应JL_OTA）：所有BLE的操作都自行实现，SDK只负责对OTA数据包解析
+​        第一种，使用自定义的蓝牙连接API进行OTA（对应JL_OTA）：所有BLE的操作都自行实现，SDK只负责对OTA数据包解析。
 
 从而实现OTA功能。
 
