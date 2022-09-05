@@ -55,3 +55,4 @@
 "提示：电脑与手机处于相同WiFi，浏览器登录" = "Tip: Computer and mobile phone in the same WiFi, browser login";
 "即可导入OTA升级文件。" = "You can import the OTA upgrade file.";
 "提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。" = "Tip: the computer and the phone are in the same WiFi, you can add the upgrade file from the computer browser.";
+"升级失败" = "Update Fail.";

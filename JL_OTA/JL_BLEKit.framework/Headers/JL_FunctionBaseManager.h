@@ -12,12 +12,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class JL_ManagerM;
 @interface JL_FunctionBaseManager : NSObject
 
 @property (assign, nonatomic) uint8_t           mCmdSN;
 @property (strong, nonatomic) NSString          *mBLE_UUID;
 @property (strong, nonatomic) NSString          *mBLE_NAME;
-@property (weak, nonatomic) JLModel_Device      *deviceModel;
+@property (weak  , nonatomic) JLModel_Device    *deviceModel;
+@property (weak  , nonatomic) JL_ManagerM       *centerManagerM;
 
 - (void)inputPKG:(JL_PKG *)pkg;
 

@@ -62,10 +62,10 @@ typedef void(^JL_RTC_ALARM_BK)(NSArray <JLModel_AlarmSetting *>* __nullable arra
               Result:(JL_RTC_ALARM_BK __nullable)result;
 
 #pragma mark ---> 【闹钟信息】解析
--(NSMutableArray<JLModel_RTC*> *)makeOutRtc:(NSData*)data;
++(NSMutableArray<JLModel_RTC*> *)makeOutRtc:(NSData*)data RtcType:(uint8_t)rtcType;
 
 #pragma mark ----> [默认闹钟铃声]解析
--(NSMutableArray<JLModel_Ring*> *)makeOutRtcDefaultRing:(NSData *)data;
++(NSMutableArray<JLModel_Ring*> *)makeOutRtcDefaultRing:(NSData *)data;
 
 @end
 

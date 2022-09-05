@@ -11,7 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JLWearSyncRealTimeModel : NSObject
+
+@interface JLWearSyncRealTimeData : NSObject
+
+@property(nonatomic,strong)NSData *basicData;
+
+@end
+
+@interface JLWearSyncRealTimeModel : JLWearSyncRealTimeData
 
 /// 类型
 @property(nonatomic,assign)UInt8 type;

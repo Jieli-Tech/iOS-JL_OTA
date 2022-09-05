@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_CustomManager : JL_FunctionBaseManager
 
+#pragma mark ---> 设备返回的自定义数据
+extern NSString *kJL_MANAGER_CUSTOM_DATA;
+
 #pragma mark ---> 用户自定义数据
 /**
  @param data 数据

@@ -11,7 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JLWearSyncInfoModel : NSObject
+@interface JLWearSyncDataModel : NSObject
+
+/// 基础返回对象
+@property(nonatomic,strong)NSData *basicData;
+
+@end
+
+
+@interface JLWearSyncInfoModel : JLWearSyncDataModel
 
 ///运动模式类型
 @property(nonatomic,assign)WatchSportType sportType;

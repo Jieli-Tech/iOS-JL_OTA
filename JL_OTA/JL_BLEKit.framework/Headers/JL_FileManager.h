@@ -65,6 +65,7 @@ typedef NS_ENUM(UInt8, JL_BigFileResult) {
     JL_BigFileTransferFail          = 0x04, //大文件传输失败
     JL_BigFileCrcError              = 0x05, //大文件校验失败
     JL_BigFileOutOfMemory           = 0x06, //空间不足
+    JL_BigFileTransferCancel        = 0x07, //取消传输
     JL_BigFileTransferNoResponse    = 0xF1, //设备没有响应
 };
 

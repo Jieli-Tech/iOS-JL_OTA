@@ -10,6 +10,14 @@
 #import "JLWatchEnum.h"
 NS_ASSUME_NONNULL_BEGIN
 
+
+@interface JLWearSyncFinishDataModel:NSObject
+
+@property(nonatomic,strong)NSData *basicData;
+
+@end
+
+
 @interface JLWatchExerciseIntens:NSObject
 
 /// 运动强度类型
@@ -20,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface JLWearSyncFinishModel : NSObject
+@interface JLWearSyncFinishModel : JLWearSyncFinishDataModel
 
 /// 结束时间
 @property(nonatomic,strong)NSDate *endTime;

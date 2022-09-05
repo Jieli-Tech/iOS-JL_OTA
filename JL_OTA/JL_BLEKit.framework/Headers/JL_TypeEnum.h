@@ -54,13 +54,21 @@ typedef NS_ENUM(UInt8,JL_AdvType) {
 };
 typedef NS_ENUM(NSInteger,JL_DeviceType) {
     JL_DeviceTypeSoundBox           = 0,     //AI音箱类型
-    JL_DeviceTypeTWS                = 1,     //TWS耳机类型
-    JL_DeviceTypeChargingBin        = 2,     //充电仓类型
+    JL_DeviceTypeChargingBin        = 1,     //充电仓类型
+    JL_DeviceTypeTWS                = 2,     //TWS耳机类型
     JL_DeviceTypeHeadset            = 3,     //普通耳机类型
     JL_DeviceTypeSoundCard          = 4,     //声卡类型
     JL_DeviceTypeWatch              = 5,     //手表类型
     JL_DeviceTypeTradition          = -1,    //传统设备类型
 };
+
+typedef NS_ENUM(UInt8,JLDevSpecialType) {
+    ///普通正常设备
+    JLDevSpecialType_Normal = 0x00,
+    ///回连设备
+    JLDevSpecialType_Reconnect = 0x01,
+};
+
 //---------------------------------------------------------//
 
 

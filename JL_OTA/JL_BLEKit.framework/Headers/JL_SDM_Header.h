@@ -32,6 +32,8 @@
 #import "JLAutoPressureModel.h"
 #import "JLSleepMonitorModel.h"
 #import "JLFallDetectionModel.h"
+#import "JLEmergencyContactModel.h"
+#import "JLOxygenSturationRemindModel.h"
 #import "JLWristLiftDetectionModel.h"
 #import "JLPersonInfoModel.h"
 #import "JLDisconnectRemindModel.h"
@@ -44,6 +46,7 @@
 #import "JLWearSyncHealthSleepChart.h"
 #import "JLWearSyncHealthStepChart.h"
 #import "JLWearSyncHealthWeightChart.h"
+
 
 #include <syslog.h>
 #ifndef JL_IOS
@@ -148,6 +151,8 @@ typedef void(^JL_CB_Status)(BOOL succeed);
 //MARK: - 同步相关
 ///读取同步运动状态
 typedef void(^JL_CB_SyncSportInfo)(JLWearSyncInfoModel *infoModel);
+/// 读取同步状态
+typedef void(^JL_CB_SyncSportDataInfo)(JLWearSyncDataModel *infoModel);
 
 
 #endif /* JL_SDM_Header_h */

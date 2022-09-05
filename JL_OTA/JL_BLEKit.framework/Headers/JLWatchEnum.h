@@ -168,10 +168,10 @@ typedef NS_ENUM(UInt8, JL_WearSyncStatus) {
 typedef NS_ENUM(UInt8, WatchSportType) {
     /// 非运动模式
     WatchSportType_NonExercise       = 0x00,
-    /// 室内运动
-    WatchSportType_InDoor            = 0x01,
     /// 室外运动
-    WatchSportType_OutDoor           = 0x02,
+    WatchSportType_OutDoor            = 0x01,
+    /// 室内运动
+    WatchSportType_InDoor           = 0x02,
 };
 ///运动状态
 typedef NS_ENUM(UInt8, WatchSportStatus) {

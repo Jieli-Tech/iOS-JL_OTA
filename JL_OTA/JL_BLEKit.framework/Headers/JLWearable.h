@@ -12,6 +12,7 @@
 #import "JL_SDM_Header.h"
 #import "JL_WatchProtocol.h"
 #import "JLWearSync.h"
+#import "JLWearSyncCustom.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

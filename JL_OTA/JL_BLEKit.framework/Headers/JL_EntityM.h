@@ -79,6 +79,7 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 @property(strong,nonatomic) NSString        *mVID;
 @property(strong,nonatomic) NSString        *mPID;
 @property(strong,nonatomic) NSString        *mEdr;
+@property(strong,nonatomic) NSString        *mBleAddr;            //OTA设备需要
 @property(assign,nonatomic) uint8_t         mChipType;            //0：690x 1：692x 2：693x
 @property(assign,nonatomic) uint8_t         mProtocolType;        //默认0x00
 /**
@@ -112,6 +113,8 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
  */
 @property(assign,nonatomic) uint8_t         mWatchScene;            //连接标识 (0:可以连接 1:不可连接)
 @property(assign,nonatomic) uint8_t         mWatchWay;              //连接方式 0:ble 1:spp
+/// 设备特殊类型
+@property(assign,nonatomic) JLDevSpecialType  mSpecialType;
 
 -(void)setBlePeripheral:(CBPeripheral *)mPeripheral;
 -(void)setBleItem:(NSString *)mItem;
@@ -146,6 +149,9 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 @param delay 发数时间间隔
 */
 -(void)installTimingModeDelay:(NSTimeInterval)delay;
+
+-(void)flashFinishedAction;
+
 
 #pragma mark - 连接超时管理
 -(void)startTimeout:(int)code;

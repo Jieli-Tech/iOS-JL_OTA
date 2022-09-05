@@ -15,6 +15,7 @@
 #import "JLModel_File.h"
 #import "JLModel_EQ.h"
 
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(UInt8, JL_DevicePlatform) {
@@ -230,7 +231,10 @@ typedef NS_ENUM(UInt8, JL_FMMode) {
     JL_FMModeUnknown,
 };
 
+
 @interface JLModel_Device : NSObject<NSCopying>
+@property (copy,  nonatomic) NSString           *mBLE_UUID;       //设备UUID
+
 @property (copy,  nonatomic) NSString           *versionProtocol;       //协议版本
 @property (copy,  nonatomic) NSString           *versionFirmware;       //固件版本
 @property (assign,nonatomic) JL_SDKType         sdkType;                //SDK类型
@@ -260,12 +264,15 @@ typedef NS_ENUM(UInt8, JL_FMMode) {
 @property (assign,nonatomic) JL_FasheType       fasheType;              //当前是否为发射模式
 @property (assign,nonatomic) JL_MD5Type         md5Type;                //是否支持MD5固件校验
 @property (assign,nonatomic) JL_GameType        gameType;               //是否为游戏模式
+@property (assign,nonatomic) BOOL               isSupportGameModel;               //是否支持游戏模式
 @property (assign,nonatomic) JL_SearchType      searchType;             //是否支持查找设备
 @property (assign,nonatomic) JL_KaraokeType     karaokeType;            //是否支持卡拉OK
 @property (assign,nonatomic) JL_KaraokeEQType   karaokeEQType;          //是否禁止app调节设备音效
 @property (assign,nonatomic) JL_FlashType       flashType;              //是否外挂flash
 @property (assign,nonatomic) JL_AncType         ancType;                //是否支持ANC
 @property (assign,nonatomic) JL_AudioFileType   audioFileType;          //是否支持音频文件传输功能
+/// 是否支持日志获取
+@property (assign,nonatomic) BOOL               isSupportLog;
 @property (assign,nonatomic) int                pitchLow;               //低音
 @property (assign,nonatomic) int                pitchHigh;              //高音
 @property (copy,  nonatomic) JLModel_Flash      *flashInfo;             //外挂flash信息
@@ -371,6 +378,14 @@ typedef NS_ENUM(UInt8, JL_FMMode) {
 -(void)cleanMe;
 +(void)observeModelProperty:(NSString*)prty Action:(SEL)action Own:(id)own;
 +(void)removeModelProperty:(NSString*)prty Own:(id)own;
+
+#pragma mark ---> 设备信息
+-(void)deviceInfoData:(NSData*)infoData;
+
+#pragma mark ---> 各个模式信息
+-(void)deviceModeInfoData:(NSData*)infoData;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

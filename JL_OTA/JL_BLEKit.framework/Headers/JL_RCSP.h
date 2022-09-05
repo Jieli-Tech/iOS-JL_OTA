@@ -72,6 +72,9 @@
 #define kJL_FILE_GET_CRC            0x0027
 #define kJL_SMALL_FILE              0x0028
 
+#define kJL_DEVICE_LOG              0X0029
+
+
 #define kJL_WEAR_REQ_OPCODE         0x00A0   //获取运动信息
 #define kJL_WEAR_SET_OPCODE         0x00A1   //设置运动信息
 #define kJL_WEAR_RES_OPCODE         0x00A2   //设备主动推的运动信息

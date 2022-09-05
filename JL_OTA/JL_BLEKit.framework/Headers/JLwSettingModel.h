@@ -29,7 +29,11 @@ typedef NS_ENUM(UInt8, WatchSettingFunc) {
     ///个人信息
     WatchSettingFunc_PersonInfo  = 0x09,
     /// 蓝牙断开提醒
-    WatchSettingFunc_DisconnectReminder = 0xA
+    WatchSettingFunc_DisconnectReminder = 0xA,
+    /// 血氧测量提醒
+    WatchSettingFunc_OxygenSturation = 0x0B,
+    /// 紧急联系人
+    WatchSettingFunc_EmergencyContact = 0x0C
 };
 
 ///提醒模式
@@ -48,6 +52,14 @@ typedef NS_ENUM(UInt8, WatchConsequentType) {
     WatchConsequent_Intelligent = 0x00,
     //实时
     WatchConsequent_realTime = 0x01
+};
+
+/// 连续血氧测量模式
+typedef NS_ENUM(UInt8,WatchOxygenMsmType){
+    //智能
+    WatchOxygenMsm_Intelligent = 0x00,
+    //定时
+    WatchOxygenMsm_runTime = 0x01
 };
 
 ///监察开关类型

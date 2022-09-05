@@ -191,7 +191,15 @@
         [self checkDeviceConnected];
         [self isUpgradingUI:NO];
         [self otaTimeClose];//关闭超时检测
-    } else {
+    } else if (result == JL_OTAResultFail) {
+        
+        [self otaTimeClose];
+
+        self.updateLabel.text = @"";
+        [DFUITools showText:kJL_TXT("升级失败") onView:self.view delay:1.0];
+        [self isUpgradingUI:NO];
+        
+    }else {
         // 其余错误码详细 Command+点击JL_OTAResult 查看说明
         NSLog(@"ota update result: %d", result);
     }

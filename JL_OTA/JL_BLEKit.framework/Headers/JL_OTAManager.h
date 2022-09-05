@@ -62,6 +62,9 @@ typedef void(^JL_OTA_RT)(JL_OTAResult result, float progress);
 
 @interface JL_OTAManager : JL_FunctionBaseManager
 
+-(void)noteEntityConnected;
+-(void)noteEntityDisconnected;
+
 #pragma mark - OTA升级
 #pragma mark ---> OTA升级文件下载
 /**

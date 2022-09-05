@@ -106,6 +106,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param model 断开设置
 -(void)jlWatchSetDisconnectRemindModel:(JLDisconnectRemindModel *)model;
 
+/// 紧急联系人
+/// @param model 紧急联系人设置
+-(void)jlWatchSetEmergencyContactModel:(JLEmergencyContactModel *)model;
+
+/// 血氧测量
+/// @param model 血氧测量模式
+-(void)jlWatchSetOxygenSturationRemindModel:(JLOxygenSturationRemindModel *)model;
+
 @end
 
 NS_ASSUME_NONNULL_END

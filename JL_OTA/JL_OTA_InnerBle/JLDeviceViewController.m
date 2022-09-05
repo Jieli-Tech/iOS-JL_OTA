@@ -170,6 +170,8 @@
     JL_EntityM *selectedItem = _btEnityList[indexPath.row];
     CBPeripheral *item = selectedItem.mPeripheral;
     __weak typeof(self) weakSelf = self;
+    
+    
     if (item.state == CBPeripheralStateConnected || item.state == CBPeripheralStateConnecting) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@【%@】？",kJL_TXT("你是否要断开设备"),item.name] preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("取消") style:UIAlertActionStyleCancel handler:nil]];
@@ -190,9 +192,20 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:kJL_TXT("APP是否通过认证方式连接BLE设备?") preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("取消") style:UIAlertActionStyleCancel handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("认证连接") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"蓝牙正在连接... ==> %@",item.name);
-        [weakSelf startLoadingView:kJL_TXT("连接中...") Delay:5.0];
-        [weakSelf connectToDevice:selectedItem withFilter:YES];
+        
+        [[JL_RunSDK sharedInstance].mBleMultiple disconnectEntity:[JL_RunSDK sharedInstance].mBleEntityM Result:^(JL_EntityM_Status status) {
+            if (JL_EntityM_StatusDisconnectOk == status) {
+                //NSLog(@"断开设备成功");
+                //[weakSelf startLoadingView:kJL_TXT("断开设备成功") Delay:1.0];
+                [JL_RunSDK sharedInstance].mBleEntityM = nil;
+            }
+            [weakSelf reloadTableView];
+        }];
+        [JL_Tools delay:0.5 Task:^{
+            NSLog(@"蓝牙正在连接... ==> %@",item.name);
+            [weakSelf startLoadingView:kJL_TXT("连接中...") Delay:5.0];
+            [weakSelf connectToDevice:selectedItem withFilter:YES];
+        }];
     }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }

@@ -22,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 最大心率
 @property(nonatomic,assign)uint8_t max;
 
+/// 单次测量的心率
+@property(nonatomic,assign)uint8_t singleRate;
+
+/// 是否为单次测量的数据
+@property(nonatomic,assign)BOOL isSingle;
 
 /// 处理回复数据内容
 /// @param value 数据内容
@@ -33,6 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param rting 是否需要静息心率
 /// @param max 是否需要最大心率
 +(JL_SDM_HeartRate*)requireRealTime:(BOOL)rt Resting:(BOOL)rting Max:(BOOL)max;
+
+/// 单次测量
++(JL_SDM_HeartRate*)requireSingle;
 
 
 

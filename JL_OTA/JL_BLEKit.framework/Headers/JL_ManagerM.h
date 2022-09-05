@@ -45,6 +45,7 @@
 #import <JL_BLEKit/JL_SystemVolume.h>
 #import <JL_BLEKit/JL_CustomManager.h>
 #import <JL_BLEKit/JL_BatchManger.h>
+#import <JL_BLEKit/JL_DeviceLogs.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -57,11 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *kJL_MANAGER_KEY_UUID;      //KEY --> UUID
 extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 
-/*
- *  分支业务委托JL_Manager发送的命令
- */
-extern NSString *kJL_MANAGER_SEND_CMD;      //异步命令
-extern NSString *kJL_MANAGER_SEND_RESP;     //异步回复
 
 @protocol JL_ManagerMDelegate <NSObject>
 @optional
@@ -69,11 +65,13 @@ extern NSString *kJL_MANAGER_SEND_RESP;     //异步回复
 
 @end
 
+@class JL_EntityM;
 @interface JL_ManagerM : NSObject
 @property(nonatomic,weak)id<JL_ManagerMDelegate>delegate;
 @property(nonatomic,readonly,copy)NSString  *mBLE_UUID;
 @property(nonatomic,readonly,copy)NSString  *mBLE_NAME;
 @property(nonatomic,readonly,assign)uint8_t mCmdSN;
+@property(nonatomic,weak)JL_EntityM         *mEntity;
 
 @property(nonatomic,strong)JL_SmallFileManager      *mSmallFileManager;
 @property(nonatomic,strong)JL_FileManager           *mFileManager;
@@ -95,10 +93,16 @@ extern NSString *kJL_MANAGER_SEND_RESP;     //异步回复
 @property(nonatomic,strong)JL_SystemVolume          *mSystemVolume;
 @property(nonatomic,strong)JL_CustomManager         *mCustomManager;
 @property(nonatomic,strong)JL_BatchManger           *mBatchManger;
+@property(nonatomic,strong)JL_DeviceLogs            *mDeviceLogs;
+
 
 -(void)setBleUuid:(NSString*)uuid;
 -(void)setBleName:(NSString*)name;
 -(void)inputPKG:(JL_PKG*)pkg;
+
+-(void)noteEntityConnected;
+-(void)noteEntityDisconnected;
+-(void)noteEntityBleOff;
 
 /**
  发送【命令包】
@@ -111,10 +115,6 @@ extern NSString *kJL_MANAGER_SEND_RESP;     //异步回复
              needRep:(BOOL)needResponse
                 data:(NSData *)sendData;
 
-+(void)xmCommandCode:(uint8_t)cmdCode
-             needRep:(BOOL)needResponse
-                data:(NSData *)sendData
-                UUID:(NSString*)uuid;
 /**
  发送【回复包】
  @param code  命令号
@@ -127,15 +127,12 @@ extern NSString *kJL_MANAGER_SEND_RESP;     //异步回复
                 Status:(JL_CMDStatus)st
                   Data:(NSData* __nullable)data;
 
-+(void)cmdResponseCode:(uint8_t)code
-                  OpSN:(UInt8)sn
-                Status:(JL_CMDStatus)st
-                  Data:(NSData* __nullable)data
-                  UUID:(NSString*)uuid;
-
-+(void)noteManagerPost:(NSString*)name
-                Object:(id __nullable)obj
-                  UUID:(NSString*)uuid;
+/**
+ 发送【通知命令】
+ @param name    通知名字
+ @param obj       携带对象
+ */
+-(void)managerPost:(NSString*)name Object:(id __nullable)obj;
 
 /**
   获取当前命令序号
@@ -144,9 +141,6 @@ extern NSString *kJL_MANAGER_SEND_RESP;     //异步回复
 
 #pragma mark ---> 取出设备信息
 -(JLModel_Device *)outputDeviceModel;
-
-#pragma mark ---> 设备返回的自定义数据
-extern NSString *kJL_MANAGER_CUSTOM_DATA;
 
 #pragma mark ---> 获取设备信息
 extern NSString *kJL_MANAGER_TARGET_INFO;
@@ -214,6 +208,10 @@ typedef void(^JL_IMAGE_RT)(NSMutableDictionary* __nullable dict);
 #pragma mark ---> 通知固件开始播放TTS内容
 -(void)cmdStartTTSNote;
 
+
+/// 获取MD5信息
+/// @param result 回调
+-(void)cmdGetMD5_Result:(JL_CMD_RESPOND)result;
 
 @end
 

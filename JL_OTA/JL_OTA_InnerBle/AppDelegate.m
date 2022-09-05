@@ -26,18 +26,20 @@
     // 初始化本地OTA升级文件，取消注释后可转移安装本地项目目录的ota升级文件到APP沙盒
 //    [JLOtaFileManager initializeOtaFile];
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UITabBarController *mainVC = [JLMainViewController prepareViewControllers];
-    self.window.rootViewController = mainVC;
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    
     /*--- 检测当前语言 ---*/
     if (![kJL_GET hasPrefix:@"zh-Hans"]) {
         kJL_SET("en");// set APP's language to English
     } else {
         kJL_SET("zh-Hans");// 设置APP语言为中文
     }
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UITabBarController *mainVC = [JLMainViewController prepareViewControllers];
+    self.window.rootViewController = mainVC;
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+
     
     return YES;
 }

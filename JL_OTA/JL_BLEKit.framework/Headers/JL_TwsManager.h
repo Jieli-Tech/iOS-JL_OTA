@@ -13,15 +13,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void(^JL_HEADSET_BK)(NSDictionary* __nullable dict);
-
 @interface JL_TwsManager : JL_FunctionBaseManager
-
-#pragma mark - 对耳相关API
-
-#pragma mark ---> 修改设备名字
 /**
- @param name EDR名字
+ @param name 设置对耳设备的EDR名字
  */
 -(void)cmdHeadsetEdrName:(NSData*)name;
 
@@ -131,6 +125,7 @@ typedef NS_ENUM(UInt8, JL_HeadsetWorkingMode) {
 -(void)cmdHeadsetTimeSetting:(NSDate*)date;
 
 #pragma mark ---> 获取设备信息(耳机)
+typedef void(^JL_HEADSET_BK)(NSDictionary* __nullable dict);
 typedef NS_ENUM(uint32_t, JL_HeadsetAdviceFlag) {
     JL_HeadsetAdviceFlagGetElectricity              = 1,            //小机电量获取
     JL_HeadsetAdviceFlagEdrName                     = 1 << 1,       //Edr名称

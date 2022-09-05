@@ -25,6 +25,8 @@ extern NSString *kJL_BLE_M_ENTITY_DISCONNECTED; //断开连接
 extern NSString *kJL_BLE_M_ON;                  //BLE开启
 extern NSString *kJL_BLE_M_OFF;                 //BLE关闭
 extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
+extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
+
 
 @interface JL_BLEMultiple : NSObject
 @property (strong, nonatomic) NSData   *__nullable filterKey;         //过滤码
@@ -34,9 +36,10 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
 @property (assign, nonatomic) BOOL                 BLE_PAIR_ENABLE;   //是否【开启配对】
 @property (assign, nonatomic) int                  BLE_TIMEOUT;       //连接超时时间
 
-@property (assign, nonatomic) CBManagerState bleManagerState;   //蓝牙状态
 @property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr; //发现的设备
 @property (strong, nonatomic) NSMutableArray<JL_EntityM *> *bleConnectedArr;  //已连接的设备
+@property (assign, nonatomic) CBManagerState bleManagerState;   //蓝牙状态
+
 @property (strong, nonatomic) NSArray<NSNumber *> *bleDeviceTypeArr; //选择的设备类型<@(JL_DeviceType)>
 
 @property (strong, nonatomic) NSString             *JL_BLE_SERVICE;   //服务号
@@ -86,6 +89,9 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
 */
 -(void)updateHistoryRename:(NSString*)name withUuid:(NSString*)uuid;
 
+/// 获取当前正在连接的entity
+-(JL_EntityM *__nullable)connectingEntity;
+
 /**
  返回经典蓝牙信息
  @return @{@"ADDRESS":@"7c9a1da7330e",
@@ -93,6 +99,7 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
            @"NAME"   :@"earphone"}
  */
 +(NSDictionary*)outputEdrInfo;
+
 
 #pragma mark - ota升级
 
@@ -105,6 +112,7 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
 - (void)otaFuncWithEntityM:(JL_EntityM *)mBleEntityM
               withFilePath:(NSString *)otaFilePath
                     Result:(JL_OTA_RT __nullable)result;
+- (void)setOtaReconnectBleAddr:(NSString*)addr;
 
 @end
 

@@ -161,19 +161,22 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 }
 
 #pragma mark 发现设备
-- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
+- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral
+     advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
     
     NSString *ble_name = advertisementData[@"kCBAdvDataLocalName"];
     NSData *ble_AD   = advertisementData[@"kCBAdvDataManufacturerData"];
     NSDictionary *info = [JL_BLEAction bluetoothKey_1:self.mAssist.mPairKey Filter:advertisementData];
-    if (ble_name.length == 0 || [RSSI intValue] < -70) return;
+    if (ble_name.length == 0) return;
     
     NSLog(@"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
     if (self.isFilter) {
+        //NSLog(@"(过滤)发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
         /*--- 过滤蓝牙设备 ---*/
         BOOL isOk = [info[@"ISOK"] boolValue];
         if (isOk) [self addPeripheral:peripheral RSSI:RSSI Name:ble_name];
     } else {
+        //NSLog(@"(全部)发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
         [self addPeripheral:peripheral RSSI:RSSI Name:ble_name];
     }
     [DFNotice post:kFLT_BLE_FOUND Object:_blePeripheralArr];

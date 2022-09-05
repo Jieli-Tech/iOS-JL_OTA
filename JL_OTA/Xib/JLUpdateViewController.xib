@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -71,10 +71,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tB5-pI-oGO">
-                    <rect key="frame" x="20" y="140" width="374" height="514"/>
+                    <rect key="frame" x="20" y="140" width="374" height="499"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2aJ-WP-tDb">
-                            <rect key="frame" x="0.0" y="49" width="374" height="455"/>
+                            <rect key="frame" x="0.0" y="49" width="374" height="440"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="separatorColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>
@@ -135,12 +135,12 @@
                     <color key="textColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVy-qq-E2H">
-                    <rect key="frame" x="30" y="659" width="364" height="34"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提示：电脑与手机处于相同WiFi，可从电脑浏览器添加升级文件。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="VVy-qq-E2H">
+                    <rect key="frame" x="30" y="644" width="364" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="34" id="569-xJ-89Y"/>
+                        <constraint firstAttribute="height" constant="60" id="569-xJ-89Y"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="11"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -151,7 +151,6 @@
                 <constraint firstAttribute="trailing" secondItem="nkX-b5-9IU" secondAttribute="trailing" constant="20" id="12l-Q0-4Kn"/>
                 <constraint firstItem="ZWd-Sd-m7h" firstAttribute="bottom" secondItem="nkX-b5-9IU" secondAttribute="bottom" constant="46" id="33N-0r-nsY"/>
                 <constraint firstItem="Da6-lQ-Rdb" firstAttribute="top" secondItem="35T-7A-Lot" secondAttribute="bottom" constant="10" id="3Te-L4-beL"/>
-                <constraint firstItem="Bjv-iY-rKw" firstAttribute="top" secondItem="tB5-pI-oGO" secondAttribute="bottom" constant="60" id="7lB-R5-kdK"/>
                 <constraint firstItem="nkX-b5-9IU" firstAttribute="top" secondItem="WRQ-OJ-atz" secondAttribute="bottom" constant="8" id="8HE-fW-nSB"/>
                 <constraint firstItem="VVy-qq-E2H" firstAttribute="leading" secondItem="ZWd-Sd-m7h" secondAttribute="leading" constant="30" id="8qh-Dr-kEv"/>
                 <constraint firstItem="tB5-pI-oGO" firstAttribute="top" secondItem="Da6-lQ-Rdb" secondAttribute="bottom" constant="10" id="Bca-15-Lun"/>
@@ -162,6 +161,7 @@
                 <constraint firstItem="nkX-b5-9IU" firstAttribute="leading" secondItem="0eR-yE-5H4" secondAttribute="leading" constant="20" id="PYT-oy-jdo"/>
                 <constraint firstAttribute="trailing" secondItem="35T-7A-Lot" secondAttribute="trailing" id="c3X-Je-twQ"/>
                 <constraint firstItem="WRQ-OJ-atz" firstAttribute="top" secondItem="ahP-41-72s" secondAttribute="bottom" constant="19" id="csp-UN-ajY"/>
+                <constraint firstItem="Bjv-iY-rKw" firstAttribute="top" secondItem="VVy-qq-E2H" secondAttribute="bottom" constant="10" id="fiH-C3-cJt"/>
                 <constraint firstItem="tB5-pI-oGO" firstAttribute="leading" secondItem="0eR-yE-5H4" secondAttribute="leading" constant="20" id="fij-xS-nQb"/>
                 <constraint firstItem="WRQ-OJ-atz" firstAttribute="leading" secondItem="0eR-yE-5H4" secondAttribute="leading" constant="20" id="h6B-rj-vtr"/>
                 <constraint firstItem="ahP-41-72s" firstAttribute="leading" secondItem="Bjv-iY-rKw" secondAttribute="trailing" constant="15" id="iax-Kh-4UM"/>

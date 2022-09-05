@@ -175,8 +175,13 @@
         return;
     }
     if (_btEnityList.count == 0) return;
+    
+    
     JLBleEntity *selectedItem = _btEnityList[indexPath.row];
     CBPeripheral *item = selectedItem.mPeripheral;
+    
+
+    
     
     if (item.state == CBPeripheralStateConnected || item.state == CBPeripheralStateConnecting) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@【%@】？",kJL_TXT("你是否要断开设备"),item.name] preferredStyle:UIAlertControllerStyleAlert];
@@ -191,6 +196,13 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:kJL_TXT("APP是否通过认证方式连接BLE设备?") preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("取消") style:UIAlertActionStyleCancel handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:kJL_TXT("认证连接") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        /*--- 断开已连接的设备 ---*/
+        if (self.bleManager.mBlePeripheral.state == CBPeripheralStateConnected ||
+            self.bleManager.mBlePeripheral.state == CBPeripheralStateConnecting) {
+            [self.bleManager disconnectBLE];
+        }
+        
+        
         self.bleManager.isPaired = YES;
         NSLog(@"蓝牙正在连接... ==> %@",item.name);
         [self startLoadingView:kJL_TXT("连接中...") Delay:5.0];

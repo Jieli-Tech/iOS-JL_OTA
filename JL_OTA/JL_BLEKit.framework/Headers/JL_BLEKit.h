@@ -63,6 +63,8 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JL_SystemVolume.h>
 #import <JL_BLEKit/JL_CustomManager.h>
 #import <JL_BLEKit/JL_BatchManger.h>
+#import <JL_BLEKit/JL_DeviceLogs.h>
+
 
 #import <JL_BLEKit/JLWearable.h>
 #import <JL_BLEKit/JLSportDataModel.h>
