@@ -19,6 +19,7 @@ FOUNDATION_EXPORT const unsigned char DFUnitsVersionString[];
 #import <DFUnits/DFFile.h>
 #import <DFUnits/DFTime.h>
 #import <DFUnits/DFHttp.h>
+#import <DFUnits/DFHttp1.h>
 #import <DFUnits/DFImage.h>
 #import <DFUnits/DFVideo.h>
 #import <DFUnits/DFAudio.h>

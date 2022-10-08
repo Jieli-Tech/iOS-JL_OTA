@@ -32,7 +32,7 @@
  */
 -(void)down:(NSDictionary*)info;
 
-
+-(void)cancelTask;
 /*
         Returns a new string made from the receiver by replacing
     all characters not in the allowedCharacters set with percent

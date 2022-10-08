@@ -54,6 +54,7 @@
 #define kJL_GET_MD5                 0x00D4
 #define kJL_GET_LOW_DELAY           0x00D5
 #define kJL_GET_FLASH_INFO          0x00D6
+#define kJL_SET_DEV_STORAGE         0x00D8  //设置当前使用的存储设备
 #define kJL_GET_FLASH_W_R           0x001A
 
 #define kJL_BIGFILE_START           0x001B

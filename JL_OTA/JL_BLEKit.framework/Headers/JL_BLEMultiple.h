@@ -25,7 +25,7 @@ extern NSString *kJL_BLE_M_ENTITY_DISCONNECTED; //断开连接
 extern NSString *kJL_BLE_M_ON;                  //BLE开启
 extern NSString *kJL_BLE_M_OFF;                 //BLE关闭
 extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
-extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
+extern NSString *kJL_BLE_M_SAVE_BLEADDR;        //存储EDR地址
 
 
 @interface JL_BLEMultiple : NSObject
@@ -36,11 +36,12 @@ extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
 @property (assign, nonatomic) BOOL                 BLE_PAIR_ENABLE;   //是否【开启配对】
 @property (assign, nonatomic) int                  BLE_TIMEOUT;       //连接超时时间
 
-@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr; //发现的设备
-@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *bleConnectedArr;  //已连接的设备
-@property (assign, nonatomic) CBManagerState bleManagerState;   //蓝牙状态
+@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr;   //发现的设备
+@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *bleConnectedArr;    //已连接的设备
+@property (assign, nonatomic) CBManagerState                bleManagerState;    //蓝牙状态
+@property (strong, nonatomic) NSArray<NSNumber *> *__nullable bleDeviceTypeArr;   //选择的设备类型<@(JL_DeviceType)>
+@property (strong, nonatomic) NSArray<NSNumber *> *__nullable managerClassArr;    //实例化的业务逻辑<@(JL_CLASS)>
 
-@property (strong, nonatomic) NSArray<NSNumber *> *bleDeviceTypeArr; //选择的设备类型<@(JL_DeviceType)>
 
 @property (strong, nonatomic) NSString             *JL_BLE_SERVICE;   //服务号
 @property (strong, nonatomic) NSString             *JL_BLE_RCSP_W;    //命令【写】通道
@@ -66,7 +67,7 @@ extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
 /**
  通过UUID生成Entity。
  */
--(JL_EntityM*)makeEntityWithUUID:(NSString*)uuid;
+-(JL_EntityM *_Nullable)makeEntityWithUUID:(NSString*)uuid;
 
 /**
  连接设备
@@ -112,7 +113,7 @@ extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
 - (void)otaFuncWithEntityM:(JL_EntityM *)mBleEntityM
               withFilePath:(NSString *)otaFilePath
                     Result:(JL_OTA_RT __nullable)result;
-- (void)setOtaReconnectBleAddr:(NSString*)addr;
+- (void)setOtaReconnectBleAddr:(NSString* __nullable)addr;
 
 @end
 

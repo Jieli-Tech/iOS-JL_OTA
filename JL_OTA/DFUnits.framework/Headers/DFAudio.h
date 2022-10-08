@@ -128,6 +128,8 @@ struct DF_Data
  */
 +(NSString*)pcmToWav:(NSString*)pcmPath Format:(DFAudioFormat*)format;
 
+#pragma mark 设置PCM参数
++(void)setPcmFormat:(DFAudioFormat *)format;
 
 #pragma mark 检测PCM数据 音量分贝
 +(double)checkPcmDB:(NSData*)pcmData;

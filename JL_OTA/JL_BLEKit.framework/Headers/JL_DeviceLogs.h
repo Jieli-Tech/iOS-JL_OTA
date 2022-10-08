@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef enum : UInt8 {
     LogTypeDownloading = 0x00,
     LogTypeFailed = 0x01,
-    LogTypeSucceed = 0x02
+    LogTypeSucceed = 0x02,
+    LogTypeNoLog = 0x03
 } DeviceLogType;
 
 typedef void(^JLDeviceLogBK)(DeviceLogType type,float progress,NSString *_Nullable tempSavePath);

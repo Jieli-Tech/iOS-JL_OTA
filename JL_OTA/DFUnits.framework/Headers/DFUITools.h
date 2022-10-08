@@ -154,6 +154,13 @@ typedef void (^TipsCompletion) (void);
               labelTextColor:(UIColor *)textColor
       activityIndicatorColor:(UIColor *)actIndicatorColor;
 
++ (DFTips *)showHUDWithLabel:(NSString *)labelText
+                onView:(UIView *)view
+                 alpha:(float)alpha
+                 color:(UIColor *)color
+        labelTextColor:(UIColor *)textColor
+      activityIndicatorColor:(UIColor *)actIndicatorColor;
+
 + (DFTips *)showHUDOnWindowWithLabel:(NSString *)labelText
                                color:(UIColor *)color;
 

@@ -360,6 +360,13 @@ typedef void(^JL_Timer_BK)(void);
  *  返回时间戳（单位：秒）
  */
 +(long)dateCurrent;
+
+
+/// 把data变成LTV格式
+/// @param type 类型
+/// @param data 数据
++(NSData *)beLtv:(uint8_t)type Data:(NSData*)data;
+
 /**
  *  开启打印
  */

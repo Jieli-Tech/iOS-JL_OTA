@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSData (ToUnit)
 
+
+-(BOOL)beBool;
+
 -(uint8_t)beUint8;
 
 -(UInt16)beLittleUint16;

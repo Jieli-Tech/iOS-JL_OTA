@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark ---> 设备返回的自定义数据
 extern NSString *kJL_MANAGER_CUSTOM_DATA;
 
+#pragma mark ---> 设备返回的自定义数据(回复包)
+extern NSString *kJL_MANAGER_CUSTOM_DATA_RSP;
+
 #pragma mark ---> 用户自定义数据
 /**
  @param data 数据

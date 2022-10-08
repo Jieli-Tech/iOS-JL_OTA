@@ -10,7 +10,7 @@
 
 
 
-typedef void(^Action)();
+typedef void(^Action)(void);
 
 @interface DFAction : NSObject
 

@@ -14,6 +14,7 @@
 #import "JLModel_FM.h"
 #import "JLModel_File.h"
 #import "JLModel_EQ.h"
+#import "JLDhaFitting.h""
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -231,6 +232,11 @@ typedef NS_ENUM(UInt8, JL_FMMode) {
     JL_FMModeUnknown,
 };
 
+typedef NS_ENUM(UInt8,JL_ReverberationType) {
+    JL_ReverberationTypeNormal      = 0,     //混响
+    JL_ReverberationTypeDynamic     = 1,     //限幅器
+};
+
 
 @interface JLModel_Device : NSObject<NSCopying>
 @property (copy,  nonatomic) NSString           *mBLE_UUID;       //设备UUID
@@ -273,9 +279,26 @@ typedef NS_ENUM(UInt8, JL_FMMode) {
 @property (assign,nonatomic) JL_AudioFileType   audioFileType;          //是否支持音频文件传输功能
 /// 是否支持日志获取
 @property (assign,nonatomic) BOOL               isSupportLog;
+/// 是否支持辅听设置
+@property (assign,nonatomic) BOOL               isSupportDhaFitting;
+///验配信息交互：版本、通道数、通道频率
+///Fitting information interaction: version, channel number, channel frequency
+@property (strong,nonatomic) DhaFittingInfo     *dhaFitInfo;
+/// 验配中断/开启的对象，仅限于监听
+/// Fitting interrupted/opened object, only for listening
+@property (strong,nonatomic) DhaFittingSwitch   *dhaFitSwitch;
+/// 通道增益值数组,先左耳后右耳，个数和验配信息中返回的一致
+/// Array of channel gain values, first left ear then right ear, the number is the same as the one returned in the fitting information
+@property (strong,nonatomic) NSArray<NSNumber *> *dhaFittingList;
+
 @property (assign,nonatomic) int                pitchLow;               //低音
 @property (assign,nonatomic) int                pitchHigh;              //高音
 @property (copy,  nonatomic) JLModel_Flash      *flashInfo;             //外挂flash信息
+
+/// 设备信息中指明，外部SD卡/U盘引脚是否被复用
+/// Specify in the device information, whether the external SD card/U disk pins are multiplexed
+@property (assign,nonatomic) BOOL               devPinMultiplex;
+
 
 /*--- File INFO ---*/
 @property (assign,nonatomic) JL_FileHandleType        currentFileHandleType;                        //当前文件传输句柄

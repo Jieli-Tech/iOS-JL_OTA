@@ -96,6 +96,7 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 @property(nonatomic,strong)JL_DeviceLogs            *mDeviceLogs;
 
 
+-(void)setPropertyUpdate:(BOOL)isUpdate;
 -(void)setBleUuid:(NSString*)uuid;
 -(void)setBleName:(NSString*)name;
 -(void)inputPKG:(JL_PKG*)pkg;
@@ -140,7 +141,12 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 -(uint8_t)xmCommandSN;
 
 #pragma mark ---> 取出设备信息
+
+/// copy出来的原值
 -(JLModel_Device *)outputDeviceModel;
+
+/// 取出原本的值
+-(JLModel_Device *)getDeviceModel;
 
 #pragma mark ---> 获取设备信息
 extern NSString *kJL_MANAGER_TARGET_INFO;

@@ -40,6 +40,11 @@
 #pragma mark --> 【网络加载时间差】回调
 #define kDFAudioPlayer_NET_TIMEGAP      @"DF_AU_NET_TIMEGAP"
 
+#pragma mark --> 【音乐被系统打断】回调
+#define kDFAudioPlayer_PLAYER_INTERRUPTION          @"DFAudioPlayer_PLAYER_INTERRUPTION"
+#define kDFAudioPlayer_PLAYER_INTERRUPTION_END      @"DFAudioPlayer_PLAYER_INTERRUPTION_END"
+#define kDFAudioPlayer_PLAYER_INTERRUPTION_END_FLAG @"DFAudioPlayer_PLAYER_INTERRUPTION_END_FLAG"
+
 typedef enum : NSUInteger {
     DFAudioPlayer_ALL_LOOP,
     DFAudioPlayer_ONE_LOOP,
@@ -55,9 +60,9 @@ typedef enum : NSUInteger {
 } DFAudioPlayer_STATE;
 
 typedef enum : NSUInteger {
-    DFAudioPlayer_TYPE_IPOD,
-    DFAudioPlayer_TYPE_PATHS,
-    DFAudioPlayer_TYPE_NET,
+    DFAudioPlayer_TYPE_IPOD  = 0,
+    DFAudioPlayer_TYPE_PATHS = 1,
+    DFAudioPlayer_TYPE_NET   = 2,
     DFAudioPlayer_TYPE_NONE
 } DFAudioPlayer_TYPE;
 
@@ -70,6 +75,8 @@ typedef enum : NSUInteger {
 @property(nonatomic,assign) DFAudioPlayer_MODE   mMode;
 @property(nonatomic,assign) DFAudioPlayer_STATE  mState;
 @property(nonatomic,assign) DFAudioPlayer_TYPE   mType;
+@property(nonatomic,assign) NSInteger            play_index;
+
 
 #pragma mark - 当前播放器的类型
 /**
@@ -82,6 +89,9 @@ typedef enum : NSUInteger {
  *  @used 当前播放器的类型。
  */
 +(DFAudioPlayer*)currentPlayer;
+
+#pragma mark - 恢复歌曲信息状态
++(void)recoveryMusicInfo;
 
 #pragma mark - ipod（实例_0）
 /**
@@ -98,8 +108,6 @@ typedef enum : NSUInteger {
  *  @used 筛选ipod歌曲。
  */
 +(NSArray*)filterMusic:(NSString*)name;
-
-
 
 #pragma mark - 音乐文件（实例_1）
 /**

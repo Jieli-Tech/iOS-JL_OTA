@@ -13,7 +13,60 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///耳机电量
+///TWS earphones Electricity
+@interface TwsElectricity:NSObject
+//    @"ISCHARGING_L"
+@property(nonatomic,assign) BOOL isChargingLeft;
+//    @"ISCHARGING_R"
+@property(nonatomic,assign) BOOL isChargingRight;
+//    @"ISCHARGING_C"
+@property(nonatomic,assign) BOOL isChargingCenter;
+//    @"POWER_L"
+@property(nonatomic,assign) int powerLeft;
+//    @"POWER_R"
+@property(nonatomic,assign) int powerRight;
+//    @"POWER_C"
+@property(nonatomic,assign) int powerCenter;
+
+@end
+
 @interface JL_TwsManager : JL_FunctionBaseManager
+
+///耳机电量
+///TWS earphones Electricity
+@property (nonatomic,strong)TwsElectricity *electricity;
+//@"EDR_NAME"
+@property (nonatomic,strong)NSString *edrName;
+//@"KEY_LR"
+@property (nonatomic,assign)int keyLR;
+//@"KEY_ACTION"
+@property (nonatomic,assign)int keyAction;
+//@"KEY_FUNCTION"
+@property (nonatomic,assign)int keyFunction;
+//@"LED_SCENE"
+@property (nonatomic,assign)int ledScen;
+//@"LED_EFFECT"
+@property (nonatomic,assign)int ledEffect;
+//@"MIC_MODE"
+@property (nonatomic,assign)int micMode;
+//@"WORK_MODE"
+@property (nonatomic,assign)int workMode;
+//@"VID"
+@property (nonatomic,assign)uint16_t vid;
+//@"UID"
+@property (nonatomic,assign)uint16_t uid;
+//@"PID"
+@property (nonatomic,assign)uint16_t pid;
+//@"LINK_TIME"
+@property (nonatomic,assign)uint32_t linkTime;
+//@""IN_EAR_TEST"
+@property (nonatomic,assign)uint8_t earEntryDection;
+//@"DEVICE_LANGUAGE"
+@property (nonatomic,strong)NSString *deviceLanguage;
+//@"KEY_ANC_MODE"    ANC的模式数组
+@property (nonatomic,strong)NSArray *ancModels;
+
 /**
  @param name 设置对耳设备的EDR名字
  */

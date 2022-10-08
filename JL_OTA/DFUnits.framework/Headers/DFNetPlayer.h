@@ -30,7 +30,6 @@ typedef enum : NSUInteger {
 @end
 
 
-
 @interface DFNetPlayer : NSObject
 @property (assign,nonatomic)id delegate;
 @property (strong,nonatomic)AVPlayer *mPlayer;
