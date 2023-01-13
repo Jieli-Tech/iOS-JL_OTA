@@ -15,6 +15,10 @@
     entity.mPeripheral = self.mPeripheral;
     entity.mName = self.mName;
     entity.bleMacAddress = self.bleMacAddress;
+    entity.edrMacAddress = self.edrMacAddress;
+    entity.pid = self.pid;
+    entity.uid = self.uid;
+    entity.mType = self.mType;
     return entity;
 }
 

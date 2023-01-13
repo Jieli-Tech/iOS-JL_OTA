@@ -2,17 +2,18 @@
 //  DFUnits.h
 //  DFUnits
 //
-//  Created by DFung on 16/1/22.
-//  Copyright © 2016年 DFung. All rights reserved.
+//  Created by EzioChan on 2022/6/29.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for DFUnits.
 FOUNDATION_EXPORT double DFUnitsVersionNumber;
 
 //! Project version string for DFUnits.
 FOUNDATION_EXPORT const unsigned char DFUnitsVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <DFUnits/PublicHeader.h>
 
 //Using statements like #import <DFUnits/PublicHeader.h>
 #import <DFUnits/DFTools.h>
@@ -34,8 +35,6 @@ FOUNDATION_EXPORT const unsigned char DFUnitsVersionString[];
 #import <DFUnits/DFGzip.h>
 #import <DFUnits/DFHmacMD5.h>
 #import <DFUnits/DFNetPlayer.h>
-#import <DFUnits/DFAudioPlayer.h>
-#import <DFUnits/MusicOfPhoneMode.h>
 #import <DFUnits/DFCrc16.h>
 #import <DFUnits/DFRing.h>
 #import <DFUnits/DFPing.h>

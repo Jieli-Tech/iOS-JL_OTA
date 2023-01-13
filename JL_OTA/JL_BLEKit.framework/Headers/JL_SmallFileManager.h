@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "JL_FunctionBaseManager.h"
-#import "JLModel_SmallFile.h"
-#import "JL_Tools.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
+#import <JL_BLEKit/JLModel_SmallFile.h>
+#import <JL_BLEKit/JL_Tools.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

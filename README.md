@@ -1,10 +1,10 @@
 [toc]
 
-# iOS杰理蓝牙OTA开发说明v2.0.0
+# iOS杰理蓝牙OTA开发说明v3.2.0
 
 - 对应的芯片类型：AC692x，BD29
-- APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.0以上
-- 对应于苹果商店上的APP: **【OTA Update】**
+- APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.4以上
+- 对应于苹果商店上的APP: **【杰理OTA】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
 - 杰理OTA对外开发文档：https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html
 
@@ -20,6 +20,7 @@
 
 | 版本 | 日期           | 编辑    | 修改内容                                       |
 | ---- | -------------- | ------- | ---------------------------------------------- |
+| V3.2.0 | 2023年1月11日 | 陈冠杰 | 重构UI页面，整理项目架构，新增自动化测试/广播音箱模块 |
 | v2.0.0 | 2021年10月14日 | 凌 煊峰 | 蓝牙库新增根据ble地址对升级设备的回连；重写ota demo |
 | v1.5.0 | 2021年09月08日 | 冯 洪鹏 | 优化自定义蓝牙SDK的接入方式                         |
 | v1.2   | 2020年12月09日 | 冯 洪鹏 | 更新文档                                            |
@@ -36,17 +37,19 @@
 将JL_OTA项目的*JL_BLEKit.framework*导入Xcode工程项目里，添加*Privacy - Bluetooth Peripheral Usage Description*和*Privacy - Bluetooth Always Usage Description*两个权限。
 
 ## 2、SDK具体使用的两种方式
-​        第一种，使用自定义的蓝牙连接API进行OTA（对应JL_OTA）：所有BLE的操作都自行实现，SDK只负责对OTA数据包解析。
+​        第一种，使用自定义的蓝牙连接API进行OTA（对应BleManager文件夹）：所有BLE的操作都自行实现，SDK只负责对OTA数据包解析。
 
 从而实现OTA功能。
 
-​		第二种，使用JL_BLEKit.framework内的蓝牙连接API进行OTA（对应JL_OTA_Inner）：完全使用SDK。
+​		第二种，使用JL_BLEKit.framework内的蓝牙连接API进行OTA（对应SDKBleManager文件夹）：完全使用SDK。
 
+工程中已通过BleHandle文件夹内的JLBleHandler类进行了统筹区分，具体可以参考实际源码。
 
+开发普通OTA升级流程只需要参考Views文件夹中的NormalUpdate文件内容即可。
 
 ### 2.1、使用自定义的蓝牙连接API进行OTA
 
-**参考Demo：「 JL_OTA项目的  “JL_OTA” target」**
+**参考Demo：「 JL_OTA项目的 BleManager 」**
 
 **1、支持的功能**：
 
@@ -273,7 +276,7 @@
 
 ### 2.2、使用SDK内的蓝牙连接API进行OTA
 
-**参考Demo：「 JL_OTA项目的  “JL_OTA_InnerBle” target」**
+**参考Demo：「 JL_OTA项目的 SDKBleManager文件夹」**
 
 **1、支持的功能**：
 

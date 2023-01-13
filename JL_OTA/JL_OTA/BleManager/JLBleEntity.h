@@ -8,6 +8,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
+
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JLBleEntity : NSObject                                //蓝牙设备模型
@@ -16,6 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) CBPeripheral *mPeripheral;
 @property (strong, nonatomic) NSString *mName;
 @property (strong, nonatomic) NSString *bleMacAddress;
+@property (strong, nonatomic) NSString *edrMacAddress;
+@property (assign, nonatomic) JL_DeviceType mType;
+@property (assign, nonatomic) uint16_t pid;
+@property (assign, nonatomic) uint16_t uid;
 
 @end
 

@@ -65,6 +65,9 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JL_BatchManger.h>
 #import <JL_BLEKit/JL_DeviceLogs.h>
 #import <JL_BLEKit/JLDhaFitting.h>
+#import <JL_BLEKit/JLAutoConfigAnc.h>
+#import <JL_BLEKit/JLDeviceConfig.h>
+#import <JL_BLEKit/JL_BigDataManager.h>
 
 
 #import <JL_BLEKit/JLWearable.h>
@@ -90,5 +93,6 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 
 #import <JL_BlEKit/bmp_convert.h>
 #import <JL_BLEKit/BitmapTool.h>
+#import <JL_BLEKit/jl_ufw.h>
 
 

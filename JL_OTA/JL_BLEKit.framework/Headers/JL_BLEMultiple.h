@@ -11,7 +11,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <UIKit/UIKit.h>
 
-#import "JL_EntityM.h"
+#import <JL_BLEKit/JL_EntityM.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,6 +26,7 @@ extern NSString *kJL_BLE_M_ON;                  //BLE开启
 extern NSString *kJL_BLE_M_OFF;                 //BLE关闭
 extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
 extern NSString *kJL_BLE_M_SAVE_BLEADDR;        //存储EDR地址
+extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
 
 
 @interface JL_BLEMultiple : NSObject

@@ -8,8 +8,7 @@
 
 #import "GCDWebKit.h"
 #import "SJXCSMIPHelper.h"
-
-#import <AFNetworking/AFNetworking.h>
+#import "AFNetworking.h"
 
 @interface GCDWebKit()<GCDWebUploaderDelegate>{
     GCDWebUploader      *webServer;
@@ -92,14 +91,31 @@ static GCDWebKit *ME = nil;
     // 限制文件上传类型
     webServer.allowedFileExtensions = @[@"ufw", @"zip"];
     // 设置网页标题
-    webServer.title = @"OTA Update";
+    webServer.title = kJL_TXT("OTA_Update");
     // 设置展示在网页上的文字(开场白)
-    webServer.prologue = @"欢迎使用「杰理OTA」文件管理平台~";
+    webServer.prologue = kJL_TXT("wecome_to_use_ota");
     // 设置展示在网页上的文字(收场白)
-    webServer.epilogue = @"请将升级文件拖入即可。";
+    webServer.epilogue = kJL_TXT("drag_the_update_file");
     // 设置页尾文字
     webServer.footer = @"fenghongpeng@zh-jieli.com";
     
+    NSString* device = [[UIDevice currentDevice] name];
+    webServer.variables = @{
+        @"device" : device,
+        @"title" : kJL_TXT("OTA_Update"),
+        @"header" : kJL_TXT("OTA_Update"),
+        @"prologue" : kJL_TXT("wecome_to_use_ota"),
+        @"epilogue" : kJL_TXT("drag_the_update_file"),
+        @"footer" : @"fenghongpeng@zh-jieli.com",
+        @"Upload Files":kJL_TXT("Upload Files"),
+        @"Create Folder":kJL_TXT("Create Folder"),
+        @"Refresh":kJL_TXT("Refresh"),
+        @"File Uploads in Progress":kJL_TXT("File Uploads in Progress"),
+        @"Please enter the name of the folder to be created:":kJL_TXT("Please enter the name of the folder to be created:"),
+        @"Cancel":kJL_TXT("Cancel"),
+        @"Move Item":kJL_TXT("Move Item"),
+        @"Please enter the new location for this item:":kJL_TXT("Please enter the new location for this item:")
+    };
     if ([webServer start]) {
         NSString *wifi_IP = [SJXCSMIPHelper deviceIPAdress];
         NSInteger wifi_Port = webServer.port;

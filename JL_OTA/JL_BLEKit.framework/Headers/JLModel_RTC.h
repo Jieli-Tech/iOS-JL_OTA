@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RTC_RingInfo.h"
+#import <JL_BLEKit/RTC_RingInfo.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

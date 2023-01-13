@@ -55,6 +55,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param sportMsg 运动数据对象
 -(void)jlWatchSportMessage:(JL_SDM_SportMessage *)sportMsg;
 
+
+/// 设备回调无法区分的数据内容
+/// @param value 数据区域，根据类型解析数据
+/// @param submask 对应查询的参数,描述功能类型，作用域
+/// @param type 数据类型
+-(void)jlWatchUnDefineData:(NSData *)value subMask:(NSData *)submask Type:(UInt8)type;
+
 /// 设备回调传感器相关数据
 /// @param type 数据类型
 /// @param data 数据内容

@@ -55,6 +55,7 @@
 #define kJL_GET_LOW_DELAY           0x00D5
 #define kJL_GET_FLASH_INFO          0x00D6
 #define kJL_SET_DEV_STORAGE         0x00D8  //设置当前使用的存储设备
+#define kJL_GET_DEV_CONFIG          0x00D9  //获取设备配置信息
 #define kJL_GET_FLASH_W_R           0x001A
 
 #define kJL_BIGFILE_START           0x001B
@@ -73,7 +74,8 @@
 #define kJL_FILE_GET_CRC            0x0027
 #define kJL_SMALL_FILE              0x0028
 
-#define kJL_DEVICE_LOG              0X0029
+#define kJL_DEVICE_LOG              0x0029
+#define kJL_BIG_DATA                0x0030
 
 
 #define kJL_WEAR_REQ_OPCODE         0x00A0   //获取运动信息

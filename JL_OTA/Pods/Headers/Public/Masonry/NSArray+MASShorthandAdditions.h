@@ -1,0 +1,5 @@
+//
+//  NSArray+MASShorthandAdditions.h
+//  Masonry
+//
+//

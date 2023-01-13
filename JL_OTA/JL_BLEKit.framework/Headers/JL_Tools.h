@@ -370,7 +370,9 @@ typedef void(^JL_Timer_BK)(void);
 /**
  *  开启打印
  */
-+(void)openLogTextFile;
++(NSString *)openLogTextFile;
+
+
 
 @end
 

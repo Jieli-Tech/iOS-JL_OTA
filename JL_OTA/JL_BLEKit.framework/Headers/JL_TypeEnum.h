@@ -88,6 +88,7 @@ typedef NS_ENUM(int64_t,JL_CLASS) {
     JL_CLASS_Custom         = 18,
     JL_CLASS_Batch          = 19,
     JL_CLASS_DeviceLogs     = 20,
+    JL_CLASS_BigData        = 21,
 };
 
 //---------------------------------------------------------//

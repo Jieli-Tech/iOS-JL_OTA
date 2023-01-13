@@ -10,6 +10,7 @@
 #import <JL_BLEKit/JL_BLEKit.h>
 #import <DFUnits/DFUnits.h>
 #import <UIKit/UIKit.h>
+#import "JLBleEntity.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,7 +31,7 @@ extern NSString *kFLT_BLE_DISCONNECTED;  //断开连接
 @end
 
 
-@interface JLBleManager : NSObject
+@interface JLBleManager : ECOneToMorePtl
 
 @property (assign, nonatomic) CBManagerState mBleManagerState;
 @property (strong, nonatomic) CBPeripheral *__nullable mBlePeripheral;
@@ -40,7 +41,9 @@ extern NSString *kFLT_BLE_DISCONNECTED;  //断开连接
 @property (strong, nonatomic) NSString *__nullable lastBleMacAddress;     // 上一次连接的蓝牙地址
 @property (strong, nonatomic) JL_Assist *mAssist;
 
-@property (weak, nonatomic) id<JLBleManagerOtaDelegate> otaDelegate;
+@property (assign,nonatomic)BOOL isConnected;
+
+@property (strong, nonatomic) JLBleEntity *__nullable currentEntity;
 
 /**
  * 单例
@@ -72,6 +75,11 @@ extern NSString *kFLT_BLE_DISCONNECTED;  //断开连接
  使用UUID，重连设备。
 */
 -(void)connectPeripheralWithUUID:(NSString *)uuid;
+
+
+/// HID设备重连
+/// - Parameter uuid: 设备 identifyString
+-(void)findHid:(NSString *)uuid;
 
 #pragma mark - 杰理蓝牙库OTA流程相关业务
 

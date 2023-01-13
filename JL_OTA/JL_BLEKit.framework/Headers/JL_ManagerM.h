@@ -44,8 +44,10 @@
 #import <JL_BLEKit/JL_SystemTime.h>
 #import <JL_BLEKit/JL_SystemVolume.h>
 #import <JL_BLEKit/JL_CustomManager.h>
-#import <JL_BLEKit/JL_BatchManger.h>
+#import <JL_BLEKit/JL_BigDataManager.h>
 #import <JL_BLEKit/JL_DeviceLogs.h>
+#import <JL_BLEKit/JL_BatchManger.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -94,6 +96,8 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 @property(nonatomic,strong)JL_CustomManager         *mCustomManager;
 @property(nonatomic,strong)JL_BatchManger           *mBatchManger;
 @property(nonatomic,strong)JL_DeviceLogs            *mDeviceLogs;
+
+@property(nonatomic,strong)JL_BigDataManager        *mBigDataManager;
 
 
 -(void)setPropertyUpdate:(BOOL)isUpdate;

@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JL_TypeEnum.h"
-#import "JLModel_Flash.h"
-#import "JLModel_ANC.h"
-#import "JLModel_RTC.h"
-#import "JLModel_FM.h"
-#import "JLModel_File.h"
-#import "JLModel_EQ.h"
-#import "JLDhaFitting.h""
+#import <JL_BLEKit/JL_TypeEnum.h>
+#import <JL_BLEKit/JLModel_Flash.h>
+#import <JL_BLEKit/JLModel_ANC.h>
+#import <JL_BLEKit/JLModel_RTC.h>
+#import <JL_BLEKit/JLModel_FM.h>
+#import <JL_BLEKit/JLModel_File.h>
+#import <JL_BLEKit/JLModel_EQ.h>
+#import <JL_BLEKit/JLDhaFitting.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -290,6 +290,12 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 /// 通道增益值数组,先左耳后右耳，个数和验配信息中返回的一致
 /// Array of channel gain values, first left ear then right ear, the number is the same as the one returned in the fitting information
 @property (strong,nonatomic) NSArray<NSNumber *> *dhaFittingList;
+
+/// 是否支持获取设备配置信息
+@property (assign,nonatomic) BOOL               isSupportDevConfigInfo;
+
+/// 是否支持自适应ANC
+@property (assign,nonatomic) BOOL               isSupportAutoANC;
 
 @property (assign,nonatomic) int                pitchLow;               //低音
 @property (assign,nonatomic) int                pitchHigh;              //高音

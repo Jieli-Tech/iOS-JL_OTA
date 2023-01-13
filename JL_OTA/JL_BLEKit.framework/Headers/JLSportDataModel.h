@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 请求内容数据
 @property(nonatomic,strong)NSData *rqData;
 
+/// 功能掩码
+@property(nonatomic,assign)uint32_t funcMask;
 
 
 @end

@@ -12,7 +12,7 @@
 #import <JL_BLEKit/JL_TypeEnum.h>
 #import <JL_BLEKit/JLModel_RTC.h>
 #import <JL_BLEKit/JLModel_Ring.h>
-#import "JL_FunctionBaseManager.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

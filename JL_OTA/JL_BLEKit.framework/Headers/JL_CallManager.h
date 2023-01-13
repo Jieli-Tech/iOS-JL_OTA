@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JL_FunctionBaseManager.h"
-#import "JL_TypeEnum.h"
-#import "JL_Tools.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
+#import <JL_BLEKit/JL_TypeEnum.h>
+#import <JL_BLEKit/JL_Tools.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_CallManager : JL_FunctionBaseManager

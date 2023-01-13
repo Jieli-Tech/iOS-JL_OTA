@@ -1,0 +1,24 @@
+source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+
+platform:ios,'10.0'
+
+target:'JL_OTA' do
+
+pod 'Masonry'
+
+pod 'AFNetworking'
+
+pod 'Colours'
+
+pod 'MJRefresh'
+
+pod 'GCDWebServer/WebUploader'
+
+pod 'GCDWebServer/WebDAV'
+
+pod 'GCDWebServer'
+
+pod 'Bugly'
+
+end
+

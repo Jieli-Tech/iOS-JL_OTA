@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JL_FunctionBaseManager.h"
-#import "JL_Tools.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
+#import <JL_BLEKit/JL_Tools.h>
 
 typedef NS_ENUM(UInt8, JL_FCmdMusic) {
     JL_FCmdMusicPP                  = 0x01, //PP按钮

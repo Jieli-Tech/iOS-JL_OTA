@@ -49,7 +49,7 @@ typedef NS_ENUM(UInt8, JL_SRMDataType) {
     JL_SRM_End = 0xff,
 };
 
-// 运动数据类型
+// 实时健康数据类型
 typedef NS_ENUM(UInt8, JL_SportDataType) {
     ///心率
     JL_SportDataTypeHeartRate           = 0,
