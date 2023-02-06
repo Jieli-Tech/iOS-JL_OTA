@@ -1,5 +1,0 @@
-//
-//  MASConstraint.h
-//  Masonry
-//
-//

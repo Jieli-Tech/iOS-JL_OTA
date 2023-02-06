@@ -1,5 +1,0 @@
-//
-//  NSArray+MASAdditions.h
-//
-//
-//  Created

@@ -1,0 +1,5 @@
+//
+//  MJRefreshAutoFooter.h
+//  MJRefresh
+//
+//  Creat

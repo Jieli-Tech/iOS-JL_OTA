@@ -1,5 +1,0 @@
-//
-//  MASUtilities.h
-//  Masonry
-//
-//

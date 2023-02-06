@@ -1,0 +1,5 @@
+//
+//  MASConstraint+Private.h
+//  Masonry
+//
+//

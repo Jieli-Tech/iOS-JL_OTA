@@ -1,5 +1,0 @@
-//
-//  MASCompositeConstraint.h
-//  Masonry
-//
-//

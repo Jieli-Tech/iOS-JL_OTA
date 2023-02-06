@@ -1,1 +1,0 @@
-// Copyright (C) 2013 by B

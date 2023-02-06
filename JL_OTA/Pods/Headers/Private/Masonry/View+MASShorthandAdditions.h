@@ -1,4 +1,0 @@
-//
-//  UIView+MASShorthandAdditions.h
-//  Masonry
-//

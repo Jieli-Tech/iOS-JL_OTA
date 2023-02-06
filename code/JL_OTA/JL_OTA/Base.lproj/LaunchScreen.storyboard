@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="5Ux-vk-O8i">
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="珠海市杰理科技股份有限公司" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yv5-cx-Mrd">
+                                <rect key="frame" x="10" y="763" width="370" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Hu3-8g-hzU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OTA升级" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcO-RZ-wmA">
+                                <rect key="frame" x="155.66666666666666" y="390" width="79" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="W8F-0I-RUo">
+                                <rect key="frame" x="149.66666666666666" y="262.33333333333331" width="90.666666666666657" height="107.66666666666669"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright@2015 www.zh-jieli.com All Rights Reserved" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Pl-vG-XCW">
+                                <rect key="frame" x="10" y="788" width="370" height="12"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="0Pl-vG-XCW" firstAttribute="top" secondItem="yv5-cx-Mrd" secondAttribute="bottom" id="0eA-Dm-6qT"/>
+                            <constraint firstItem="jcO-RZ-wmA" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-20" id="11u-af-vX8"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0Pl-vG-XCW" secondAttribute="trailing" constant="10" id="531-ev-9UT"/>
+                            <constraint firstItem="yv5-cx-Mrd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="76A-lB-Bbq"/>
+                            <constraint firstItem="jcO-RZ-wmA" firstAttribute="top" secondItem="W8F-0I-RUo" secondAttribute="bottom" constant="20" id="C1z-Dn-C7B"/>
+                            <constraint firstItem="W8F-0I-RUo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="E5W-Ol-Im3"/>
+                            <constraint firstItem="0Pl-vG-XCW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="GGx-0y-Goo"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yv5-cx-Mrd" secondAttribute="trailing" constant="10" id="HaB-Vf-wP8"/>
+                            <constraint firstItem="jcO-RZ-wmA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TK5-W2-tAL"/>
+                            <constraint firstItem="5Ux-vk-O8i" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="bVe-y3-hCi"/>
+                            <constraint firstAttribute="bottom" secondItem="5Ux-vk-O8i" secondAttribute="bottom" id="d3Z-4i-zfu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5Ux-vk-O8i" secondAttribute="trailing" id="fNi-VC-EYU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="0Pl-vG-XCW" secondAttribute="bottom" constant="10" id="gqH-IS-ZGH"/>
+                            <constraint firstItem="5Ux-vk-O8i" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ofK-8O-c6l"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.307692307692307" y="374.64454976303318"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="background" width="375" height="666.66668701171875"/>
+        <image name="logo" width="90.666664123535156" height="107.66666412353516"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

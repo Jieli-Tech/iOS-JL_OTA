@@ -1,5 +1,0 @@
-//
-//  MJRefreshTrailer.h
-//  MJRefresh
-//
-//  Creat

@@ -1,5 +1,0 @@
-//
-//  Masonry.h
-//  Masonry
-//
-//

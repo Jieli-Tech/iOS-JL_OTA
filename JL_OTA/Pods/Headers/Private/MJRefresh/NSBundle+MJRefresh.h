@@ -1,5 +1,0 @@
-//
-//  NSBundle+MJRefresh.h
-//  MJRefresh
-//
-//  

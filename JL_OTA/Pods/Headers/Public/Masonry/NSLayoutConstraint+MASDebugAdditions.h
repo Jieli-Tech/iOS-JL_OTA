@@ -1,5 +1,0 @@
-//
-//  NSLayoutConstraint+MASDebugAdditions.h
-//  Masonry
-//
-//

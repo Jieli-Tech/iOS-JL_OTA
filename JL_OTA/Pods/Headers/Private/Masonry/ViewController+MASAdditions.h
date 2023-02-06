@@ -1,4 +1,0 @@
-//
-//  UIViewController+MASAdditions.h
-//  Masonry
-//
