@@ -1,5 +1,1 @@
-//
-//  MJRefreshBackGifFooter.h
-//  MJRefresh
-//
-//  Created by MJ Lee o
+../../../MJRefresh/MJRefresh/Custom/Footer/Back/MJRefreshBackGifFooter.h

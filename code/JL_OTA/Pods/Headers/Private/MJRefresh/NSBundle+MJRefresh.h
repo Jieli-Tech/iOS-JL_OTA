@@ -1,5 +1,1 @@
-//
-//  NSBundle+MJRefresh.h
-//  MJRefresh
-//
-//  
+../../../MJRefresh/MJRefresh/NSBundle+MJRefresh.h

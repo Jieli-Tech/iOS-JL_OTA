@@ -1,4 +1,1 @@
-//
-//  MJRefreshConfig.h
-//
-//  Created by Fra
+../../../MJRefresh/MJRefresh/MJRefreshConfig.h

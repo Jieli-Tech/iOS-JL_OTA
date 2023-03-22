@@ -1,5 +1,1 @@
-//
-//  MJRefreshStateTrailer.h
-//  MJRefresh
-//
-//  Created by kina
+../../../MJRefresh/MJRefresh/Custom/Trailer/MJRefreshStateTrailer.h

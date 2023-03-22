@@ -1,2 +1,1 @@
-// AFSecurityPolicy.h
-// Copyright (c) 2011–2016 Al
+../../../AFNetworking/AFNetworking/AFSecurityPolicy.h

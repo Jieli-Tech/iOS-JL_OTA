@@ -1,5 +1,1 @@
-//
-//  MJRefreshBackFooter.h
-//  MJRefresh
-//
-//  Creat
+../../../MJRefresh/MJRefresh/Base/MJRefreshBackFooter.h

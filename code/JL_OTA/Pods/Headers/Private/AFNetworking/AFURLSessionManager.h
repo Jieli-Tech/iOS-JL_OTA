@@ -1,2 +1,1 @@
-// AFURLSessionManager.h
-// Copyright (c) 2011–2016 Al
+../../../AFNetworking/AFNetworking/AFURLSessionManager.h

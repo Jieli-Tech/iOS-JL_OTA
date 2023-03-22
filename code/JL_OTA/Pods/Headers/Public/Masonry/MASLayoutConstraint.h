@@ -1,5 +1,1 @@
-//
-//  MASLayoutConstraint.h
-//  Masonry
-//
-//
+../../../Masonry/Masonry/MASLayoutConstraint.h

@@ -1,5 +1,1 @@
-//
-//  MJRefreshTrailer.h
-//  MJRefresh
-//
-//  Creat
+../../../MJRefresh/MJRefresh/Base/MJRefreshTrailer.h

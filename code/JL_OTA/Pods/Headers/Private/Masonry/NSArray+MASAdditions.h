@@ -1,5 +1,1 @@
-//
-//  NSArray+MASAdditions.h
-//
-//
-//  Created
+../../../Masonry/Masonry/NSArray+MASAdditions.h

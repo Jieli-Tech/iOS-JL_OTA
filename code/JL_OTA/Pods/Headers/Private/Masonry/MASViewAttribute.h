@@ -1,5 +1,1 @@
-//
-//  MASViewAttribute.h
-//  Masonry
-//
-//
+../../../Masonry/Masonry/MASViewAttribute.h

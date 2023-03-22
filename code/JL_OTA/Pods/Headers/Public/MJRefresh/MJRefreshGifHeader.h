@@ -1,5 +1,1 @@
-//
-//  MJRefreshGifHeader.h
-//  MJRefresh
-//
-//  Created by MJ 
+../../../MJRefresh/MJRefresh/Custom/Header/MJRefreshGifHeader.h

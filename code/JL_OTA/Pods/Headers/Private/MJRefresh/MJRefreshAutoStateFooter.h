@@ -1,5 +1,1 @@
-//
-//  MJRefreshAutoStateFooter.h
-//  MJRefresh
-//
-//  Created by MJ Lee o
+../../../MJRefresh/MJRefresh/Custom/Footer/Auto/MJRefreshAutoStateFooter.h

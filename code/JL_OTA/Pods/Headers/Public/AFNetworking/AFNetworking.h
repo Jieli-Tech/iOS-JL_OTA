@@ -1,3 +1,1 @@
-// AFNetworking.h
-//
-// Copyright (c) 2013 AFNetw
+../../../AFNetworking/AFNetworking/AFNetworking.h

@@ -1,2 +1,1 @@
-// UIProgressView+AFNetworking.h
-// Copyright (c) 2011–2016 Alamofir
+../../../AFNetworking/UIKit+AFNetworking/UIProgressView+AFNetworking.h

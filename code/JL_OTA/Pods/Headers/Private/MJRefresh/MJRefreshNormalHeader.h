@@ -1,5 +1,1 @@
-//
-//  MJRefreshNormalHeader.h
-//  MJRefresh
-//
-//  Created by MJ 
+../../../MJRefresh/MJRefresh/Custom/Header/MJRefreshNormalHeader.h
