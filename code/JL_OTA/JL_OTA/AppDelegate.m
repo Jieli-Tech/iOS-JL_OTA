@@ -32,10 +32,12 @@
 //    [JLOtaFileManager initializeOtaFile];
     
     /*--- 检测当前语言 ---*/
-    if (![kJL_GET hasPrefix:@"zh-Hans"]) {
-        kJL_SET("en");// set APP's language to English
-    } else {
+    if ([kJL_GET hasPrefix:@"zh-Hans"]) {
         kJL_SET("zh-Hans");// 设置APP语言为中文
+    } else if([kJL_GET hasPrefix:@"ko"]) {
+        kJL_SET("ko");// set APP's language to ko-cn
+    }else{
+        kJL_SET("en");// set APP's language to English
     }
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -109,6 +109,8 @@ typedef NS_ENUM(UInt8, JL_WATCH_SETTING_MASK) {
 /// Bit8：抬腕监察
 /// Bit9：个人信息
 /// Bit10：蓝牙断开提醒
+/// Bit11：血氧测量提醒
+/// Bit12：紧急联系人
 typedef NS_ENUM(uint32_t, JL_WATCH_SETTING) {
     JL_WATCH_SETTING_SENSOR_FUNC                        = 0x0002,     // Bit1：传感器功能
     JL_WATCH_SETTING_SEDENTARY_REMIND                   = 0x0004,     // Bit2：久坐提醒
@@ -120,6 +122,8 @@ typedef NS_ENUM(uint32_t, JL_WATCH_SETTING) {
     JL_WATCH_SETTING_LIFTWRIST_DETECTION                = 0x0100,     // Bit8：抬腕监察
     JL_WATCH_SETTING_PERSONAL_INFO                      = 0x0200,     // Bit9：个人信息
     JL_WATCH_SETTING_BLUETOOTH_DISCONECTED_REMINDER     = 0x0400,     // Bit10：蓝牙断开提醒
+    JL_WATCH_SETTING_OXIMETRY                           = 0x0800,     //Bit11:血氧测量提醒
+    JL_WATCH_SETTING_EMERGENCY_CONTACT                  = 0x1000,      //Bit12:紧急联系人
 };
 
 /// 传感器功能开关

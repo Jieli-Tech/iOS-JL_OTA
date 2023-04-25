@@ -122,6 +122,14 @@ typedef void(^JL_Timer_BK)(void);
 +(void)post:(NSString*)name Object:(id __nullable)object;
 
 /**
+ 发出通知事件
+ 
+ @param name 通知名字
+ @param object 传递的对象
+ @param info     传递的信息
+ */
++(void)post:(NSString*)name Object:(id __nullable)object UserInfo:(NSDictionary* __nullable)info;
+/**
  监听通知事件
  
  @param name 通知名字
@@ -370,9 +378,7 @@ typedef void(^JL_Timer_BK)(void);
 /**
  *  开启打印
  */
-+(NSString *)openLogTextFile;
-
-
++(void)openLogTextFile;
 
 @end
 

@@ -19,7 +19,22 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @param date 时间类
  */
--(void)cmdSetSystemTime:(NSDate*)date;
+-(void)cmdSetSystemTime:(NSDate*)date __attribute__((deprecated ( "Please use the (cmdSetSystemYear: Month: Day: Hour: Minute: Second) method instead. The current method will be invalid")));
+
+
+/// 设置系统年月日时分秒
+/// @param year 年
+/// @param month 月
+/// @param day 日
+/// @param hour 时
+/// @param min 分
+/// @param sec 秒
+-(void)cmdSetSystemYear:(uint16_t)year
+                  Month:(uint8_t)month
+                    Day:(uint8_t)day
+                   Hour:(uint8_t)hour
+                 Minute:(uint8_t)min
+                 Second:(uint8_t)sec;
 
 @end
 

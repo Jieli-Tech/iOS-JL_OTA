@@ -34,6 +34,7 @@
 @property(nonatomic,strong)UIView *popSuperView;
 @property(nonatomic,strong)PopoverView *popView;
 
+
 //MARK: - Tips Views
 @property(nonatomic,strong)TipsFinishView *finishView;
 @property(nonatomic,strong)TipsProgressView *progressView;
@@ -43,7 +44,9 @@
 @property(nonatomic,strong)NSArray *itemArray;
 @property (strong, nonatomic) NSMutableArray *selectedArray;
 @property (assign, nonatomic) NSInteger selectIndex;
-
+@property(nonatomic,strong)NSTimer *connectTimer;
+@property(nonatomic,assign)int connectTimerCount;
+@property(nonatomic,assign)int maxOtaTime;
 @end
 
 @implementation AutoUpdateViewController
@@ -300,6 +303,7 @@
        || [name isEqualToString:kFLT_BLE_DISCONNECTED]
        || [name isEqualToString:kJL_BLE_M_ENTITY_DISCONNECTED]){
         [self checkDeviceConnected];
+        [self cancelReconnectTimer];
     }
     if([name isEqualToString:@"REFRESH_FILE"]){
         [self reflashFileArray];
@@ -310,7 +314,12 @@
         
         JLBleEntity * entity = [[JLBleManager sharedInstance] currentEntity];
         if(entity){
-            [[[JLBleManager sharedInstance] mAssist].mCmdManager.mOTAManager cmdOTACancelResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+//            [[[JLBleManager sharedInstance] mAssist].mCmdManager.mOTAManager cmdOTACancelResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+//                if(status == JL_CMDStatusSuccess){
+//                    weakSelf.progressView.hidden = YES;
+//                }
+//            }];
+            [[JLBleManager sharedInstance] otaFuncCancel:^(uint8_t status) {
                 if(status == JL_CMDStatusSuccess){
                     weakSelf.progressView.hidden = YES;
                 }
@@ -381,7 +390,8 @@
         [self otaTimeCheck];//增加超时检测
     } else if (result == JL_OTAResultReconnectWithMacAddr) {
         
-        JLModel_Device *model = [[JLBleManager sharedInstance].mAssist.mCmdManager outputDeviceModel];
+//        JLModel_Device *model = [[JLBleManager sharedInstance].mAssist.mCmdManager outputDeviceModel];
+        JL_OTAManager *model = [JLBleManager sharedInstance].otaManager;
         NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", model.bleAddr);
         
         [JLBleManager sharedInstance].lastBleMacAddress = model.bleAddr;
@@ -409,6 +419,7 @@
             [DFUITools showText:kJL_TXT("wait_connect") onView:self.view delay:4];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(16 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [[LoopUpdateManager share] startLoopOta];
+                [self startReconnect];
             });
         }
         
@@ -421,10 +432,10 @@
         self.progressView.hidden = YES;
         [self.finishView failed:result];
         [LoopUpdateManager share].failedNumber+=1;
-        
         [self faultTolerantHandle];
         // 其余错误码详细 Command+点击JL_OTAResult 查看说明
         NSLog(@"ota update result: %d", result);
+        //[[JLBleManager sharedInstance].otaManager resetOTAManager];
        
     }
 }
@@ -457,6 +468,10 @@ static NSTimer  *otaTimer = nil;
 static int      otaTimeout= 0;
 - (void)otaTimeCheck {
     otaTimeout = 0;
+    _maxOtaTime = 10;
+    if([ToolsHelper isSupportHID]){
+        _maxOtaTime = 25;
+    }
     if (otaTimer == nil) {
         otaTimer = [JL_Tools timingStart:@selector(otaTimeAdd) target:self Time:1.0];
     }
@@ -471,7 +486,7 @@ static int      otaTimeout= 0;
 
 - (void)otaTimeAdd {
     otaTimeout++;
-    if (otaTimeout == 10) {
+    if (otaTimeout == _maxOtaTime) {
         [self otaTimeClose];
         NSLog(@"OTA ---> 超时了！！！");
         [DFUITools showText:kJL_TXT("update_timeout") onView:self.view delay:1.0];
@@ -479,6 +494,29 @@ static int      otaTimeout= 0;
         [self.finishView failed:JL_OTAResultFailCmdTimeout];
         [self faultTolerantHandle];
     }
+}
+
+//MARK: - reconnect timer
+-(void)startReconnect{
+    self.connectTimerCount = 0;
+    [self.connectTimer invalidate];
+    self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(reconnectAdd) userInfo:nil repeats:true];
+    [self.connectTimer fire];
+}
+
+-(void)reconnectAdd{
+    self.connectTimerCount+=1;
+    if(self.connectTimerCount > 40){
+        [self.connectTimer invalidate];
+        self.connectTimer = nil;
+        [self.progressView timeOutShow];
+        [self.finishView failed:JL_OTAResultFailTWSDisconnect];
+    }
+}
+
+-(void)cancelReconnectTimer{
+    [self.connectTimer invalidate];
+    self.connectTimer = nil;
 }
 
 

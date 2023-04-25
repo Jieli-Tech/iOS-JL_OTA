@@ -10,8 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 紧急联系人设置
 @interface JLEmergencyContactModel : JLwSettingModel
 
+/// 联系电话
 @property(nonatomic,strong)NSString *phoneNumber;
 
 -(instancetype)initWithData:(NSData *)data;

@@ -1,1 +1,1 @@
-../../../Masonry/Masonry/View+MASShorthandAdditions.h
+link ../../../Masonry/Masonry/View+MASShorthandAdditions.h

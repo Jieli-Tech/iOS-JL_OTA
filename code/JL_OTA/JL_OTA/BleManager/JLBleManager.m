@@ -6,8 +6,10 @@
 //
 
 #import "JLBleManager.h"
-
 #import "FittingView.h"
+#import "SingleDataSender.h"
+
+#define SENDBYSINGLE  0 //1：通过信号检测发送 0：通过直接塞数据发送
 
 NSString *kFLT_BLE_FOUND        = @"FLT_BLE_FOUND";            //发现设备
 NSString *kFLT_BLE_PAIRED       = @"FLT_BLE_PAIRED";           //BLE已配对
@@ -19,15 +21,25 @@ NSString *FLT_BLE_RCSP_W  = @"AE01"; //命令“写”通道
 NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 
-@interface JLBleManager() <CBCentralManagerDelegate, CBPeripheralDelegate>
+
+@interface JLBleManager() <CBCentralManagerDelegate, CBPeripheralDelegate,JL_OTAManagerDelegate,JLHashHandlerDelegate,SingleSendDelegate>
 
 @property (strong, nonatomic) CBCentralManager *bleManager;
+@property (strong, nonatomic) JLHashHandler *pairHash;
+@property (assign, nonatomic) BOOL pairStatus;
 
 @property (strong, nonatomic) NSMutableArray<JLBleEntity *> *blePeripheralArr;
 @property (strong, nonatomic) CBPeripheral *bleCurrentPeripheral;
+@property (strong, nonatomic) CBService * mService;
+@property (strong, nonatomic) CBCharacteristic *mRcspWrite;
+@property (strong, nonatomic) CBCharacteristic *mRcspRead;
 
 @property (strong, nonatomic) NSString *selectedOtaFilePath;
 @property (strong, nonatomic) NSString *connectByUUID;
+
+@property (strong, nonatomic) GET_DEVICE_CALLBACK getCallback;
+
+
 @end
 
 @implementation JLBleManager
@@ -44,31 +56,32 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _isFilter = YES;
         _isPaired = YES;
+        _pairStatus = NO;
         
         _bleManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
         
         /*--- JLSDK ADD ---*/
-        _mAssist = [[JL_Assist alloc] init];
-        _mAssist.mNeedPaired = _isPaired;             //是否需要握手配对
-        /*--- 自定义配对码(16个字节配对码) ---*/
-        //char pairkey[16] = {0x01,0x02,0x03,0x04,
-        //                    0x01,0x02,0x03,0x04,
-        //                    0x01,0x02,0x03,0x04,
-        //                    0x01,0x02,0x03,0x04};
-        //NSData *pairData = [NSData dataWithBytes:pairkey length:16];
-        _mAssist.mPairKey    = nil;             //配对秘钥（或者自定义配对码pairData）
-        _mAssist.mService    = FLT_BLE_SERVICE; //服务号
-        _mAssist.mRcsp_W     = FLT_BLE_RCSP_W;  //特征「写」
-        _mAssist.mRcsp_R     = FLT_BLE_RCSP_R;  //特征「读」
+        _otaManager = [[JL_OTAManager alloc] init];
+        [JL_OTAManager logSDKVersion];
+        [JLHashHandler sdkVersion];
+        //[_otaManager logSendData:true];
+        
+        _otaManager.delegate = self;
+        
+        self.pairHash = [[JLHashHandler alloc] init];
+        self.pairHash.delegate = self;
+        
         _connectByUUID = nil;
+#if SENDBYSINGLE
+        [[SingleDataSender share] addDelegate:self];
+#endif
+        
     }
     return self;
 }
 
 - (void)setIsPaired:(BOOL)isPaired {
-    self.mAssist.mNeedPaired = isPaired;
     _isPaired = isPaired;
 }
 
@@ -108,6 +121,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         NSLog(@"BLE --->To disconnectBLE.");
         [_bleManager cancelPeripheralConnection:_bleCurrentPeripheral];
         self.isConnected = false;
+        self.currentEntity = nil;
     }
 }
 
@@ -178,9 +192,6 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     
     _mBleManagerState = central.state;
     
-    /*--- JLSDK ADD ---*/
-    [self.mAssist assistUpdateState:central.state];
-    
     if (_mBleManagerState != CBManagerStatePoweredOn) {
         self.mBlePeripheral = nil;
         self.blePeripheralArr = [NSMutableArray array];
@@ -193,7 +204,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     
     NSString *ble_name = advertisementData[@"kCBAdvDataLocalName"];
     NSData *ble_AD   = advertisementData[@"kCBAdvDataManufacturerData"];
-    NSDictionary *info = [JL_BLEAction bluetoothKey_1:self.mAssist.mPairKey Filter:advertisementData];
+    NSDictionary *info = [JLAdvParse bluetoothAdvParse:self.pairKey AdvData:advertisementData];
     if (ble_name.length == 0) return;
     
     NSLog(@"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
@@ -213,7 +224,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     [DFNotice post:kFLT_BLE_FOUND Object:_blePeripheralArr];
     
     // ota升级过程，回连使用
-    if ([JL_BLEAction otaBleMacAddress:self.lastBleMacAddress isEqualToCBAdvDataManufacturerData:ble_AD]) {
+    if ([JLAdvParse otaBleMacAddress:self.lastBleMacAddress isEqualToCBAdvDataManufacturerData:ble_AD]) {
         [self connectBLE:peripheral];
     }
 }
@@ -256,6 +267,10 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         }
     }
     self.isConnected = YES;
+    
+    _otaManager.mBLE_NAME = peripheral.name;
+    _otaManager.mBLE_UUID = peripheral.identifier.UUIDString;
+    
     [DFNotice post:kFLT_BLE_CONNECTED Object:peripheral];
     // 连接成功后，查找服务
     [peripheral discoverServices:nil];
@@ -268,14 +283,12 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 #pragma mark 设备断开连接
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error {
     NSLog(@"BLE Disconnect ---> Device %@ error:%d", peripheral.name, (int)error.code);
-    self.mBlePeripheral = nil;
     
-    /*--- JLSDK ADD ---*/
-    [self.mAssist assistDisconnectPeripheral:peripheral];
-    
+    [_otaManager noteEntityDisconnected];
     self.isConnected = NO;
+    self.pairStatus = NO;
     /*--- UI刷新，设备断开 ---*/
-    [JL_Tools post:kFLT_BLE_DISCONNECTED Object:peripheral];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_DISCONNECTED object:peripheral];
 }
 
 #pragma mark - CBPeripheralDelegate
@@ -283,7 +296,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 #pragma mark 设备服务回调
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error {
     if (error) { NSLog(@"Err: Discovered services fail."); return; }
-    
+    _mBlePeripheral = peripheral;
     for (CBService *service in peripheral.services) {
         //如果我们知道要查询的特性的CBUUID，可以在参数一中传入CBUUID数组。
         //if ([service.UUID.UUIDString isEqual:FLT_BLE_SERVICE]) {
@@ -298,8 +311,27 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(nullable NSError *)error {
     if (error) { NSLog(@"Err: Discovered Characteristics fail."); return; }
     
-    /*--- JLSDK ADD ---*/
-    [self.mAssist assistDiscoverCharacteristicsForService:service Peripheral:peripheral];
+    if ([service.UUID.UUIDString isEqual:FLT_BLE_SERVICE]) {
+        
+        for (CBCharacteristic *character in service.characteristics) {
+            /*--- RCSP ---*/
+            if ([character.UUID.UUIDString isEqual:FLT_BLE_RCSP_W]) {
+                NSLog(@"BLE Get Rcsp(Write) Channel ---> %@",character.UUID.UUIDString);
+                self.mRcspWrite = character;
+            }
+            
+            if ([character.UUID.UUIDString isEqual:FLT_BLE_RCSP_R]) {
+                NSLog(@"BLE Get Rcsp(Read) Channel ---> %@",character.UUID.UUIDString);
+                self.mRcspRead = character;
+                [peripheral setNotifyValue:YES forCharacteristic:character];
+                
+                if(self.mRcspRead.properties == CBCharacteristicPropertyRead){
+                    [peripheral readValueForCharacteristic:character];
+                    NSLog(@"BLE  Rcsp(Read) Read Value For Characteristic.");
+                }
+            }
+        }
+    }
 }
 
 #pragma mark 更新通知特征的状态
@@ -307,29 +339,61 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     
     if (error) { NSLog(@"Err: Update NotificationState For Characteristic fail."); return; }
     
-    /*--- JLSDK ADD ---*/
-    __weak typeof(self) weakSelf = self;
-    [self.mAssist assistUpdateCharacteristic:characteristic Peripheral:peripheral Result:^(BOOL isPaired) {
-        if (isPaired == YES) {
-            weakSelf.lastUUID = peripheral.identifier.UUIDString;
-            weakSelf.lastBleMacAddress = nil;
-            weakSelf.mBlePeripheral = peripheral;
-            /*--- UI配对成功 ---*/
-            [JL_Tools post:kFLT_BLE_PAIRED Object:peripheral];
-        } else {
-            
-            [weakSelf.bleManager cancelPeripheralConnection:peripheral];
+    if ([characteristic.service.UUID.UUIDString isEqual:FLT_BLE_SERVICE] &&
+        [characteristic.UUID.UUIDString isEqual:FLT_BLE_RCSP_R]          &&
+        characteristic.isNotifying == YES)
+    {
+        
+        __weak typeof(self) weakSelf = self;
+        self.bleMtu = [peripheral maximumWriteValueLengthForType:CBCharacteristicWriteWithoutResponse];
+        NSLog(@"BLE ---> MTU:%lu",(unsigned long)self.bleMtu);
+        if (self.isPaired == YES) {
+            [_pairHash hashResetPair];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                //设备认证
+                [self->_pairHash bluetoothPairingKey:self.pairKey Result:^(BOOL ret) {
+                    if(ret){
+                        weakSelf.lastUUID = peripheral.identifier.UUIDString;
+                        weakSelf.lastBleMacAddress = nil;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_PAIRED object:peripheral];
+                        [weakSelf.otaManager noteEntityConnected];
+                        weakSelf.pairStatus = YES;
+                    }else{
+                        NSLog(@"JL_Assist Err: bluetooth pairing fail.");
+                        [weakSelf.bleManager cancelPeripheralConnection:peripheral];
+                    }
+                }];
+            });
+        }else{
+            self.lastUUID = peripheral.identifier.UUIDString;
+            self.lastBleMacAddress = nil;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_PAIRED object:peripheral];
+            [self.otaManager noteEntityConnected];
         }
-        weakSelf.isConnected = YES;
-    }];
+    }
+    self.isConnected = YES;
 }
 
 #pragma mark 设备返回的数据 GET
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     if (error) { NSLog(@"Err: receive data fail."); return; }
 
-    /*--- JLSDK ADD ---*/
-    [self.mAssist assistUpdateValueForCharacteristic:characteristic];
+    if(_isPaired == YES && _pairStatus == NO){
+        //收到设备的认证交互数据
+        [_pairHash inputPairData:characteristic.value];
+    }else{
+        //收到的设备数据，正常通讯数据
+        [_otaManager cmdOtaDataReceive:characteristic.value];
+    }
+
+}
+
+- (void)peripheralIsReadyToSendWriteWithoutResponse:(CBPeripheral *)peripheral{
+    
+#if SENDBYSINGLE
+    [[SingleDataSender share] sendSingle];
+#endif
+    
 }
 
 
@@ -339,43 +403,9 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
  *  获取已连接的蓝牙设备信息，这里如果上次设备升级没有成功，会要求执行otaFuncWithFilePath:强制升级
  */
 - (void)getDeviceInfo:(GET_DEVICE_CALLBACK _Nonnull)callback {
-    __weak typeof(self) weakSelf = self;
-    NSLog(@"getDeviceInfo:%d",__LINE__);
     /*--- 获取设备信息 ---*/
-    [self.mAssist.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
-        NSLog(@"getDeviceInfo:%d",__LINE__);
-        if (status == JL_CMDStatusSuccess) {
-            JLModel_Device *model = [weakSelf.mAssist.mCmdManager outputDeviceModel];
-            JL_OtaStatus upSt = model.otaStatus;
-            if (upSt == JL_OtaStatusForce) {
-                NSLog(@"---> 进入强制升级.");
-                if (weakSelf.selectedOtaFilePath) {
-                    [weakSelf otaFuncWithFilePath:weakSelf.selectedOtaFilePath];
-                } else {
-                    callback(true);
-                }
-                return;
-            } else {
-                if (model.otaHeadset == JL_OtaHeadsetYES) {
-                    NSLog(@"---> 进入强制升级: OTA另一只耳机.");
-                    if (weakSelf.selectedOtaFilePath) {
-                        [weakSelf otaFuncWithFilePath:weakSelf.selectedOtaFilePath];
-                    } else {
-                        callback(true);
-                    }
-                    return;
-                }
-            }
-            NSLog(@"---> 设备正常使用...");
-            [JL_Tools mainTask:^{
-                /*--- 获取公共信息 ---*/
-                [weakSelf.mAssist.mCmdManager cmdGetSystemInfo:JL_FunctionCodeCOMMON Result:nil];
-                callback(false);
-            }];
-        } else {
-            NSLog(@"---> ERROR：设备信息获取错误!");
-        }
-    }];
+    _getCallback = callback;
+    [_otaManager cmdTargetFeature];
 }
 
 /**
@@ -387,10 +417,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     self.selectedOtaFilePath = otaFilePath;
     NSData *otaData = [[NSData alloc] initWithContentsOfFile:otaFilePath];
     
-    [JLBleManager sharedInstance];
-    JL_OTAManager *otaManager = self.mAssist.mCmdManager.mOTAManager;
-    
-    [otaManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
+    [_otaManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
         for (id<JLBleManagerOtaDelegate> objc in self.delegates) {
             if([objc respondsToSelector:@selector(otaProgressWithOtaResult:withProgress:)]){
                 [objc otaProgressWithOtaResult:result withProgress:progress];
@@ -399,6 +426,114 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         
     }];
 }
+
+- (void)otaFuncCancel:(CANCEL_CALLBACK _Nonnull)result{
+    
+    [_otaManager cmdOTACancelResult:^(uint8_t status, uint8_t sn, NSData * _Nullable data) {
+        result(status);
+    }];
+}
+
+
+
+//MARK: - ota manager delegate callback
+-(void)otaCancel{
+    //TODO: 取消OTA升级回调
+}
+-(void)otaUpgradeResult:(JL_OTAResult)result Progress:(float)progress{
+    //TODO: 设备升级过程回调，包括进度状态
+}
+
+-(void)otaDataSend:(NSData *)data{
+    [self writeDataByCbp:data];
+}
+
+-(void)otaFeatureResult:(JL_OTAManager *)manager{
+    
+    NSLog(@"getDeviceInfo:%d",__LINE__);
+    if (manager.otaStatus == JL_OtaStatusForce) {
+        NSLog(@"---> 进入强制升级.");
+        if (self.selectedOtaFilePath) {
+            [self otaFuncWithFilePath:self.selectedOtaFilePath];
+        } else {
+            _getCallback(true);
+        }
+        return;
+    } else {
+        if (manager.otaHeadset == JL_OtaHeadsetYES) {
+            NSLog(@"---> 进入强制升级: OTA另一只耳机.");
+            if (self.selectedOtaFilePath) {
+                [self otaFuncWithFilePath:self.selectedOtaFilePath];
+            } else {
+                _getCallback(true);
+            }
+            return;
+        }
+    }
+    NSLog(@"---> 设备正常使用...");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        /*--- 获取公共信息 ---*/
+        [self->_otaManager cmdSystemFunction];
+        self->_getCallback(false);
+    });
+
+}
+
+//MARK: - Hash pair delegate callback
+
+-(void)hashOnPairOutputData:(NSData *)data{
+    [self writeDataByCbp:data];
+}
+
+
+//MARK: - data send manager
+
+/// 需要分包发送
+/// - Parameter data: 数据
+-(void)writeDataByCbp:(NSData *)data{
+    //    NSLog(@"%s:data:%@",__func__,data);
+        if (_mBlePeripheral && self.mRcspWrite) {
+            if (data.length > 0 ) {
+                NSInteger len = data.length;
+                while (len>0) {
+                    if (len <= _bleMtu) {
+                        NSData *mtuData = [data subdataWithRange:NSMakeRange(0, data.length)];
+                        [self selectSendAction:mtuData];
+                        len -= data.length;
+                    }else{
+                        NSData *mtuData = [data subdataWithRange:NSMakeRange(0, _bleMtu)];
+                        [self selectSendAction:mtuData];
+                        len -= _bleMtu;
+                        data = [data subdataWithRange:NSMakeRange(_bleMtu, len)];
+                    }
+                }
+            }
+        }else{
+            //需要先赋值写特征的内容
+            NSLog(@"need to init");
+        }
+}
+
+-(void)selectSendAction:(NSData *)data{
+    
+#if SENDBYSINGLE
+    [[SingleDataSender share] appendSend:data];
+#else
+    [_mBlePeripheral writeValue:data
+      forCharacteristic:self.mRcspWrite
+                   type:CBCharacteristicWriteWithoutResponse];
+#endif
+    
+}
+
+
+//MARK: - 通过信号阀发送
+- (void)singleDidSendData:(NSData *)data{
+    [_mBlePeripheral writeValue:data
+      forCharacteristic:self.mRcspWrite
+                   type:CBCharacteristicWriteWithoutResponse];
+}
+
 
 @end
 

@@ -73,7 +73,7 @@
     _sdkVersionLab = [UILabel new];
     _sdkVersionLab.font = [UIFont systemFontOfSize:13];
     _sdkVersionLab.textColor = [UIColor colorFromHexString:@"#6F6F6F"];
-    _sdkVersionLab.text = [NSString stringWithFormat:@"%@：V%@",kJL_TXT("sdk_version"),[JL_BLEMultiple versionOfSDK]];
+    _sdkVersionLab.text = [NSString stringWithFormat:@"%@：%@",kJL_TXT("sdk_version"),[JL_OTAManager logSDKVersion]];
     _sdkVersionLab.textAlignment = NSTextAlignmentCenter;
     _sdkVersionLab.numberOfLines = 0;
     [self.view addSubview:_sdkVersionLab];

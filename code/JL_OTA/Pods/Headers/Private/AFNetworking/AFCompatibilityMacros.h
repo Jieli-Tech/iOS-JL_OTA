@@ -1,1 +1,1 @@
-../../../AFNetworking/AFNetworking/AFCompatibilityMacros.h
+link ../../../AFNetworking/AFNetworking/AFCompatibilityMacros.h

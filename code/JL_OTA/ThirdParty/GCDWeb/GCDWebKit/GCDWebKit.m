@@ -107,14 +107,14 @@ static GCDWebKit *ME = nil;
         @"prologue" : kJL_TXT("wecome_to_use_ota"),
         @"epilogue" : kJL_TXT("drag_the_update_file"),
         @"footer" : @"fenghongpeng@zh-jieli.com",
-        @"Upload Files":kJL_TXT("Upload Files"),
-        @"Create Folder":kJL_TXT("Create Folder"),
+        @"Upload Files":kJL_TXT("Upload_Files"),
+        @"Create Folder":kJL_TXT("Create_Folder"),
         @"Refresh":kJL_TXT("Refresh"),
-        @"File Uploads in Progress":kJL_TXT("File Uploads in Progress"),
-        @"Please enter the name of the folder to be created:":kJL_TXT("Please enter the name of the folder to be created:"),
+        @"File Uploads in Progress":kJL_TXT("File_Uploads_in_Progress"),
+        @"Please enter the name of the folder to be created:":kJL_TXT("Please_enter_the_name_of_the_folder_to_be_created:"),
         @"Cancel":kJL_TXT("Cancel"),
-        @"Move Item":kJL_TXT("Move Item"),
-        @"Please enter the new location for this item:":kJL_TXT("Please enter the new location for this item:")
+        @"Move Item":kJL_TXT("Move_Item"),
+        @"Please enter the new location for this item:":kJL_TXT("Please_enter_the_new_location_for_this_item:")
     };
     if ([webServer start]) {
         NSString *wifi_IP = [SJXCSMIPHelper deviceIPAdress];

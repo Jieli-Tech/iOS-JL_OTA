@@ -15,6 +15,7 @@
 #import <JL_BLEKit/JLModel_File.h>
 #import <JL_BLEKit/JLModel_EQ.h>
 #import <JL_BLEKit/JLDhaFitting.h>
+#import <JL_OTALib/JL_OTALib.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -47,26 +48,9 @@ typedef NS_ENUM(UInt8, JL_FunctionCode) {
     JL_FunctionCodeFMTX             = 6,    //发射频点
     JL_FunctionCodeCOMMON           = 0xff, //通用
 };
-typedef NS_ENUM(UInt8, JL_Partition) {
-    JL_PartitionSingle              = 0,    //固件单备份
-    JL_PartitionDouble              = 1,    //固件双备份
-};
-typedef NS_ENUM(UInt8, JL_OtaHeadset) {
-    JL_OtaHeadsetNO                 = 0,    //耳机单备份 正常升级
-    JL_OtaHeadsetYES                = 1,    //耳机单备份 强制升级
-};
-typedef NS_ENUM(UInt8, JL_OtaWatch) {
-    JL_OtaWatchNO                   = 0,    //手表资源 正常升级
-    JL_OtaWatchYES                  = 1,    //手表资源 强制升级
-};
-typedef NS_ENUM(UInt8, JL_OtaStatus) {
-    JL_OtaStatusNormal              = 0,    //正常升级
-    JL_OtaStatusForce               = 1,    //强制升级
-};
-typedef NS_ENUM(UInt8, JL_BootLoader) {
-    JL_BootLoaderNO                 = 0,    //不需要下载Bootloader
-    JL_BootLoaderYES                = 1,    //需要下载BootLoader
-};
+
+
+
 typedef NS_ENUM(UInt8, JL_OtaBleAllowConnect) {
     JL_OtaBleAllowConnectYES        = 0,    //OTA 允许BLE连接
     JL_OtaBleAllowConnectNO         = 1,    //OTA 禁止BLE连接
@@ -240,9 +224,12 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 
 @interface JLModel_Device : NSObject<NSCopying>
 @property (copy,  nonatomic) NSString           *mBLE_UUID;       //设备UUID
-
 @property (copy,  nonatomic) NSString           *versionProtocol;       //协议版本
 @property (copy,  nonatomic) NSString           *versionFirmware;       //固件版本
+/// 单包固件最大发送值，APP单次能收到最大的值
+@property (assign,nonatomic) NSInteger          getMtu;
+/// 单包固件最大接收值（MaxMtu）APP单次可发送最大值
+@property (assign,nonatomic) NSInteger          sendMtu;
 @property (assign,nonatomic) JL_SDKType         sdkType;                //SDK类型
 @property (assign,nonatomic) NSUInteger         battery;                //电量0~9
 @property (assign,nonatomic) NSUInteger         currentVol;             //当前音量
@@ -383,11 +370,21 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 @property (copy,  nonatomic) NSString           *typeSupport;           //解码音频格式
     
 /*--- RTC INFO ---*/
-@property (assign,nonatomic) uint8_t             rtcVersion;            //RTC 版本
-@property (assign,nonatomic) JL_RTCAlarmType     rtcAlarmType;          //是否支持闹铃设置
-@property (strong,nonatomic) JLModel_RTC         *rtcModel;             //设备当前时间
-@property (strong,nonatomic) NSMutableArray      *rtcAlarms;            //设备闹钟数组
-@property (strong,nonatomic) NSMutableArray      *rtcDfRings;           //默认铃声
+
+///RTC 版本
+@property (assign,nonatomic) uint8_t             rtcVersion __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_AlarmClockManager class instead, this property is about to become invalid")));
+
+///是否支持闹铃设置
+@property (assign,nonatomic) JL_RTCAlarmType     rtcAlarmType __attribute__((deprecated ( "Use the instance property rtcAlarmType of the JL_AlarmClockManager class instead, this property is about to become invalid")));
+
+///设备当前时间
+@property (strong,nonatomic) JLModel_RTC         *rtcModel __attribute__((deprecated ( "Use the instance property rtcModel of the JL_AlarmClockManager class instead, this property is about to become invalid")));
+
+///设备闹钟数组
+@property (strong,nonatomic) NSMutableArray      *rtcAlarms __attribute__((deprecated ( "Use the instance property rtcAlarms of the JL_AlarmClockManager class instead, this property is about to become invalid")));
+
+///默认铃声
+@property (strong,nonatomic) NSMutableArray      *rtcDfRings __attribute__((deprecated ( "Use the instance property rtcDfRings of the JL_AlarmClockManager class instead, this property is about to become invalid")));
 
 /*--- LineIn INFO ---*/
 @property (assign,nonatomic) JL_LineInStatus    lineInStatus;           //LineIn状态

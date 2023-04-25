@@ -1,1 +1,1 @@
-../../../Masonry/Masonry/MASConstraint+Private.h
+link ../../../Masonry/Masonry/MASConstraint+Private.h

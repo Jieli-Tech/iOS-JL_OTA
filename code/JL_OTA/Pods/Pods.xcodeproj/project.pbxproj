@@ -15,6 +15,7 @@
 			dependencies = (
 			);
 			name = Bugly;
+			productName = Bugly;
 		};
 /* End PBXAggregateTarget section */
 
@@ -318,7 +319,7 @@
 		99BE8C6C66306BC1702F70FE02E78F03 /* MJRefreshNormalHeader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MJRefreshNormalHeader.h; path = MJRefresh/Custom/Header/MJRefreshNormalHeader.h; sourceTree = "<group>"; };
 		9BF4A3FEEBA8CAED85AA85783A9E7815 /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+MASAdditions.h"; path = "Masonry/NSArray+MASAdditions.h"; sourceTree = "<group>"; };
 		9C90751B57E9092CF8F69F44F883E596 /* MJRefreshTrailer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJRefreshTrailer.m; path = MJRefresh/Base/MJRefreshTrailer.m; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A2464065D17FAD6CD704B49634A5DEEC /* MJRefreshNormalHeader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJRefreshNormalHeader.m; path = MJRefresh/Custom/Header/MJRefreshNormalHeader.m; sourceTree = "<group>"; };
 		A312F6A525E5D77A814A9FF31B652DCC /* AFURLSessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLSessionManager.h; path = AFNetworking/AFURLSessionManager.h; sourceTree = "<group>"; };
 		A3E4AF04FDBC075C73AA0BEDF1D63EB6 /* GCDWebServerFileResponse.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GCDWebServerFileResponse.m; path = GCDWebServer/Responses/GCDWebServerFileResponse.m; sourceTree = "<group>"; };
@@ -528,7 +529,6 @@
 				F7011CE6021B25750609FEEAEBB620A9 /* Resources */,
 				0BC4A7C73471EEC3A8A665A3CF0DDBD5 /* Support Files */,
 			);
-			name = MJRefresh;
 			path = MJRefresh;
 			sourceTree = "<group>";
 		};
@@ -562,7 +562,6 @@
 				8B904BD7E1C13BE51AD1D672CC949B61 /* ViewController+MASAdditions.m */,
 				8C1226FAB7193BC1CEB5DCDC3F4B0FE7 /* Support Files */,
 			);
-			name = Masonry;
 			path = Masonry;
 			sourceTree = "<group>";
 		};
@@ -586,7 +585,6 @@
 				873F276E0D1F8EB3259D9261CEA39200 /* Support Files */,
 				7827DCC9C92850EDC7A01AA1A5920FC1 /* UIKit */,
 			);
-			name = AFNetworking;
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
@@ -700,7 +698,6 @@
 				8F1DAB030DB8742C6F62F5CDC8C39CFA /* WebDAV */,
 				808AE19DE6AFA6B1EDA577826DB040F3 /* WebUploader */,
 			);
-			name = GCDWebServer;
 			path = GCDWebServer;
 			sourceTree = "<group>";
 		};
@@ -800,7 +797,6 @@
 				D882C19D1AF0FA8921CD903DA41DAE1C /* Frameworks */,
 				E4FE73F044219A97CA1A9E9873832552 /* Support Files */,
 			);
-			name = Bugly;
 			path = Bugly;
 			sourceTree = "<group>";
 		};
@@ -810,7 +806,6 @@
 				A89FDC38F00AB2BE680C79E27AB66B97 /* ObjC */,
 				2ACAFB880FFF3F60AC9523C4B4C212C9 /* Support Files */,
 			);
-			name = Colours;
 			path = Colours;
 			sourceTree = "<group>";
 		};

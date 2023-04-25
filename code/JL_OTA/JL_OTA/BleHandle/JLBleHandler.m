@@ -65,8 +65,8 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
         JLModel_Device *model = [[[JL_RunSDK sharedInstance] mBleEntityM].mCmdManager outputDeviceModel];
         upSt = model.otaStatus;
     }else{
-        JLModel_Device *model = [userManager.mAssist.mCmdManager outputDeviceModel];
-        upSt = model.otaStatus;
+        
+        upSt = userManager.otaManager.otaStatus;
     }
     if (upSt == JL_OtaStatusForce){
         return YES;
@@ -112,7 +112,7 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
 }
 
 -(void)handleDisconnect{
-    if([ToolsHelper isConnectBySDK]){
+    if(![ToolsHelper isConnectBySDK]){
         JL_EntityM *entity = [[JL_RunSDK sharedInstance] mBleEntityM];
         [sdkManager disconnectEntity:entity Result:^(JL_EntityM_Status status) {
             
@@ -127,9 +127,9 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
         NSLog(@"---> OTA SDK 正在通过Mac Addr方式回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mBleAddr);
         [sdkManager scanStart];
     }else{
-        JLModel_Device *model = [[JLBleManager sharedInstance].mAssist.mCmdManager outputDeviceModel];
-        NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", model.bleAddr);
-        [JLBleManager sharedInstance].lastBleMacAddress = model.bleAddr;
+        
+        NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", userManager.otaManager.bleAddr);
+        [JLBleManager sharedInstance].lastBleMacAddress = userManager.otaManager.bleAddr;
         [[JLBleManager sharedInstance] startScanBLE];
     }
 }
@@ -142,7 +142,7 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
             
         }];
     }else{
-        NSLog(@"---> OTA正在回连设备... %@", [JLBleManager sharedInstance].mBlePeripheral.name);
+        NSLog(@"---> OTA正在回连设备... %@,%@", [JLBleManager sharedInstance].mBlePeripheral.name,userManager.lastUUID);
         [userManager connectPeripheralWithUUID:userManager.lastUUID];
     }
 }
@@ -216,7 +216,8 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
     }else{
        JLBleEntity * entity = [[JLBleManager sharedInstance] currentEntity];
         if(entity){
-            [[[JLBleManager sharedInstance] mAssist].mCmdManager.mOTAManager cmdOTACancelResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+
+            [[JLBleManager sharedInstance] otaFuncCancel:^(uint8_t status) {
                 block(status);
             }];
         }else{

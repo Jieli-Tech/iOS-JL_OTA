@@ -75,7 +75,7 @@
     [_sdkVersionBtn setTitleColor:[UIColor colorFromHexString:@"#6F6F6F"] forState:UIControlStateNormal];
     [_sdkVersionBtn setBackgroundColor:[UIColor clearColor]];
     [_sdkVersionBtn addTarget:self action:@selector(sdkVersionBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [_sdkVersionBtn setTitle:[NSString stringWithFormat:@"%@：V%@",kJL_TXT("sdk_version"),[JL_BLEMultiple versionOfSDK]] forState:UIControlStateNormal];
+    [_sdkVersionBtn setTitle:[NSString stringWithFormat:@"%@：%@",kJL_TXT("sdk_version"),[JL_OTAManager logSDKVersion]] forState:UIControlStateNormal];
     [self.view addSubview:_sdkVersionBtn];
     
     [_sdkVersionBtn mas_makeConstraints:^(MASConstraintMaker *make) {

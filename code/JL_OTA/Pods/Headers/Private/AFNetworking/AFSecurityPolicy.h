@@ -1,1 +1,1 @@
-../../../AFNetworking/AFNetworking/AFSecurityPolicy.h
+link ../../../AFNetworking/AFNetworking/AFSecurityPolicy.h

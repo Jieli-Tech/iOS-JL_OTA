@@ -1,1 +1,1 @@
-../../../MJRefresh/MJRefresh/Custom/Trailer/MJRefreshStateTrailer.h
+link ../../../MJRefresh/MJRefresh/Custom/Trailer/MJRefreshStateTrailer.h

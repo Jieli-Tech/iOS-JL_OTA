@@ -48,7 +48,7 @@
         make.height.offset(164);
     }];
     self.nullLab = [UILabel new];
-    self.nullLab.text = [NSString stringWithFormat:@"%@%@",kJL_TXT("device"),kJL_TXT("not_connect")];
+    self.nullLab.text = kJL_TXT("device_not_connected");
     self.nullLab.textAlignment = NSTextAlignmentCenter;
     self.nullLab.font = FontMedium(14);
     self.nullLab.textColor = [UIColor colorFromHexString:@"#AEAEAE"];
@@ -85,7 +85,6 @@
     
     
     [_updateBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_subTable.mas_bottom).offset(35);
         make.left.right.equalTo(self.view).inset(16);
         make.height.offset(48);
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).inset(40);
@@ -241,7 +240,7 @@
     cell.delegate = self;
     UpdateObjc *item = self.itemArray[indexPath.row];
     cell.index = indexPath.row;
-    cell.mainLab.text = [NSString stringWithFormat:@"%@：%@",kJL_TXT("device"),item.info.entity.mName];
+    cell.mainLab.text = [NSString stringWithFormat:@"%@",item.info.entity.mName];
     if(item.selected){
         [cell.chooseBtn setImage:[UIImage imageNamed:@"icon_choose_02_sel"] forState:UIControlStateNormal];
     }else{

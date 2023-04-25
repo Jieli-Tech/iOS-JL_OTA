@@ -16,10 +16,10 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 
 #import <JL_BLEKit/JL_Tools.h>
 #import <JL_BLEKit/JL_RCSP.h>
+#import <JL_BLEKit/JL_OpCode.h>
 #import <JL_BLEKit/JL_Handle.h>
 #import <JL_BLEKit/JL_BLEAction.h>
 #import <JL_BLEKit/JL_vad.h>
-#import <JL_BLEKit/JL_ble_pair.h>
 #import <JL_BLEKit/JL_TypeEnum.h>
 
 #import <JL_BLEKit/JLModel_Device.h>
@@ -45,7 +45,6 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JL_FunctionBaseManager.h>
 #import <JL_BLEKit/JL_FileManager.h>
 #import <JL_BLEKit/JL_SmallFileManager.h>
-#import <JL_BLEKit/JL_OTAManager.h>
 #import <JL_BLEKit/JL_FlashOperateManager.h>
 #import <JL_BLEKit/JL_BinChargeManager.h>
 #import <JL_BLEKit/JL_CallManager.h>
@@ -93,6 +92,5 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 
 #import <JL_BlEKit/bmp_convert.h>
 #import <JL_BLEKit/BitmapTool.h>
-#import <JL_BLEKit/jl_ufw.h>
 
 

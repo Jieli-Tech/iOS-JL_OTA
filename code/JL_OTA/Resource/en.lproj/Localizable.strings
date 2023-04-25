@@ -3,6 +3,7 @@
     Copyright Â© www.zh-jieli.com. All rights reserved.
 */
 
+
 "connect" = "Connect";
 "update" = "Update";
 "setting" = "Setting";
@@ -42,7 +43,7 @@
 "weather_disconnect_device" = "Weather you to disconnect device";
 "connecting" = "Connecting";
 "ble_not_open" = "Bluetooth not ready";
-"need_upgrade_now" = "The device needs to be forced to upgrade, please go to the upgrade interface and select the ota upgrade file to upgrade!";
+"need_upgrade_now" = "The device needs to be forced updated";
 "connect_ok" = "Connect success！";
 "connect_first" = "Connect device first!";
 "update_timeout" = "Update timeout";
@@ -80,16 +81,17 @@
 "fault_tolerant_times" = "Fault-tolerant times";
 "update_finish_end" = "Update finish";
 "need_select_file" = "No file selected";
-
 "wecome_to_use_ota" = "Welcome to the 'JL OTA' file management platform~";
 "drag_the_update_file" = "Please drag the upgrade file.";
 "OTA_Update" = "JL OTA";
-
-"Upload Files" = "Upload Files";
-"Create Folder" = "Create Folder";
+"Upload_Files" = "Upload Files";
+"Create_Folder" = "Create Folder";
 "Refresh" = "Refresh";
-"File Uploads in Progress" = "File Uploads in Progress";
-"Please enter the name of the folder to be created:" = "Please enter the name of the folder to be created:";
+"File_Uploads_in_Progress" = "File Uploads in Progress";
+"Please_enter_the_name_of_the_folder_to_be_created" = "Please enter the name of the folder to be created:";
 "Cancel" = "Cancel";
-"Move Item" = "Move Item";
-"Please enter the new location for this item:" = "Please enter the new location for this item:";
+"Move_Item" = "Move Item";
+"Please_enter_the_new_location_for_this_item:" = "Please enter the new location for this item:";
+"file_select" = "Select file";
+"device_not_connected" = "Device not connected";
+

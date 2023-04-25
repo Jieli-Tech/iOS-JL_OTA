@@ -21,10 +21,16 @@ typedef void(^JL_Assist_BK)(BOOL isPaired);
 @property(strong,nonatomic)NSString           *mRcsp_R;       //特征：RCSP读
 @property(strong,nonatomic)NSData *__nullable mPairKey;       //握手(配对)秘钥
 @property(assign,nonatomic)BOOL               mNeedPaired;    //是否需要配对
+@property(assign,nonatomic)BOOL               mLogData;       //是否打印裸数据
 
 /// Execute in a method 「- (void)centralManagerDidUpdateState:」
 /// @param state CBManagerState
 -(void)assistUpdateState:(CBManagerState)state;
+
+/// Execute in a method 「- (void)centralManager:didDisconnectPeripheral:error:」
+/// @param peripheral CBPeripheral
+-(void)assistDisconnectPeripheral:(CBPeripheral *)peripheral;
+
 
 /// Execute in a method 「- (void)peripheral:didDiscoverServices:」
 /// @param service CBService
@@ -44,9 +50,6 @@ typedef void(^JL_Assist_BK)(BOOL isPaired);
 /// @param characteristic CBCharacteristic
 -(void)assistUpdateValueForCharacteristic:(CBCharacteristic *)characteristic;
 
-/// Execute in a method 「- (void)centralManager:didDisconnectPeripheral:error:」
-/// @param peripheral CBPeripheral
--(void)assistDisconnectPeripheral:(CBPeripheral *)peripheral;
 
 @end
 

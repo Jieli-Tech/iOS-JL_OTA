@@ -27,7 +27,6 @@
 #import <JL_BLEKit/JL_FunctionBaseManager.h>
 #import <JL_BLEKit/JL_SmallFileManager.h>
 #import <JL_BLEKit/JL_FileManager.h>
-#import <JL_BLEKit/JL_OTAManager.h>
 #import <JL_BLEKit/JL_FlashOperateManager.h>
 #import <JL_BLEKit/JL_BinChargeManager.h>
 #import <JL_BLEKit/JL_AlarmClockManager.h>
@@ -47,6 +46,7 @@
 #import <JL_BLEKit/JL_BigDataManager.h>
 #import <JL_BLEKit/JL_DeviceLogs.h>
 #import <JL_BLEKit/JL_BatchManger.h>
+#import <JL_OTALib/JL_OTALib.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -64,7 +64,6 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 @protocol JL_ManagerMDelegate <NSObject>
 @optional
 -(void)onManagerSendPackage:(JL_PKG*)pkg;
-
 @end
 
 @class JL_EntityM;

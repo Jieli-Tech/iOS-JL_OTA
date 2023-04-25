@@ -7,10 +7,14 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-#import <JL_BLEKit/JL_BLEKit.h>
-#import <DFUnits/DFUnits.h>
 #import <UIKit/UIKit.h>
+#import <DFUnits/DFUnits.h>
 #import "JLBleEntity.h"
+#import "HandleBroadcastPtl.h"
+
+#import <JL_OTALib/JL_OTALib.h>
+#import <JL_HashPair/JL_HashPair.h>
+#import <JL_AdvParse/JL_AdvParse.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +23,8 @@ extern NSString *kFLT_BLE_FOUND;         //发现设备
 extern NSString *kFLT_BLE_PAIRED;        //已配对
 extern NSString *kFLT_BLE_CONNECTED;     //已连接
 extern NSString *kFLT_BLE_DISCONNECTED;  //断开连接
+
+
 
 @protocol JLBleManagerOtaDelegate <NSObject>
 
@@ -31,15 +37,27 @@ extern NSString *kFLT_BLE_DISCONNECTED;  //断开连接
 @end
 
 
-@interface JLBleManager : ECOneToMorePtl
+@interface JLBleManager : HandleBroadcastPtl
 
 @property (assign, nonatomic) CBManagerState mBleManagerState;
 @property (strong, nonatomic) CBPeripheral *__nullable mBlePeripheral;
-@property (assign, nonatomic) BOOL isFilter;                            // 是否过滤非杰理蓝牙
-@property (assign, nonatomic) BOOL isPaired;                            // 连接蓝牙是否需要认证配对
-@property (strong, nonatomic) NSString *lastUUID;                        // 上一次连接的蓝牙UUID
-@property (strong, nonatomic) NSString *__nullable lastBleMacAddress;     // 上一次连接的蓝牙地址
-@property (strong, nonatomic) JL_Assist *mAssist;
+
+/// 连接蓝牙是否需要认证配对
+@property (assign, nonatomic) BOOL isPaired;
+
+/// 配对秘钥（默认为空）
+@property (assign, nonatomic) NSData *pairKey;
+
+/// 连接设备的MTU（单次最大发送数据）
+@property (assign, nonatomic) NSInteger bleMtu;
+
+/// 上一次连接的蓝牙UUID
+@property (strong, nonatomic) NSString *lastUUID;
+
+/// 上一次连接的蓝牙地址
+@property (strong, nonatomic) NSString *__nullable lastBleMacAddress;
+
+@property (strong, nonatomic) JL_OTAManager *otaManager;
 
 @property (assign,nonatomic)BOOL isConnected;
 
@@ -85,6 +103,8 @@ extern NSString *kFLT_BLE_DISCONNECTED;  //断开连接
 
 typedef void(^GET_DEVICE_CALLBACK)(BOOL needForcedUpgrade);
 
+typedef void(^CANCEL_CALLBACK)(uint8_t status);
+
 /**
  *  获取已连接的蓝牙设备信息
  */
@@ -94,6 +114,8 @@ typedef void(^GET_DEVICE_CALLBACK)(BOOL needForcedUpgrade);
  *  OTA升级
  */
 - (void)otaFuncWithFilePath:(NSString *)otaFilePath;
+
+- (void)otaFuncCancel:(CANCEL_CALLBACK _Nonnull)result;
 
 @end
 

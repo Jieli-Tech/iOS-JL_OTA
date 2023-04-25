@@ -1,1 +1,1 @@
-../../../AFNetworking/UIKit+AFNetworking/AFAutoPurgingImageCache.h
+link ../../../AFNetworking/UIKit+AFNetworking/AFAutoPurgingImageCache.h

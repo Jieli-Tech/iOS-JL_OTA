@@ -1,1 +1,1 @@
-../../../GCDWebServer/GCDWebServer/Core/GCDWebServerConnection.h
+link ../../../GCDWebServer/GCDWebServer/Core/GCDWebServerConnection.h

@@ -111,7 +111,9 @@
         _normalView.hidden = true;
         [_autoView failedStatus];
         _autoView.errorLab.text = [NSString stringWithFormat:@"%@:%@",kJL_TXT("reason"),[ToolsHelper errorReason:result]];
-//        [[LoopUpdateManager share] cleanList];
+        if(![ToolsHelper getFaultTolerant]){
+            [[LoopUpdateManager share] cleanList];
+        }
         _autoView.testNumberLab.text = [NSString stringWithFormat:@"%@%d,%@%d",kJL_TXT("number_of_test_tasks"),(int)[ToolsHelper getAutoTestOtaNumber],kJL_TXT("number_of_successful_tests"),(int)[[LoopUpdateManager share] finishNumber]];
     }else{
         _autoView.hidden = true;

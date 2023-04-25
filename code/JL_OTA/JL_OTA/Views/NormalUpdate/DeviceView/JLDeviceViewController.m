@@ -248,7 +248,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    [_btEnityList removeAllObjects];
+    [self.subTableView reloadData];
+    NSLog(@"_btEnityList.count:%d,%d",(int)_btEnityList.count,__LINE__);
     [self startScanDevice];
 }
 
@@ -288,6 +290,8 @@
         [self.subTableView.mj_header endRefreshing];
         return;
     }
+    
+
     /*--- 搜索蓝牙设备 ---*/
     [[JLBleHandler share] handleScanDevice];
     self.showAnimation = YES;

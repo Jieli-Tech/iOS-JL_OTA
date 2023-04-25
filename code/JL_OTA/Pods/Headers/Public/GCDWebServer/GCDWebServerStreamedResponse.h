@@ -1,1 +1,1 @@
-../../../GCDWebServer/GCDWebServer/Responses/GCDWebServerStreamedResponse.h
+link ../../../GCDWebServer/GCDWebServer/Responses/GCDWebServerStreamedResponse.h

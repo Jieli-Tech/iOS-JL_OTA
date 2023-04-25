@@ -32,6 +32,7 @@
 		1D5DA7B228FCFF7900A398EA /* TipsDeleteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7B128FCFF7900A398EA /* TipsDeleteView.m */; };
 		1D5DA7B628FD25C700A398EA /* JLShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7B528FD25C700A398EA /* JLShareDetailViewController.m */; };
 		1D5DF08628E597F500124EEF /* JLDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D05BBA728E592630033BD28 /* JLDeviceViewController.m */; };
+		1D5EB63A29B8182E0096AEE4 /* SingleDataSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5EB63929B8182E0096AEE4 /* SingleDataSender.m */; };
 		1D73A29529430620003D7EDE /* AutoDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D73A29429430620003D7EDE /* AutoDevicesViewController.m */; };
 		1D73A2992943090D003D7EDE /* AutoUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D73A2982943090D003D7EDE /* AutoUpdateViewController.m */; };
 		1D73A29D29430ABD003D7EDE /* AutoSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D73A29C29430ABD003D7EDE /* AutoSettingViewController.m */; };
@@ -59,9 +60,13 @@
 		1DE45E4228F69E6400BB7AD2 /* SDKBleHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE45E4128F69E6400BB7AD2 /* SDKBleHelper.m */; };
 		1DE45E4328F6B33F00BB7AD2 /* JL_RunSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD092711466B0090027A /* JL_RunSDK.m */; };
 		1DE45E4628F7AEB900BB7AD2 /* LoopUpdateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE45E4528F7AEB900BB7AD2 /* LoopUpdateManager.m */; };
-		1DF308F3296E95F500C09F6A /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF308F2296E95F500C09F6A /* JL_BLEKit.framework */; };
+		1DF2527F2987A60F0058EDA0 /* HandleBroadcastPtl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF2527E2987A60F0058EDA0 /* HandleBroadcastPtl.m */; };
 		1DFA8DDD28F961A700E7EB99 /* JLShareFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DFA8DDC28F961A700E7EB99 /* JLShareFileViewController.m */; };
 		1DFA8DDF28F9677300E7EB99 /* file_share.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1DFA8DDE28F9677300E7EB99 /* file_share.gif */; };
+		1DFE84F729BABDE500943809 /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DFE84F329BABDE500943809 /* JL_BLEKit.framework */; };
+		1DFE84F829BABDE500943809 /* JL_OTALib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DFE84F429BABDE500943809 /* JL_OTALib.framework */; };
+		1DFE84F929BABDE500943809 /* JL_AdvParse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DFE84F529BABDE500943809 /* JL_AdvParse.framework */; };
+		1DFE84FA29BABDE500943809 /* JL_HashPair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DFE84F629BABDE500943809 /* JL_HashPair.framework */; };
 		1DFF1B0E28FCE72800C0EDBC /* JLShareLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF1B0D28FCE72800C0EDBC /* JLShareLogViewController.m */; };
 		485354C527390335004B426F /* GCDWebKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 485354B127390335004B426F /* GCDWebKit.m */; };
 		485354C627390335004B426F /* SJXCSMIPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 485354B227390335004B426F /* SJXCSMIPHelper.m */; };
@@ -86,20 +91,8 @@
 		BECEAD74271441B70090027A /* UITableViewCell+JLCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		1DD757B0294AEDFB00DE5702 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		1D0127B5297159EE00A0F676 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1D02819B29345430001EE828 /* PopoverViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopoverViewCell.h; sourceTree = "<group>"; };
 		1D02819C29345430001EE828 /* PopoverViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopoverViewCell.m; sourceTree = "<group>"; };
 		1D02819F29346791001EE828 /* BroadcastMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BroadcastMainViewController.h; sourceTree = "<group>"; };
@@ -133,6 +126,8 @@
 		1D2477BA28F17BFB00C8EC48 /* UfwFileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UfwFileCell.h; sourceTree = "<group>"; };
 		1D2477BB28F17BFB00C8EC48 /* UfwFileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UfwFileCell.m; sourceTree = "<group>"; };
 		1D2477BC28F17BFB00C8EC48 /* UfwFileCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UfwFileCell.xib; sourceTree = "<group>"; };
+		1D27E11E298B502D005244AB /* JLBleAssistManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLBleAssistManager.m; sourceTree = "<group>"; };
+		1D27E11F298B502D005244AB /* JLBleAssistManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLBleAssistManager.h; sourceTree = "<group>"; };
 		1D2CA7DA2963FF5800893829 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1D2CA7DB2963FF5800893829 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1D2FA5DE2909309000D5E547 /* AutoUpdateTipsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoUpdateTipsView.h; sourceTree = "<group>"; };
@@ -151,6 +146,8 @@
 		1D5DA7B128FCFF7900A398EA /* TipsDeleteView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TipsDeleteView.m; sourceTree = "<group>"; };
 		1D5DA7B428FD25C700A398EA /* JLShareDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLShareDetailViewController.h; sourceTree = "<group>"; };
 		1D5DA7B528FD25C700A398EA /* JLShareDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLShareDetailViewController.m; sourceTree = "<group>"; };
+		1D5EB63829B8182E0096AEE4 /* SingleDataSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SingleDataSender.h; sourceTree = "<group>"; };
+		1D5EB63929B8182E0096AEE4 /* SingleDataSender.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SingleDataSender.m; sourceTree = "<group>"; };
 		1D73A29329430620003D7EDE /* AutoDevicesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoDevicesViewController.h; sourceTree = "<group>"; };
 		1D73A29429430620003D7EDE /* AutoDevicesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoDevicesViewController.m; sourceTree = "<group>"; };
 		1D73A2972943090D003D7EDE /* AutoUpdateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoUpdateViewController.h; sourceTree = "<group>"; };
@@ -198,10 +195,15 @@
 		1DE45E4128F69E6400BB7AD2 /* SDKBleHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDKBleHelper.m; sourceTree = "<group>"; };
 		1DE45E4428F7AEB900BB7AD2 /* LoopUpdateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoopUpdateManager.h; sourceTree = "<group>"; };
 		1DE45E4528F7AEB900BB7AD2 /* LoopUpdateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoopUpdateManager.m; sourceTree = "<group>"; };
-		1DF308F2296E95F500C09F6A /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
+		1DF2527D2987A60F0058EDA0 /* HandleBroadcastPtl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HandleBroadcastPtl.h; sourceTree = "<group>"; };
+		1DF2527E2987A60F0058EDA0 /* HandleBroadcastPtl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HandleBroadcastPtl.m; sourceTree = "<group>"; };
 		1DFA8DDB28F961A700E7EB99 /* JLShareFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLShareFileViewController.h; sourceTree = "<group>"; };
 		1DFA8DDC28F961A700E7EB99 /* JLShareFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLShareFileViewController.m; sourceTree = "<group>"; };
 		1DFA8DDE28F9677300E7EB99 /* file_share.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = file_share.gif; sourceTree = "<group>"; };
+		1DFE84F329BABDE500943809 /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
+		1DFE84F429BABDE500943809 /* JL_OTALib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_OTALib.framework; sourceTree = "<group>"; };
+		1DFE84F529BABDE500943809 /* JL_AdvParse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_AdvParse.framework; sourceTree = "<group>"; };
+		1DFE84F629BABDE500943809 /* JL_HashPair.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_HashPair.framework; sourceTree = "<group>"; };
 		1DFF1B0C28FCE72800C0EDBC /* JLShareLogViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLShareLogViewController.h; sourceTree = "<group>"; };
 		1DFF1B0D28FCE72800C0EDBC /* JLShareLogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLShareLogViewController.m; sourceTree = "<group>"; };
 		485354AF27390335004B426F /* GCDWebKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebKit.h; sourceTree = "<group>"; };
@@ -251,14 +253,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DFE84FA29BABDE500943809 /* JL_HashPair.framework in Frameworks */,
 				1DD757B7294AEEBD00DE5702 /* SystemConfiguration.framework in Frameworks */,
 				1DD757B5294AEEB600DE5702 /* Security.framework in Frameworks */,
 				1DD757B3294AEEAB00DE5702 /* libc++.tbd in Frameworks */,
 				485354F527390825004B426F /* libz.tbd in Frameworks */,
+				1DFE84F829BABDE500943809 /* JL_OTALib.framework in Frameworks */,
 				1DDE6A1F29152955009BD1BA /* DFUnits.framework in Frameworks */,
 				485354F32739081B004B426F /* libxml2.tbd in Frameworks */,
 				B2586349BAABE434E407B5A7 /* libPods-JL_OTA.a in Frameworks */,
-				1DF308F3296E95F500C09F6A /* JL_BLEKit.framework in Frameworks */,
+				1DFE84F929BABDE500943809 /* JL_AdvParse.framework in Frameworks */,
+				1DFE84F729BABDE500943809 /* JL_BLEKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +377,15 @@
 				1D2477BC28F17BFB00C8EC48 /* UfwFileCell.xib */,
 			);
 			path = UfwFileCell;
+			sourceTree = "<group>";
+		};
+		1D27E11D298B48DF005244AB /* BleByAssist */ = {
+			isa = PBXGroup;
+			children = (
+				1D27E11F298B502D005244AB /* JLBleAssistManager.h */,
+				1D27E11E298B502D005244AB /* JLBleAssistManager.m */,
+			);
+			path = BleByAssist;
 			sourceTree = "<group>";
 		};
 		1D2FA5DD2909306300D5E547 /* ProgressViews */ = {
@@ -624,6 +638,7 @@
 			children = (
 				BECEACBC271132DE0090027A /* AppDelegate.h */,
 				BECEACBD271132DE0090027A /* AppDelegate.m */,
+				1D27E11D298B48DF005244AB /* BleByAssist */,
 				1D30D5AA292F4FC500BC5E89 /* BroadcastSpeakers */,
 				1DE45E3F28F69E4400BB7AD2 /* SDKBleManager */,
 				BECEAD552713E5910090027A /* BleManager */,
@@ -641,7 +656,10 @@
 		BECEACFB2711416E0090027A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1DF308F2296E95F500C09F6A /* JL_BLEKit.framework */,
+				1DFE84F529BABDE500943809 /* JL_AdvParse.framework */,
+				1DFE84F329BABDE500943809 /* JL_BLEKit.framework */,
+				1DFE84F629BABDE500943809 /* JL_HashPair.framework */,
+				1DFE84F429BABDE500943809 /* JL_OTALib.framework */,
 				1DD757B6294AEEBD00DE5702 /* SystemConfiguration.framework */,
 				1DD757B4294AEEB600DE5702 /* Security.framework */,
 				1DD757B2294AEEAB00DE5702 /* libc++.tbd */,
@@ -693,10 +711,14 @@
 		BECEAD552713E5910090027A /* BleManager */ = {
 			isa = PBXGroup;
 			children = (
+				1DF2527D2987A60F0058EDA0 /* HandleBroadcastPtl.h */,
+				1DF2527E2987A60F0058EDA0 /* HandleBroadcastPtl.m */,
 				BECEAD4E2713D1E90090027A /* JLBleManager.h */,
 				BECEAD4F2713D1E90090027A /* JLBleManager.m */,
 				BECEAD562713E5AF0090027A /* JLBleEntity.h */,
 				BECEAD572713E5AF0090027A /* JLBleEntity.m */,
+				1D5EB63829B8182E0096AEE4 /* SingleDataSender.h */,
+				1D5EB63929B8182E0096AEE4 /* SingleDataSender.m */,
 			);
 			path = BleManager;
 			sourceTree = "<group>";
@@ -725,7 +747,6 @@
 				BECEACB6271132DE0090027A /* Frameworks */,
 				BECEACB7271132DE0090027A /* Resources */,
 				5E2C286442DE7B55B1EA6AF1 /* [CP] Copy Pods Resources */,
-				1DD757B0294AEDFB00DE5702 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -846,6 +867,7 @@
 				1D30D5BE292F8E1000BC5E89 /* BroadcastThread.m in Sources */,
 				1D2477B828F1627300C8EC48 /* JLUpgradeViewController.m in Sources */,
 				1DE45E4328F6B33F00BB7AD2 /* JL_RunSDK.m in Sources */,
+				1DF2527F2987A60F0058EDA0 /* HandleBroadcastPtl.m in Sources */,
 				1DE45E3628F54D5600BB7AD2 /* SettingTableViewCell.m in Sources */,
 				1D0281A429346837001EE828 /* FileViewController.m in Sources */,
 				1DC4DD2A29370ADA00E157EB /* UfwConfig.m in Sources */,
@@ -857,6 +879,7 @@
 				1D2FA5EA290A73CA00D5E547 /* NormalFinishView.m in Sources */,
 				1D0281AA2934D2ED001EE828 /* NSString+Size.m in Sources */,
 				1D73A29D29430ABD003D7EDE /* AutoSettingViewController.m in Sources */,
+				1D5EB63A29B8182E0096AEE4 /* SingleDataSender.m in Sources */,
 				1DFF1B0E28FCE72800C0EDBC /* JLShareLogViewController.m in Sources */,
 				BECEAD6A271423C90090027A /* JLOtaFileManager.m in Sources */,
 				1D73A2A029430CB0003D7EDE /* JLAutoViewsController.m in Sources */,
@@ -920,6 +943,7 @@
 				BECEACCB271132E20090027A /* Base */,
 				BECEAD4A2713D0330090027A /* zh-Hans */,
 				1D2CA7DA2963FF5800893829 /* ko */,
+				1D0127B5297159EE00A0F676 /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -991,7 +1015,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1046,7 +1070,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1063,7 +1087,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1089,7 +1113,7 @@
 					"@executable_path/Frameworks",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MARKETING_VERSION = 3.2.0;
+				MARKETING_VERSION = 3.3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1097,11 +1121,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.JLBLE.OtaUpdate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "JL_OTA/Tools/JL_OTA-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1113,7 +1140,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1139,7 +1166,7 @@
 					"@executable_path/Frameworks",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MARKETING_VERSION = 3.2.0;
+				MARKETING_VERSION = 3.3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1147,10 +1174,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.JLBLE.OtaUpdate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "JL_OTA/Tools/JL_OTA-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

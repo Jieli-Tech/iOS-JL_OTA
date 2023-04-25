@@ -60,7 +60,7 @@
         [_centerView addSubview:_chooseBtn];
         
         _selectFileBtn = [UIButton new];
-        [_selectFileBtn setTitle:kJL_TXT("select_file") forState:UIControlStateNormal];
+        [_selectFileBtn setTitle:kJL_TXT("file_select") forState:UIControlStateNormal];
         _selectFileBtn.titleLabel.font = [UIFont systemFontOfSize:13];
         [_selectFileBtn setTitleColor:[UIColor colorFromHexString:@"#398BFF"] forState:UIControlStateNormal];
         [_selectFileBtn setTitleColor:[UIColor colorFromHexString:@"#949494"] forState:UIControlStateHighlighted];

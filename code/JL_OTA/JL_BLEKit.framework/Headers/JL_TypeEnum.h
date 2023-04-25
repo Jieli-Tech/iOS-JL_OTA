@@ -39,26 +39,6 @@ typedef void(^JL_CMD_RESPOND)(JL_CMDStatus status, uint8_t sn, NSData* __nullabl
 
 //---------------------------------------------------------//
 
-
-typedef NS_ENUM(UInt8,JL_AdvType) {
-    JL_AdvTypeSoundBox              = 0,     //音箱类型
-    JL_AdvTypeChargingBin           = 1,     //充电仓类型
-    JL_AdvTypeTWS                   = 2,     //TWS耳机类型
-    JL_AdvTypeHeadset               = 3,     //普通耳机类型
-    JL_AdvTypeSoundCard             = 4,     //声卡类型
-    JL_AdvTypeWatch                 = 5,     //手表类型
-    JL_AdvTypeTradition             = 6,     //传统设备类型
-};
-typedef NS_ENUM(NSInteger,JL_DeviceType) {
-    JL_DeviceTypeSoundBox           = 0,     //AI音箱类型
-    JL_DeviceTypeChargingBin        = 1,     //充电仓类型
-    JL_DeviceTypeTWS                = 2,     //TWS耳机类型
-    JL_DeviceTypeHeadset            = 3,     //普通耳机类型
-    JL_DeviceTypeSoundCard          = 4,     //声卡类型
-    JL_DeviceTypeWatch              = 5,     //手表类型
-    JL_DeviceTypeTradition          = -1,    //传统设备类型
-};
-
 typedef NS_ENUM(UInt8,JLDevSpecialType) {
     ///普通正常设备
     JLDevSpecialType_Normal = 0x00,

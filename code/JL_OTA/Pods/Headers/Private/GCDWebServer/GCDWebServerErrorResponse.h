@@ -1,1 +1,1 @@
-../../../GCDWebServer/GCDWebServer/Responses/GCDWebServerErrorResponse.h
+link ../../../GCDWebServer/GCDWebServer/Responses/GCDWebServerErrorResponse.h

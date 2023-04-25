@@ -79,7 +79,10 @@
     self.info.nowIndexStr = [NSString stringWithFormat:@"%d/%d",(int)self.finishNumber+1,(int)number];
     return YES;
     
+    
 }
+
+
 
 -(BOOL)toNextUpdate{
     

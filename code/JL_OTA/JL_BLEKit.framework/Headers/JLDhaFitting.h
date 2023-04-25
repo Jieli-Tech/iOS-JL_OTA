@@ -22,6 +22,12 @@ typedef NS_ENUM(UInt8, DhaChannel) {
     ///右声道
     DhaChannel_right = 0x01
 };
+//typedef enum : UInt8 {
+//    ///左声道
+//    DhaChannel_left = 0x00,
+//    ///右声道
+//    DhaChannel_right = 0x01
+//} DhaChannel;
 
 /// 左右耳验配类型
 typedef NS_ENUM(UInt8, DhaFittingType) {

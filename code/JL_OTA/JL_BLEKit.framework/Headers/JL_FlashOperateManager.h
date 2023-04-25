@@ -147,13 +147,25 @@ extern NSString *kJL_MANAGER_WATCH_FACE;
  开始/结束 更新UI
  @param flag        开始:0x01  结束:0x00
  */
--(void)cmdUpdateResourceFlashFlag:(JL_FlashOperateFlag)flag Result:(JL_FlashUpdate_BK __nullable)result;
+-(void)cmdUpdateResourceFlashFlag:(JL_FlashOperateFlag)flag Result:(JL_FlashUpdate_BK __nullable)result __attribute__((deprecated ( "The current interface is about to be canceled in version 2.0.0, please use cmdUpdateResourceFlashFlagAsync:Result:  instead")));
+
+/// 外挂Flash（资源更新）操作
+/// 异步回调
+/// - Parameters:
+///   - flag: flag
+///   - result: 操作结果
+-(void)cmdUpdateResourceFlashFlagAsync:(JL_FlashOperateFlag)flag Result:(JL_FlashUpdate_BK __nullable)result;
 
 #pragma mark ---> 断开连接，对FATFS处理。
 -(void)cmdFlashActionDisconnect;
 
 #pragma mark ---> 外挂Flash 手表资源更新标志位
--(void)cmdWatchUpdateResource;
+-(void)cmdWatchUpdateResource __attribute__((deprecated ( "The current interface is about to be canceled in version 2.0.0, please use cmdWatchUpdateResourceWith:(JL_CMD_RESPOND __nullable)result instead")));
+
+/// 打开设备升级资源标记操作
+/// - Parameter result: 设备回复结果
+/// 当设备回复的cmd代号为非 0 时，属于异常结束，不可继续升级
+-(void)cmdWatchUpdateResourceWith:(JL_CMD_RESPOND __nullable)result;
 
 #pragma mark ---> 外挂Flash 还原系统
 -(void)cmdFlashRecovery;

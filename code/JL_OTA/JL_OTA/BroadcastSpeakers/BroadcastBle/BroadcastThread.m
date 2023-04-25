@@ -38,7 +38,6 @@
     if (self) {
         _reconnectDict = [NSMutableDictionary new];
         self.senderThread = dispatch_queue_create("ota_thread", NULL);
-
         self.verifyList = [NSMutableArray new];
         
     }
