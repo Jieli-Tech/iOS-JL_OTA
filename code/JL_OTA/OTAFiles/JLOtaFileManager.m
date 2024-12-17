@@ -29,8 +29,8 @@ static NSString *_otaFileDocPath = @"upgrade";
     if (![[NSFileManager defaultManager] fileExistsAtPath:docFileFolderPath]) {
         NSError *error = nil;
         BOOL isSuccess = [[NSFileManager defaultManager] createDirectoryAtPath:docFileFolderPath withIntermediateDirectories:YES attributes:nil error:&error];
-        NSLog(@"createDirectoryAtPath %@, error = %@", docFileFolderPath, error);
-        NSLog(@"createDirectoryAtPath %@, isSuccess = %d", docFileFolderPath, isSuccess);
+        kJLLog(JLLOG_DEBUG, @"createDirectoryAtPath %@, error = %@", docFileFolderPath, error);
+        kJLLog(JLLOG_DEBUG, @"createDirectoryAtPath %@, isSuccess = %d", docFileFolderPath, isSuccess);
     }
     for (int i = 0; i < fileCount; i++) {
         // 本地资源路径
@@ -40,9 +40,9 @@ static NSString *_otaFileDocPath = @"upgrade";
         NSString *docFilePath = [NSString stringWithFormat:@"%@/%d.ufw", docFileFolderPath, i];
         // 资源转移
         if ([[NSFileManager defaultManager] createFileAtPath:docFilePath contents:fileData attributes:nil]) {
-            NSLog(@"沙盒ota升级文件初始化 success");
+            kJLLog(JLLOG_DEBUG, @"沙盒ota升级文件初始化 success");
         } else {
-            NSLog(@"沙盒ota升级文件初始化 fail");
+            kJLLog(JLLOG_DEBUG, @"沙盒ota升级文件初始化 fail");
         }
     }
 }

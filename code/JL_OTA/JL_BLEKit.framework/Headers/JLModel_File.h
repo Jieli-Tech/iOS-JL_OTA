@@ -22,9 +22,10 @@ typedef NS_ENUM(UInt8, JL_CardType) {
     JL_CardTypeFLASH                = 3,    //FLASH
     JL_CardTypeLineIn               = 4,    //LineIn
     JL_CardTypeFLASH2               = 5,    //FLASH2
+    JL_CardTypeFLASH3               = 6,    //FLASH3
 };
 
-@interface JLModel_File : NSObject<NSCopying>
+@interface JLModel_File : NSObject<NSCopying,NSCoding>
 @property (assign,nonatomic) JL_BrowseType  fileType;
 @property (assign,nonatomic) JL_CardType    cardType;
 @property (assign,nonatomic) uint32_t       fileClus;

@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/Base/MJRefreshFooter.h
+../../../MJRefresh/MJRefresh/Base/MJRefreshFooter.h

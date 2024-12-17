@@ -1,1 +1,1 @@
-link ../../../AFNetworking/UIKit+AFNetworking/AFImageDownloader.h
+../../../AFNetworking/UIKit+AFNetworking/AFImageDownloader.h

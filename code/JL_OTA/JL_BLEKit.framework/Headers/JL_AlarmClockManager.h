@@ -46,9 +46,9 @@ extern NSString *kJL_MANAGER_RTC_AUDITION;
 ///设备当前时间
 @property (strong,nonatomic) JLModel_RTC         *rtcModel;
 ///设备闹钟数组
-@property (strong,nonatomic) NSMutableArray      *rtcAlarms;
+@property (strong,nonatomic) NSMutableArray<JLModel_RTC *>      *rtcAlarms;
 ///默认铃声
-@property (strong,nonatomic) NSMutableArray      *rtcDfRings;
+@property (strong,nonatomic) NSMutableArray<JLModel_Ring *>      *rtcDfRings;
 
 
 /// 查询设备闹钟

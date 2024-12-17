@@ -68,6 +68,8 @@ extern NSString *kJL_MANAGER_ID3_Title;
 extern NSString *kJL_MANAGER_ID3_Artist;
 extern NSString *kJL_MANAGER_ID3_Album;
 extern NSString *kJL_MANAGER_ID3_Time;
+extern NSString *kJL_MANAGER_ID3_Current;
+extern NSString *kJL_MANAGER_ID3_PlayPush;
 
 #pragma mark ---> 主动设置ID3播放状态
 -(void)setID3_Status:(uint8_t)st;

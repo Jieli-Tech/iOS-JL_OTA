@@ -3,6 +3,7 @@
 //  JL_BLEKit
 //
 //  Created by 凌煊峰 on 2021/12/17.
+//  Modify by EzioChan on 2023/08/18
 //  Copyright © 2021 www.zh-jieli.com. All rights reserved.
 //
 
@@ -13,59 +14,139 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///耳机电量
-///TWS earphones Electricity
+//MARK: - 耳机电量
+/// 耳机电量
+/// TWS earphones Electricity
 @interface TwsElectricity:NSObject
-//    @"ISCHARGING_L"
+/// 左耳充电中
 @property(nonatomic,assign) BOOL isChargingLeft;
-//    @"ISCHARGING_R"
+
+/// 右耳充电中
 @property(nonatomic,assign) BOOL isChargingRight;
-//    @"ISCHARGING_C"
+
+/// 充电仓正在充电中
 @property(nonatomic,assign) BOOL isChargingCenter;
-//    @"POWER_L"
+
+/// 左耳电量
 @property(nonatomic,assign) int powerLeft;
-//    @"POWER_R"
+
+/// 右耳电量
 @property(nonatomic,assign) int powerRight;
-//    @"POWER_C"
+
+/// 充电舱电量
 @property(nonatomic,assign) int powerCenter;
 
 @end
 
+//MARK: - TWS耳机扩展功能支持类型
+/// TWS耳机扩展功能支持类型
+@interface TwsSupportFuncs : NSObject
+
+/// 是否支持ANC功能
+@property(nonatomic,assign)BOOL isSupportAnc;
+
+/// 是否支持游戏模式
+@property(nonatomic,assign)BOOL isSupportGameMode;
+
+/// 是否支持自适应ANC
+@property(nonatomic,assign)BOOL isSupportAutoAnc;
+
+/// 是否支持智能免摘
+@property(nonatomic,assign)BOOL isSupportSmartPickFree;
+
+/// 是否支持场景降噪
+/// scene noise reduction
+@property(nonatomic,assign)BOOL isSupportSceneNoiseReduction;
+
+/// 是否支持风噪检测
+/// Noise detection
+@property(nonatomic,assign)BOOL isSupportNoiseDetection;
+
+/// 是否支持人声增强模式
+/// Vocal Boost Mode
+@property(nonatomic,assign)BOOL isSupportVocalBoostMode;
+
+/// 固件是否支持“一拖二”开 关功能
+/// Does the firmware support the "one drag two" switch function
+@property(nonatomic,assign)BOOL isSupportDragWithMore;
+
+
+@end
+
+
+
+//MARK: - TWS 控制类
+/// TWS 管理者
 @interface JL_TwsManager : JL_FunctionBaseManager
+
+/// 扩展功能支持
+@property(nonatomic,strong)TwsSupportFuncs *supports;
 
 ///耳机电量
 ///TWS earphones Electricity
 @property (nonatomic,strong)TwsElectricity *electricity;
-//@"EDR_NAME"
+
+/// 设备名称
 @property (nonatomic,strong)NSString *edrName;
-//@"KEY_LR"
-@property (nonatomic,assign)int keyLR;
-//@"KEY_ACTION"
-@property (nonatomic,assign)int keyAction;
-//@"KEY_FUNCTION"
-@property (nonatomic,assign)int keyFunction;
-//@"LED_SCENE"
+
+/// 按键功能设置
+@property (nonatomic,strong)NSArray *keySettings;
+
+/// 灯光场景类型
 @property (nonatomic,assign)int ledScen;
-//@"LED_EFFECT"
+
+/// 灯光效果类型
 @property (nonatomic,assign)int ledEffect;
-//@"MIC_MODE"
+
+/// 设备麦克风channel
+/// 若为空或者0则视为此功能不支持
+/// 1：自动切换
+/// 2：始终左耳
+/// 3：始终右耳
 @property (nonatomic,assign)int micMode;
-//@"WORK_MODE"
+
+/// 工作模式
+/// 若为空或者0则视为此功能不支持
+/// 1：普通模式
+/// 2：游戏模式
 @property (nonatomic,assign)int workMode;
-//@"VID"
+
+/// 供应商ID
 @property (nonatomic,assign)uint16_t vid;
-//@"UID"
+
+/// 厂商ID
 @property (nonatomic,assign)uint16_t uid;
-//@"PID"
+
+/// 产品ID
 @property (nonatomic,assign)uint16_t pid;
-//@"LINK_TIME"
+
+/// 连接时长
 @property (nonatomic,assign)uint32_t linkTime;
-//@""IN_EAR_TEST"
+
+/// 入耳检测
+/// 0 -- 不支持此功能
+/// 1 -- 关闭
+/// 2 -- 打开
 @property (nonatomic,assign)uint8_t earEntryDection;
-//@"DEVICE_LANGUAGE"
+
+/// 设备语言类型
+/// zh -- 中文
+/// en -- 英文
 @property (nonatomic,strong)NSString *deviceLanguage;
-//@"KEY_ANC_MODE"    ANC的模式数组
+
+///ANC的模式数组
 @property (nonatomic,strong)NSArray *ancModels;
+
+/// HeadSetInfoDict
+/// 耳机信息字典
+/// 当app端收到设备返回的信息时会更新此值
+/// 此值变化较大不适合作为唯一判断依据，容易发生部分值获取失败的问题
+@property (nonatomic,strong)NSDictionary *_Nullable headSetInfoDict;
+
+
+/// 一拖二开关状态
+@property(nonatomic,readonly,assign)BOOL dragWithMore;
+
 
 /**
  @param name 设置对耳设备的EDR名字
@@ -286,6 +367,33 @@ extern NSString *kJL_MANAGER_HEADSET_TIPS;
 
 #pragma mark ---> 耳机主动降噪ANC设置
 -(void)cmdSetANC:(JLModel_ANC*)model;
+
+
+
+//MARK: - 一拖二相关命令
+
+typedef void(^JL_MulitLinksInfo_BK)(JL_CMDStatus status,NSArray <JLTWSAddrNameInfo *>* __nullable phoneInfos);
+
+/// 设备上传一拖二设备信息列表
+extern NSString* kJL_MULIT_NAME_LIST;
+
+/// 获取设备已连接手机名
+/// 通知设备上传一拖二设备信息列表
+/// @param result 设备所连接的手机名字列表
+-(void)cmdGetDeviceInfoListResult:(JL_MulitLinksInfo_BK)result;
+
+/// 通知设备一连上手机地址和绑定信息
+/// - Parameters:
+///   - addr: 手机EDR地址
+///   - name: 手机蓝牙名称
+///   - result: 结果
+-(void)cmdBindDeviceInfo:(NSData *)addr phone:(NSString *)name result:(JL_MulitLinksInfo_BK)result;
+
+/// 一拖二开关
+/// @param dragWithMore 开关状态
+/// @param addr 手机的经典蓝牙地址（通过cmdGetDeviceInfoList 获取）
+/// @param result   结果回调
+-(void)setDragWithMore:(BOOL)dragWithMore phoneBleAddr:(NSData *) addr result:(JL_CMD_RESPOND)result;
 
 @end
 

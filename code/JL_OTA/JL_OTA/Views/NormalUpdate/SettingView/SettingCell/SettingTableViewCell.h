@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *endLab;
 @property (weak, nonatomic) IBOutlet UISwitch *switchBtn;
 @property (strong,nonatomic) NSString *saveKey;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *endLeftLayout;
 
 @end
 

@@ -38,9 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///开始运动命令
 /// @param type 运动类型
+///        0x00 :非运动模式
+///        0x01 :室外跑步
+///        0x02 :室内跑步
 /// @param entity 设备entity
 /// @param block 命令成功与否回调
--(void)w_SportStart:(WatchSportType)type With:(JL_EntityM *)entity Block:(JL_CB_Status _Nullable)block;
+-(void)w_SportStart:(uint8_t)type With:(JL_EntityM *)entity Block:(JL_CB_Status _Nullable)block;
 
 /// 结束运动命令
 /// @param entity 设备entity

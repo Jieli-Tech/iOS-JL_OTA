@@ -56,7 +56,7 @@
     }
     
     for (JLDeviceInfo *info in _devices) {
-        NSLog(@"JLDeviceInfo:%@",info);
+        kJLLog(JLLOG_DEBUG, @"JLDeviceInfo:%@",info);
     }
 }
 

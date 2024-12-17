@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/Base/MJRefreshTrailer.h
+../../../MJRefresh/MJRefresh/Base/MJRefreshTrailer.h

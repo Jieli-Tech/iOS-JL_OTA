@@ -21,7 +21,7 @@
         }else{
             if ([[entity.mItem uppercaseString] rangeOfString:key].location == NSNotFound || !entity.mItem) {
                 //
-                NSLog(@"过滤 ----> NAME:%@ RSSI:%@", entity.mItem,entity.mRSSI);
+                kJLLog(JLLOG_DEBUG, @"过滤 ----> NAME:%@ RSSI:%@", entity.mItem,entity.mRSSI);
             }else{
                 [localArray addObject:entity];
             }

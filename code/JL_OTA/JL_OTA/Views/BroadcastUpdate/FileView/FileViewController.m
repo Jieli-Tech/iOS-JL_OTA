@@ -19,7 +19,10 @@
 @property(nonatomic,strong)UITableView *subTable;
 @property (strong, nonatomic) PopoverView *popView;
 @property (strong, nonatomic) UIView *popViewBg;
+
+
 @property(nonatomic,strong)TipsComputerView *transportComputerView;
+@property(nonatomic,strong)DownloadView *ufwDownloadView;
 
 //MARK: - data
 @property(nonatomic,strong)NSArray *itemArray;
@@ -31,6 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePreFile:) name:@"REFRESH_FILE" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleQrresult:) name:QR_SCAN_RESULT object:nil];
     [self initUI];
 }
 
@@ -105,12 +109,20 @@
         make.top.equalTo(window.mas_safeAreaLayoutGuideTop).offset(38);
         make.right.equalTo(window.mas_right).offset(-8);
         make.width.offset(125);
-        make.height.offset(98);
+        make.height.offset(141);
     }];
     
     
     _transportComputerView.hidden = true;
     [self tapToDismissPop];
+    
+    _ufwDownloadView = [[DownloadView alloc] initWithFrame:CGRectZero];
+    [window addSubview:_ufwDownloadView];
+    [_ufwDownloadView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(window);
+    }];
+    _ufwDownloadView.hidden = true;
+    
 }
 
 -(void)tapToDismissPop{
@@ -128,6 +140,11 @@
         }
         if(v == 1){
             self.transportComputerView.hidden = NO;
+        }
+        if(v == 2){
+            ScanQRCodeVC *scv = [[ScanQRCodeVC alloc] init];
+            [scv setHidesBottomBarWhenPushed:true];
+            [self.navigationController pushViewController:scv animated:true];
         }
         [self tapToDismissPop];
     }
@@ -190,11 +207,18 @@
 
 }
 
+//MARK: - handle Noti
 
 -(void)handlePreFile:(NSNotification *)note{
     
     [self reflashFileArray];
     
+}
+
+
+-(void)handleQrresult:(NSNotification *)note{
+    NSString *url = note.object;
+    [_ufwDownloadView downloadAction:url];
 }
 
 

@@ -104,6 +104,10 @@ NS_ASSUME_NONNULL_BEGIN
 +(ProductType)getproductType;
 
 
+/// 创建存储路径名字
+/// ufw名字
+/// - Parameter fileName: 文件名
++(NSURL *)targetSavePath:(NSString *)fileName;
 
 
 @end

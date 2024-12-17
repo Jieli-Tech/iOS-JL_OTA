@@ -1,1 +1,1 @@
-link ../../../Masonry/Masonry/MASViewAttribute.h
+../../../Masonry/Masonry/MASViewAttribute.h

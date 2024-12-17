@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Access to the camera is required to scan the QR code to download resources.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need to access the photo album to scan the QR code to download resources</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -41,6 +50,8 @@
 	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

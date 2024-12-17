@@ -149,13 +149,16 @@
 
 +(NSInteger)getAutoTestOtaNumber{
     if([DFTools getUserByKey:@"AutoTestOtaNumber"]){
+        kJLLog(JLLOG_DEBUG,@"getAutoTestOtaNumber:%d",[[DFTools getUserByKey:@"AutoTestOtaNumber"] intValue]);
         return [[DFTools getUserByKey:@"AutoTestOtaNumber"] intValue];
     }else{
+        kJLLog(JLLOG_DEBUG, @"getAutoTestOtaNumber:1");
         return 1;
     }
 }
 
 +(void)setAutoTestOtaNumber:(NSInteger)number{
+    kJLLog(JLLOG_DEBUG, @"setAutoTestOtaNumber:%d",number);
     [DFTools setUser:[NSNumber numberWithInt:(int)number] forKey:@"AutoTestOtaNumber"];
 }
 
@@ -195,82 +198,97 @@
 +(NSString *)errorReason:(JL_OTAResult)result{
     switch (result) {
         case JL_OTAResultSuccess:
-            return  @"升级成功";
+            return kJL_TXT("result_success");
             break;
         case JL_OTAResultFail:
-            return @"升级失败";
+            return kJL_TXT("result_fail");
             break;
         case JL_OTAResultDataIsNull:
-            return @"升级数据为空";
+            return kJL_TXT("result_data_is_null");
             break;
         case JL_OTAResultCommandFail:
-            return @"指令失败";
+            return kJL_TXT("result_command_fail");
             break;
         case JL_OTAResultSeekFail:
-            return @"标示偏移查找失败";
+            return kJL_TXT("result_seek_fail");
             break;
         case JL_OTAResultInfoFail:
-            return @"固件信息错误";
+            return kJL_TXT("result_info_fail");
             break;
         case JL_OTAResultLowPower:
-            return @"电量低";
+            return kJL_TXT("result_low_power");
             break;
         case JL_OTAResultEnterFail:
-            return @"无法进入OTA升级";
+            return kJL_TXT("result_enter_fail");
             break;
         case JL_OTAResultUpgrading:
-            return @"正在升级";
+            return kJL_TXT("result_upgrading");
             break;
         case JL_OTAResultReconnect:
-            return @"回连中";
+            return kJL_TXT("result_reconnect");
             break;
         case JL_OTAResultReboot:
-            return @"设备重启中";
+            return kJL_TXT("result_reboot");
             break;
         case JL_OTAResultPreparing:
-            return @"准备中...";
+            return kJL_TXT("result_preparing");
             break;
         case JL_OTAResultPrepared:
-            return @"准备完毕...";
+            return kJL_TXT("result_prepared");
             break;
         case JL_OTAResultFailVerification:
-            return @"固件认证失败";
+            return kJL_TXT("result_fail_verification");
             break;
         case JL_OTAResultFailCompletely:
-            return @"数据校验失败";
+            return kJL_TXT("result_fail_completely");
             break;
         case JL_OTAResultFailKey:
-            return @"升级文件的生成Key不正确";
+            return kJL_TXT("result_fail_key");
             break;
         case JL_OTAResultFailErrorFile:
-            return @"升级文件错误";
+            return kJL_TXT("result_fail_error_file");
             break;
         case JL_OTAResultFailUboot:
-            return @"uboot内容不匹配";
+            return kJL_TXT("result_fail_uboot");
             break;
         case JL_OTAResultFailLenght:
-            return @"传输长度出错 ";
+            return kJL_TXT("result_fail_lenght");
             break;
         case JL_OTAResultFailFlash:
-            return @"升级过程中flash读写失败";
+            return kJL_TXT("result_fail_flash");
             break;
         case JL_OTAResultFailCmdTimeout:
-            return @"命令发送设备，回复超时";
+            return kJL_TXT("result_fail_cmd_timeout");
             break;
         case JL_OTAResultFailSameVersion:
-            return @"相同的固件";
+            return kJL_TXT("result_fail_same_version");
             break;
         case JL_OTAResultFailTWSDisconnect:
-            return @"tws 耳机未连接";
+            return kJL_TXT("result_fail_tws_disconnect");
             break;
         case JL_OTAResultFailNotInBin:
-            return @"耳机未在充电仓内";
+            return kJL_TXT("result_fail_not_in_bin");
             break;
         case JL_OTAResultReconnectWithMacAddr:
-            return @"通过mac回连设备";
+            return kJL_TXT("result_reconnect_with_mac_addr");
             break;
         case JL_OTAResultUnknown:
-            return @"未知错误";
+            return kJL_TXT("result_unknown");
+            break;
+        case JL_OTAResultDisconnect:
+            return kJL_TXT("result_disconnect");
+            break;
+        case JL_OTAResultFailedConnectMore:
+            return kJL_TXT("result_failed_connect_more");
+            break;
+        case JL_OTAResultStatusIsUpdating:
+            return kJL_TXT("result_status_is_updating");
+            break;
+        case JL_OTAResultFailSameSN:
+            return kJL_TXT("result_fail_same_sn");
+            break;
+        case JL_OTAResultCancel:
+            return kJL_TXT("result_cancel");
             break;
     }
 }
@@ -288,6 +306,71 @@
 }
 
 
+
++(void)ufwDataSave:(NSData *)data path:(NSURL *)url{
+    
+    NSString *fname = url.path.lastPathComponent;
+    NSString *basicPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true).firstObject;
+    basicPath = [basicPath stringByAppendingPathComponent:@"upgrade"];
+    NSFileManager *fm = [NSFileManager new];
+    BOOL isDir = FALSE;
+    BOOL isDirExist = [fm fileExistsAtPath:basicPath isDirectory:&isDir];
+    
+    if(!(isDirExist && isDir))
+    {
+        
+        BOOL bCreateDir = [fm createDirectoryAtPath:basicPath
+                                 withIntermediateDirectories:YES
+                                                  attributes:nil
+                                                       error:nil];
+        if(!bCreateDir){
+            kJLLog(JLLOG_DEBUG, @"Create upgrade Directory Failed.");
+        }
+    }
+    NSString *docPath = [basicPath stringByAppendingPathComponent:fname];
+    if ([fm fileExistsAtPath:docPath]) {
+        NSArray *arr = [fname componentsSeparatedByString:@"."];
+        NSDateFormatter *dfm = [NSDateFormatter new];
+        dfm.dateFormat = @"yyyyMMddHHmmss";
+        NSString *newDateStr = [dfm stringFromDate:[NSDate new]];
+        fname = [NSString stringWithFormat:@"%@_%@.%@",arr[0],newDateStr,arr[1]];
+    }
+    docPath = [basicPath stringByAppendingPathComponent:fname];
+    [fm createFileAtPath:docPath contents:data attributes:nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESH_FILE" object:nil];
+}
+
++(NSURL *)targetSavePath:(NSString *)fileName{
+    
+    NSString *basicPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true).firstObject;
+    basicPath = [basicPath stringByAppendingPathComponent:@"upgrade"];
+    NSFileManager *fm = [NSFileManager new];
+    BOOL isDir = FALSE;
+    BOOL isDirExist = [fm fileExistsAtPath:basicPath isDirectory:&isDir];
+    
+    if(!(isDirExist && isDir))
+    {
+        
+        BOOL bCreateDir = [fm createDirectoryAtPath:basicPath
+                                 withIntermediateDirectories:YES
+                                                  attributes:nil
+                                                       error:nil];
+        if(!bCreateDir){
+            kJLLog(JLLOG_DEBUG, @"Create upgrade Directory Failed.");
+        }
+    }
+    NSString *docPath = [basicPath stringByAppendingPathComponent:fileName];
+    if ([fm fileExistsAtPath:docPath]) {
+        NSArray *arr = [fileName componentsSeparatedByString:@"."];
+        NSDateFormatter *dfm = [NSDateFormatter new];
+        dfm.dateFormat = @"yyyyMMddHHmmss";
+        NSString *newDateStr = [dfm stringFromDate:[NSDate new]];
+        fileName = [NSString stringWithFormat:@"%@_%@.%@",arr[0],newDateStr,arr[1]];
+    }
+    docPath = [basicPath stringByAppendingPathComponent:fileName];
+    return [NSURL fileURLWithPath:docPath];
+}
 
 
 

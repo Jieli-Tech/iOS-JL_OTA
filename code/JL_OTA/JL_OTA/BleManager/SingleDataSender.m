@@ -70,7 +70,7 @@
             [sendDataArray removeObjectAtIndex:0];
             [lock unlock];
         }else{
-            NSLog(@"single wait:%d",(int)sendDataArray.count);
+            kJLLog(JLLOG_DEBUG, @"single wait:%d",(int)sendDataArray.count);
             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         }
     }
@@ -79,7 +79,7 @@
 -(void)sendSingle{
     
     dispatch_semaphore_signal(semaphore);
-    NSLog(@"single send");
+    kJLLog(JLLOG_DEBUG, @"single send");
     
 }
 

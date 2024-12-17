@@ -3,6 +3,7 @@
 //  JL_BLEKit
 //
 //  Created by 杰理科技 on 2020/9/4.
+//  Modify By EzioChan on 2023/03/27.
 //  Copyright © 2020 www.zh-jieli.com. All rights reserved.
 //
 
@@ -83,7 +84,6 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 @property(nonatomic,strong)JL_AlarmClockManager     *mAlarmClockManager;
 @property(nonatomic,strong)JL_LightManager          *mLightManager;
 @property(nonatomic,strong)JL_TwsManager            *mTwsManager;
-@property(nonatomic,strong)JL_SoundCardManager      *mSoundCardManager;
 @property(nonatomic,strong)JL_SpeexManager          *mSpeexManager;
 @property(nonatomic,strong)JL_LRCManager            *mLrcManager;
 @property(nonatomic,strong)JL_FindDeviceManager     *mFindDeviceManager;
@@ -94,6 +94,8 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 @property(nonatomic,strong)JL_SystemVolume          *mSystemVolume;
 @property(nonatomic,strong)JL_CustomManager         *mCustomManager;
 @property(nonatomic,strong)JL_BatchManger           *mBatchManger;
+
+@property(nonatomic,strong)JL_SoundCardManager      *mSoundCardManager;
 @property(nonatomic,strong)JL_DeviceLogs            *mDeviceLogs;
 
 @property(nonatomic,strong)JL_BigDataManager        *mBigDataManager;
@@ -215,7 +217,10 @@ typedef void(^JL_IMAGE_RT)(NSMutableDictionary* __nullable dict);
 -(NSDictionary*)localDeviceImage:(NSString*)jsonFile;
 
 #pragma mark ---> 通知固件开始播放TTS内容
--(void)cmdStartTTSNote;
+
+/// 通知固件SDK播放tts
+/// @param status 0:开始播放，1:播放结束
+-(void)cmdStartTTSNote:(uint8_t)status;
 
 
 /// 获取MD5信息

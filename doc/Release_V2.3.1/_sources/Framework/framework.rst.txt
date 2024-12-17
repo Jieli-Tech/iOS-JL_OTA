@@ -1,0 +1,25 @@
+SDK架构
+=========================================
+
+
+1. SDK简介
+------------------------
+
+Hi，开发者你好，本文档描述了杰理蓝牙控制SDK在iOS平台实现OTA升级功能。
+
+SDK提供两种方式帮助你实现OTA升级：
+
+- 第一种：开发者自行实现蓝牙控制中心连接设备，在其内部初始化JL_Assist类以及在BLE代理方法中执行JL_Assist的方法，目的是为了使SDK与设备实现OTA命令数据交互。 再而，调用JL_Asssit中的JL_ManagerM，便可获取设备信息和调用OTA接口。
+
+
+- 第二种：SDK提供了JL_BLEMultiple蓝牙管理中心，搜索并连接设备，开发者利用JL_EntityM设备类中的JL_ManagerM获取获取设备信息和调用OTA接口。
+
+
+适配于芯片类型AC692、AC693x、AC695x、AC696x、AC697x、AC701x、AC707N 的固件，本文档用于帮助开发者快速集成固件OTA升级功能。
+
+2. SDK框架结构
+------------------------
+.. figure:: ../_static/SDK_development_framework.png
+  :align: center
+  :width: 100%
+

@@ -91,7 +91,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 #pragma mark 开始扫描
 - (void)startScanBLE {
-    NSLog(@"BLE ---> startScanBLE.");
+    kJLLog(JLLOG_DEBUG, @"BLE ---> startScanBLE.");
     _blePeripheralArr = [NSMutableArray new];
     
     if (_bleManager) {
@@ -119,7 +119,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 #pragma mark 断开当前蓝牙设备连接
 - (void)disconnectBLE:(CBPeripheral *)cbp{
-    NSLog(@"BLE --->To disconnectBLE.");
+    kJLLog(JLLOG_DEBUG, @"BLE --->To disconnectBLE.");
     [_bleManager cancelPeripheralConnection:cbp];
     
 }
@@ -134,7 +134,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
     [_bleManager connectPeripheral:_bleCurrentPeripheral options:@{CBConnectPeripheralOptionNotifyOnDisconnectionKey:@(YES)}];
     [_bleManager stopScan];
 
-    NSLog(@"BLE Connecting... Name ---> %@", peripheral.name);
+    kJLLog(JLLOG_DEBUG, @"BLE Connecting... Name ---> %@", peripheral.name);
 }
 
 - (void)connectPeripheralWithUUID:(NSString*)uuid {
@@ -143,7 +143,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 }
 
 -(void)connectPeripheralWithMacAddr:(NSString *)macAddr{
-    NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", macAddr);
+    kJLLog(JLLOG_DEBUG, @"---> OTA正在通过Mac Addr方式回连设备... %@", macAddr);
     if(_lastBleMacAddressList.count == 0){
         [self.bleManager scanForPeripheralsWithServices:nil options:nil];
     }
@@ -170,7 +170,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
         
         NSString *ble_name = peripheral.name;
         NSString *ble_uuid = peripheral.identifier.UUIDString;
-        NSLog(@"FLT Connecting(Last)... Name ---> %@ UUID:%@",ble_name,ble_uuid);
+        kJLLog(JLLOG_DEBUG, @"FLT Connecting(Last)... Name ---> %@ UUID:%@",ble_name,ble_uuid);
         
         _bleCurrentPeripheral = peripheral;
         [_bleCurrentPeripheral setDelegate:self];
@@ -204,7 +204,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
     NSData *ble_AD   = advertisementData[@"kCBAdvDataManufacturerData"];
     NSDictionary *info = [JL_BLEAction bluetoothKey_1:self.mAssist.mPairKey Filter:advertisementData];
     
-    NSLog(@"发现：name:%@ advertisementData:%@",peripheral.name,advertisementData);
+    kJLLog(JLLOG_DEBUG, @"发现：name:%@ advertisementData:%@",peripheral.name,advertisementData);
     
     
     [self addPeripheral:peripheral RSSI:RSSI Name:ble_name Info:info Adv:ble_AD];
@@ -212,14 +212,14 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
     /*
     NSString *key = [[FittingView getFitterKey] uppercaseString];
     if ([key isEqualToString:@""]) {
-//        NSLog(@"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
+//        kJLLog(JLLOG_DEBUG, @"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
         [self addPeripheral:peripheral RSSI:RSSI Name:ble_name Info:info Adv:ble_AD];
     }else{
         if ([[ble_name uppercaseString] rangeOfString:key].location == NSNotFound) {
             //
-            NSLog(@"过滤 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
+            kJLLog(JLLOG_DEBUG, @"过滤 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
         }else{
-            NSLog(@"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
+            kJLLog(JLLOG_DEBUG, @"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
             [self addPeripheral:peripheral RSSI:RSSI Name:ble_name Info:info Adv:ble_AD];
         }
     }
@@ -268,7 +268,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
                 bleEntity.pid = 0;
             }
         }
-        NSLog(@"type:%d,name:%@ pid:%hx,uid:%hx type:%d",[info[@"TYPE"] intValue],peripheral.name,bleEntity.pid,bleEntity.uid,(int)bleEntity.mType);
+        kJLLog(JLLOG_DEBUG, @"type:%d,name:%@ pid:%hx,uid:%hx type:%d",[info[@"TYPE"] intValue],peripheral.name,bleEntity.pid,bleEntity.uid,(int)bleEntity.mType);
         bleEntity.mPeripheral = peripheral;
         if([ToolsHelper isBroadcastFitter]){
             if(bleEntity.mType == JL_DeviceTypeSoundBox && [advertisementData subf:0 t:2].beLittleUint16 == 0x05D6){
@@ -289,7 +289,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 #pragma mark 设备连接回调
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
-    NSLog(@"BLE Connected ---> Device %@", peripheral.name);
+    kJLLog(JLLOG_DEBUG, @"BLE Connected ---> Device %@", peripheral.name);
     for (JLBleEntity *entity in self.blePeripheralArr) {
         if([entity.mPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]){
             self.currentEntity = entity;
@@ -304,14 +304,14 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error {
-    NSLog(@"Err:BLE Connect FAIL ---> Device:%@ Error:%@",peripheral.name,[error description]);
+    kJLLog(JLLOG_DEBUG, @"Err:BLE Connect FAIL ---> Device:%@ Error:%@",peripheral.name,[error description]);
     [[DeviceManager share] removeDevicesBy:peripheral];
     [_assistDicts removeObjectForKey:peripheral.identifier.UUIDString];
 }
 
 #pragma mark 设备断开连接
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error {
-    NSLog(@"BLE Disconnect ---> Device %@ error:%d reason:%@", peripheral.name, (int)error.code,error);
+    kJLLog(JLLOG_DEBUG, @"BLE Disconnect ---> Device %@ error:%d reason:%@", peripheral.name, (int)error.code,error);
     self.mBlePeripheral = nil;
     /*--- JLSDK ADD ---*/
     JL_Assist *assist = _assistDicts[peripheral.identifier.UUIDString];
@@ -327,11 +327,11 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 #pragma mark 设备服务回调
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error {
-    if (error) { NSLog(@"Err: Discovered services fail."); return; }
+    if (error) { kJLLog(JLLOG_DEBUG, @"Err: Discovered services fail."); return; }
     
     for (CBService *service in peripheral.services) {
         
-        NSLog(@"BLE Service ---> %@", service.UUID.UUIDString);
+        kJLLog(JLLOG_DEBUG, @"BLE Service ---> %@", service.UUID.UUIDString);
         [peripheral discoverCharacteristics:nil forService:service];
         
     }
@@ -339,7 +339,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 #pragma mark 设备特征回调
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(nullable NSError *)error {
-    if (error) { NSLog(@"Err: Discovered Characteristics fail."); return; }
+    if (error) { kJLLog(JLLOG_DEBUG, @"Err: Discovered Characteristics fail."); return; }
     
     /*--- JLSDK ADD ---*/
     JL_Assist *assist = _assistDicts[peripheral.identifier.UUIDString];
@@ -349,7 +349,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 #pragma mark 更新通知特征的状态
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(nonnull CBCharacteristic *)characteristic error:(nullable NSError *)error {
     
-    if (error) { NSLog(@"Err: Update NotificationState For Characteristic fail."); return; }
+    if (error) { kJLLog(JLLOG_DEBUG, @"Err: Update NotificationState For Characteristic fail."); return; }
     
     /*--- JLSDK ADD ---*/
     __weak typeof(self) weakSelf = self;
@@ -372,18 +372,18 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
 }
 
 //- (void)peripheralIsReadyToSendWriteWithoutResponse:(CBPeripheral *)peripheral{
-////    NSLog(@"ReadyToSend");
+////    kJLLog(JLLOG_DEBUG, @"ReadyToSend");
 //    usleep(100);
 //}
 //- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
 //    if(error){
-//        NSLog(@"write error:%@",error);
+//        kJLLog(JLLOG_DEBUG, @"write error:%@",error);
 //    }
 //}
 
 #pragma mark 设备返回的数据 GET
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    if (error) { NSLog(@"Err: receive data fail."); return; }
+    if (error) { kJLLog(JLLOG_DEBUG, @"Err: receive data fail."); return; }
     
     JL_Assist *assist = _assistDicts[peripheral.identifier.UUIDString];
     /*--- JLSDK ADD ---*/
@@ -403,7 +403,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
             JLModel_Device *model = [weakSelf.mAssist.mCmdManager outputDeviceModel];
             JL_OtaStatus upSt = model.otaStatus;
             if (upSt == JL_OtaStatusForce) {
-                NSLog(@"---> 进入强制升级.");
+                kJLLog(JLLOG_DEBUG, @"---> 进入强制升级.");
                 NSString *mac = [weakSelf.connectDict valueForKey:peripheral.identifier.UUIDString];
                 if(mac){
                     [[BroadcastThread share] otaUpdateStepII:mac Info:peripheral];
@@ -411,26 +411,26 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
                     [weakSelf.connectDict removeObjectForKey:peripheral.identifier.UUIDString];
                     
                     for (NSString *macStr in weakSelf.lastBleMacAddressList) {
-                        NSLog(@"lastBleMacAddressList:%@",macStr);
+                        kJLLog(JLLOG_DEBUG, @"lastBleMacAddressList:%@",macStr);
                     }
                     for (NSObject *objc in weakSelf.connectDict) {
-                        NSLog(@"connectDict:%@",objc);
+                        kJLLog(JLLOG_DEBUG, @"connectDict:%@",objc);
                     }
                 }
                 
                 if(weakSelf.lastBleMacAddressList.count > 0){
-                    NSLog(@"继续搜索设备进行回连:\n");
+                    kJLLog(JLLOG_DEBUG, @"继续搜索设备进行回连:\n");
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{                    
                         [weakSelf.bleManager scanForPeripheralsWithServices:nil options:nil];
                     });
                 }
                 return;
             }
-            NSLog(@"---> 设备正常使用...");
+            kJLLog(JLLOG_DEBUG, @"---> 设备正常使用...");
             [assist.mCmdManager cmdGetSystemInfo:JL_FunctionCodeCOMMON Result:nil];
             
         } else {
-            NSLog(@"---> ERROR：设备信息获取错误!");
+            kJLLog(JLLOG_DEBUG, @"---> ERROR：设备信息获取错误!");
         }
     }];
 }

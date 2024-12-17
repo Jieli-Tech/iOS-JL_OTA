@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/UICollectionViewLayout+MJRefresh.h
+../../../MJRefresh/MJRefresh/UICollectionViewLayout+MJRefresh.h

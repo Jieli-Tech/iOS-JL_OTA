@@ -21,6 +21,7 @@
 #define kJL_PHONE_CALL_REQUEST      0x000a
 #define kJL_FILE_BROWSE_START       0x000c
 #define kJL_FILE_BROWSE_STOP        0x000d
+#define kJL_FILE_STRUCT_CHANGE      0x00f2  //通知文件结构变化
 #define kJL_FUNCTION_CMD            0x000e
 #define kJL_LRC_GET_START           0x000f
 #define kJL_LRC_GET_STOP            0x0010
@@ -77,6 +78,9 @@
 
 #define kJL_DEVICE_LOG              0x0029
 #define kJL_BIG_DATA                0x0030
+#define kJL_TWS_NAME_LIST           0x0031   //一拖二/获取设备已连接手机名
+#define kJL_AI_CONTROL              0x0032   //AI控制命令
+#define kJL_PUBLIC_SET              0x0033   //公共设置命令
 
 
 #define kJL_WEAR_REQ_OPCODE         0x00A0   //获取运动信息

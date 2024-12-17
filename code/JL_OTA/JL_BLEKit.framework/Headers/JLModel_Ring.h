@@ -11,7 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JLModel_Ring : NSObject
+
+/// 默认铃声序号
+/// alarm default rings index
 @property(assign,nonatomic) uint8_t         index;
+
+/// 默认铃声名称
+/// alarm default rings name
 @property(strong,nonatomic) NSString        *name;
 @end
 

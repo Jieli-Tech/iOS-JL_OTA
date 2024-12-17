@@ -22,7 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JLWearSyncInfoModel : JLWearSyncDataModel
 
 ///运动模式类型
-@property(nonatomic,assign)WatchSportType sportType;
+/// 0x00 非运动模式
+/// 0x01 户外跑步
+/// 0x02 室内跑步
+@property(nonatomic,assign)uint8_t sportType;
 
 /// 运动状态
 @property(nonatomic,assign)WatchSportStatus status;

@@ -2,8 +2,14 @@
 
 # iOS杰理蓝牙OTA开发说明
 
-- 对应的芯片类型：AC692x，BD29
-- APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.4以上
+- 数传：AC695X/AC608N/AC897/AD697N/AD698N/AC630N/AC632N
+
+  手表：AC695X/JL701N/AC707N
+
+  音箱：JL701N/AC897/AD697N/AD698N/700N
+
+  对应固件 **SDK** 版本：支持 **RCSP** 协议 **OTA** 设备
+- APP开发环境：iOS平台，iOS 12.0以上，Xcode 14.0以上
 - 对应于苹果商店上的APP: **【杰理OTA】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
 - 杰理OTA对外开发文档：https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html
@@ -18,10 +24,11 @@
 
 ## SDK 版本
 
-| 版本   | 日期       | 编辑    | 修改内容                                                     |
-| ------ | ---------- | ------- | ------------------------------------------------------------ |
-| V2.1.0 | 2023/3/28  | 陈冠杰  | 1. 性能优化<br>1.1 分离OTA模块为独立运行模块<br>1.2 分离设备认证配对业务为独立库<br>1.3 分离广播包解析模块为独立库 |
-| V2.0.0 | 2021/10/14 | 凌 煊峰 | 1. 支持BLE单备份升级<br>2.支持BLE双备份升级<br>3.支持从浏览器传输OTA升级文件到APP<br>4.支持第三方电脑软件导入OTA升级文件<br>5.可选择BLE广播包过滤<br>6. 可选择BLE握手连接 |
+| 版本   | 日期       | 编辑     | 修改内容                                                     |
+| ------ | ---------- | -------- | ------------------------------------------------------------ |
+| V2.3.1 | 2024/12/12 | EzioChan | 1. 分离日志打印库为独立运行模块; <br />2. 增加所有命令的超时检测; <br />3. 增加OTA升级的错误回调; <br />4. 增加OTA对象的对象管理容错; |
+| V2.1.0 | 2023/3/28  | 陈冠杰   | 1. 性能优化<br>1.1 分离OTA模块为独立运行模块<br>1.2 分离设备认证配对业务为独立库<br>1.3 分离广播包解析模块为独立库 |
+| V2.0.0 | 2021/10/14 | 凌 煊峰  | 1. 支持BLE单备份升级<br>2.支持BLE双备份升级<br>3.支持从浏览器传输OTA升级文件到APP<br>4.支持第三方电脑软件导入OTA升级文件<br>5.可选择BLE广播包过滤<br>6. 可选择BLE握手连接 |
 
 
 
@@ -29,6 +36,7 @@
 
 | 版本 | 日期           | 编辑    | 修改内容                                       |
 | ---- | -------------- | ------- | ---------------------------------------------- |
+| V3.5.0 | 2023 年 12 月 13 日 | EzioChan | 适配新 SDK 2.3.1 |
 |V3.3.0  | 2023年03月23日|陈冠杰   |  适配新SDK2.1.0                                |
 | V3.2.0 | 2023年1月11日 | 陈冠杰 | 重构UI页面，整理项目架构，新增自动化测试/广播音箱模块 |
 | v2.0.0 | 2021年10月14日 | 凌 煊峰 | 蓝牙库新增根据ble地址对升级设备的回连；重写ota demo |
@@ -45,10 +53,31 @@
 # 开发环境准备
 
 - 对应的芯片类型：AC692x，BD29
-- APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.4以上
+- APP开发环境：iOS平台，iOS 12.0以上，Xcode 13.4以上
 - 对应于苹果商店上的APP: **【杰理OTA】**
 - 源码连接： https://github.com/Jieli-Tech/iOS-JL_OTA
 - 杰理OTA对外开发文档：https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html
+
+## 注意事项
+
+- `JL_BLEKit.framework`  依赖  `JLLogHelper.framework`，需要在导入 JL_BLEKit.framework 的时候需要同时导入这个库。
+
+- 其他的SDK库诸如： `JL_OTALib.framework、 JL_HashPair.framework`等等，需要在导入的时候需要同时导入 `JLLogHelper.framework`。
+
+JLLogHelper.framework 是默认开启了日志打印和存储的，如果开发者不需要记录，可以通过对应的接口关闭日志打印和存储。具体操作可以参考以下：
+
+```objc
+[JLLogManager clearLog]; // 清空日志
+[JLLogManager setLog:false IsMore:false Level:JLLOG_COMPLETE]; // 关闭日志打印
+[JLLogManager saveLogAsFile:false]; // 关闭日志存储
+[JLLogManager logWithTimestamp:false]; // 关闭日志打印时间
+```
+
+## 备注
+
+1. 随着对OTA库的抽离，以后的版本将会放弃使用臃肿的JL_BLEKit.framework进行OTA升级，此SDK后续将不再提供JL_BLEKit.framework的使用示例，更多的转向开发者自定义蓝牙管理，SDK内容专注于数据解析和流程控制。
+
+2. 由于苹果公司发布的xcode开发工具**V14.0**版本之后，**不再支持 iOS10.0设备以及armv7架构**，我们也在计划淘汰掉这一部分的设备，请各位开发者及时升级Xcode，谢谢！
 
 
 
@@ -59,6 +88,8 @@
 > *JL_AdvParse.framework*——杰理蓝牙设备广播包解析业务库
 >
 > *JL_HashPair.framework*——设备认证业务库
+>
+> JLLogHelper.framework——日志打印收集库
 
 
 
@@ -143,6 +174,8 @@ end
 > *JL_AdvParse.framework*——杰理蓝牙设备广播包解析业务库
 >
 > *JL_HashPair.framework*——设备认证业务库
+>
+> JLLogHelper.framework——日志打印收集库
 
 相关类说明：
 
@@ -887,5 +920,4 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
 
 
 ```
-
 

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. API 说明 &mdash; 杰理OTA升级开发文档(iOS) v2.3.1 文档</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/translations.js"></script>
+        <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="测试调试" href="../../../Other/debug.html" />
+    <link rel="prev" title="3.使用JL_BLEKit.framework蓝牙连接方式" href="../api_desc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> 杰理OTA升级开发文档(iOS)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../import.html">1.项目配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_desc.html">3.使用JL_BLEKit.framework蓝牙连接方式</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. API 说明</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2. API列表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jl-otamanager">3. JL_OTAManager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.1 初始化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.2 类型定义</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">3.2.1 枚举类型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.3 属性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">3.4 方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">3.4.1 设备操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ota">3.4.2 OTA 操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">3.3.3 状态查询</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">3.5 回调协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#jlotafile">4. JLOTAFile</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">4.1 类型定义</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id12">4.1.1 枚举类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">4.1.2 回调类型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">4.2 方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id15">4.2.1 文件下载</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">4.3 注意事项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Other/otaQa.html">常见问题答疑</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>4. API 说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api">
+<h1>4. API 说明<a class="headerlink" href="#api" title="永久链接至标题"></a></h1>
+<section id="id1">
+<h2>1. 概述<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+<p>当前文档是关于 <strong>JL_OTALib.framework</strong> 的API文档，包含了OTA升级的所有API，用于实现OTA升级的过程，包括BLE设备握手连接，获取设备信息，OTA升级能实现等。</p>
+</section>
+<section id="id2">
+<h2>2. API列表<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>功能描述</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>JL_OTAManager</p></td>
+<td><p>OTA升级管理对象类，用于管理升级过程</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>JLOTAFile</p></td>
+<td><p>文件下载，根据授权的 key 和 code 从杰理服务器下载升级文件</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="jl-otamanager">
+<h2>3. JL_OTAManager<a class="headerlink" href="#jl-otamanager" title="永久链接至标题"></a></h2>
+<p>OTA 升级管理对象，用于管理设备的升级过程。<strong>JL_OTAManager</strong> 是杰理科技开发的一款专业 OTA 升级管理工具类，为开发者提供高效、安全的设备固件升级支持。通过丰富的功能接口和灵活的回调机制，帮助开发者轻松实现设备升级管理。</p>
+<section id="id3">
+<h3>3.1 初始化<a class="headerlink" href="#id3" title="永久链接至标题"></a></h3>
+<ol class="arabic simple">
+<li><p>*<em>+ (JL_OTAManager <em>)getOTAManager</em></em><br />
+获取 OTA 升级管理对象。</p></li>
+<li><p><strong>- (instancetype)init</strong><br />
+初始化方法，但已被标记为弃用，请使用 <strong>getOTAManager</strong> 方法获取实例。</p></li>
+</ol>
+</section>
+<section id="id4">
+<h3>3.2 类型定义<a class="headerlink" href="#id4" title="永久链接至标题"></a></h3>
+<section id="id5">
+<h4>3.2.1 枚举类型<a class="headerlink" href="#id5" title="永久链接至标题"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>JL_OTAResult</strong><br />
+表示 OTA 升级过程的结果状态。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_OTAResultSuccess</strong></p></td>
+<td><p>OTA 升级成功</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFail</strong></p></td>
+<td><p>OTA 升级失败</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultDataIsNull</strong></p></td>
+<td><p>OTA 升级数据为空</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultCommandFail</strong></p></td>
+<td><p>OTA 指令失败</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultSeekFail</strong></p></td>
+<td><p>OTA 标示偏移查找失败</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultInfoFail</strong></p></td>
+<td><p>OTA 升级固件信息错误</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultLowPower</strong></p></td>
+<td><p>OTA 升级设备电压低</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultEnterFail</strong></p></td>
+<td><p>未能进入 OTA 升级模式</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultUpgrading</strong></p></td>
+<td><p>OTA 升级中</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultReconnect</strong></p></td>
+<td><p>OTA 需重连设备（UUID 方式）</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultReboot</strong></p></td>
+<td><p>OTA 需设备重启</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultPreparing</strong></p></td>
+<td><p>OTA 准备中</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultPrepared</strong></p></td>
+<td><p>OTA 准备完成</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultStatusIsUpdating</strong></p></td>
+<td><p>设备已在升级中</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultFailedConnectMore</strong></p></td>
+<td><p>当前固件多台设备连接，请手动断开其他设备</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailSameSN</strong></p></td>
+<td><p>升级数据校验失败，SN 多次重复</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultCancel</strong></p></td>
+<td><p>升级取消</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailVerification</strong></p></td>
+<td><p>升级数据校验失败</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultFailCompletely</strong></p></td>
+<td><p>升级失败</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailKey</strong></p></td>
+<td><p>升级数据校验失败，加密 Key 不对</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultFailErrorFile</strong></p></td>
+<td><p>升级文件出错</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailUboot</strong></p></td>
+<td><p>Uboot 不匹配</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultFailLenght</strong></p></td>
+<td><p>升级过程长度出错</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailFlash</strong></p></td>
+<td><p>升级过程 Flash 读写失败</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultFailCmdTimeout</strong></p></td>
+<td><p>升级过程指令超时</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailSameVersion</strong></p></td>
+<td><p>相同版本</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultFailTWSDisconnect</strong></p></td>
+<td><p>TWS 耳机未连接</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultFailNotInBin</strong></p></td>
+<td><p>耳机未在充电仓</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultReconnectWithMacAddr</strong></p></td>
+<td><p>OTA 需重连设备（MAC 方式）</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAResultDisconnect</strong></p></td>
+<td><p>OTA 设备断开</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAResultUnknown</strong></p></td>
+<td><p>OTA 未知错误</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p><strong>JL_OTAReconnectType</strong><br />
+表示 OTA 升级回连方式。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_OTAReconnectTypeUUID</strong></p></td>
+<td><p>使用 UUID 方式回连设备</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAReconnectTypeMACAddr</strong></p></td>
+<td><p>使用 MAC 地址方式回连设备</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="3">
+<li><p><strong>JL_OtaStatus</strong><br />
+表示设备 OTA 状态。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_OtaStatusNormal</strong></p></td>
+<td><p>正常升级</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OtaStatusForce</strong></p></td>
+<td><p>强制升级</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li><p><strong>JL_OtaHeadset</strong><br />
+表示耳机单备份是否需要强制升级。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_OtaHeadsetNO</strong></p></td>
+<td><p>耳机单备份正常升级</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OtaHeadsetYES</strong></p></td>
+<td><p>耳机单备份强制升级</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="5">
+<li><p><strong>JL_OtaWatch</strong><br />
+表示手表资源是否需要强制升级。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_OtaWatchNO</strong></p></td>
+<td><p>手表资源正常升级</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OtaWatchYES</strong></p></td>
+<td><p>手表资源强制升级</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="6">
+<li><p><strong>JL_BootLoader</strong><br />
+表示是否需要下载 BootLoader。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_BootLoaderNO</strong></p></td>
+<td><p>不需要下载 BootLoader</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_BootLoaderYES</strong></p></td>
+<td><p>需要下载 BootLoader</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="7">
+<li><p><strong>JL_Partition</strong><br />
+表示设备 OTA 时支持的固件备份类型。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_PartitionSingle</strong></p></td>
+<td><p>固件单备份</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_PartitionDouble</strong></p></td>
+<td><p>固件双备份</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id6">
+<h3>3.3 属性<a class="headerlink" href="#id6" title="永久链接至标题"></a></h3>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>属性名</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>mBLE_UUID</strong></p></td>
+<td><p><strong>NSString</strong></p></td>
+<td><p>设备 UUID，需要开发者填入</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>mBLE_NAME</strong></p></td>
+<td><p><strong>NSString</strong></p></td>
+<td><p>设备名称，需要开发者填入</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>bleOnly</strong></p></td>
+<td><p><strong>BOOL</strong></p></td>
+<td><p>是否仅支持 BLE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>bleAddr</strong></p></td>
+<td><p><strong>NSString</strong></p></td>
+<td><p>蓝牙地址</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>mCmdSN</strong></p></td>
+<td><p><strong>uint8_t</strong></p></td>
+<td><p>SN 值</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>version</strong></p></td>
+<td><p><strong>uint16_t</strong></p></td>
+<td><p>设备版本号</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>versionFirmware</strong></p></td>
+<td><p><strong>NSString</strong></p></td>
+<td><p>设备版本信息</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>otaStatus</strong></p></td>
+<td><p><strong>JL_OtaStatus</strong></p></td>
+<td><p>OTA 状态</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>otaHeadset</strong></p></td>
+<td><p><strong>JL_OtaHeadset</strong></p></td>
+<td><p>耳机升级模式</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>otaPartition</strong></p></td>
+<td><p><strong>JL_Partition</strong></p></td>
+<td><p>固件单/双备份支持</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>otaLength</strong> (只读)</p></td>
+<td><p><strong>int64_t</strong></p></td>
+<td><p>OTA 升级内容大小（设备通知的）</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>otaSent</strong> (只读)</p></td>
+<td><p><strong>uint32_t</strong></p></td>
+<td><p>已传输的数据大小</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id7">
+<h3>3.4 方法<a class="headerlink" href="#id7" title="永久链接至标题"></a></h3>
+<section id="id8">
+<h4>3.4.1 设备操作<a class="headerlink" href="#id8" title="永久链接至标题"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>- (void)noteEntityConnected</strong><br />
+通知 SDK 当前设备 BLE 已连接。</p></li>
+<li><p><strong>- (void)noteEntityDisconnected</strong><br />
+通知 SDK 当前设备 BLE 已断开。</p></li>
+<li><p><strong>- (void)cmdRebootDevice</strong><br />
+请求设备重启。</p></li>
+<li><p><strong>- (void)cmdRebootForceDevice</strong><br />
+强制请求设备重启。</p></li>
+</ol>
+</section>
+<section id="ota">
+<h4>3.4.2 OTA 操作<a class="headerlink" href="#ota" title="永久链接至标题"></a></h4>
+<ol class="arabic">
+<li><p>*<em>- (void)cmdOTAData:(NSData <em>)data Result:(JL_OTA_RT __nullable)result</em></em><br />
+发起 OTA 升级请求。</p>
+<p><strong>参数</strong>:</p>
+<ul class="simple">
+<li><p><strong>data</strong>: 升级文件数据。</p></li>
+<li><p><strong>result</strong>: 升级结果回调。</p></li>
+</ul>
+</li>
+<li><p><strong>- (void)cmdOTACancelResult:(JL_OTA_RESULT __nullable)result</strong><br />
+取消当前 OTA 升级流程。</p></li>
+<li><p><strong>- (BOOL)cmdOtaIsRelinking</strong><br />
+检查当前 OTA 单备份是否正在回连。</p></li>
+</ol>
+</section>
+<section id="id9">
+<h4>3.3.3 状态查询<a class="headerlink" href="#id9" title="永久链接至标题"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>- (void)cmdTargetFeature</strong><br />
+查询设备支持的 OTA 特性，建议连接设备后第一时间调用。</p></li>
+<li><p><strong>- (void)cmdSystemFunction</strong><br />
+查询设备系统状态，主要用于外置 Flash 场景。</p></li>
+</ol>
+</section>
+</section>
+<section id="id10">
+<h3>3.5 回调协议<a class="headerlink" href="#id10" title="永久链接至标题"></a></h3>
+<p><strong>JL_OTAManagerDelegate</strong></p>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>方法</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>*<em>- (void)otaDataSend:(NSData <em>)data</em></em></p></td>
+<td><p>数据发送回调</p></td>
+</tr>
+<tr class="row-odd"><td><p>*<em>- (void)otaFeatureResult:(JL_OTAManager <em>)manager</em></em></p></td>
+<td><p>设备状态信息回调</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>- (void)otaUpgradeResult:(JL_OTAResult)result Progress:(float)progress</strong></p></td>
+<td><p>升级状态与进度回调</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>- (void)otaCancel</strong></p></td>
+<td><p>OTA 升级取消回调</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="jlotafile">
+<h2>4. JLOTAFile<a class="headerlink" href="#jlotafile" title="永久链接至标题"></a></h2>
+<p><strong>JLOTAFile</strong> 是杰理科技提供的 OTA 文件管理类，主要用于支持 OTA 升级文件的下载和管理功能。通过简单的接口调用，开发者可以轻松获取固件文件并实现相关业务逻辑。</p>
+<section id="id11">
+<h3>4.1 类型定义<a class="headerlink" href="#id11" title="永久链接至标题"></a></h3>
+<section id="id12">
+<h4>4.1.1 枚举类型<a class="headerlink" href="#id12" title="永久链接至标题"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>JL_OTAUrlResult</strong><br />
+表示 OTA 文件获取的结果状态。</p></li>
+</ol>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>值</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>JL_OTAUrlResultSuccess</strong></p></td>
+<td><p>OTA 文件获取成功</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>JL_OTAUrlResultFail</strong></p></td>
+<td><p>OTA 文件获取失败</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>JL_OTAUrlResultDownloadFail</strong></p></td>
+<td><p>OTA 文件下载失败</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id13">
+<h4>4.1.2 回调类型<a class="headerlink" href="#id13" title="永久链接至标题"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>JL_OTA_URL</strong><br />
+文件下载结果的回调类型。</p></li>
+</ol>
+<p><strong>参数说明</strong>：</p>
+<ul class="simple">
+<li><p><strong>result</strong>：结果状态，对应 <strong>JL_OTAUrlResult</strong> 枚举值。</p></li>
+<li><p><strong>version</strong>：文件版本信息，可能为空。</p></li>
+<li><p><strong>url</strong>：下载链接地址，可能为空。</p></li>
+<li><p><strong>explain</strong>：文件说明信息，可能为空。</p></li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">JL_OTA_URL</span><span class="p">)(</span><span class="n">JL_OTAUrlResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"></span>
+<span class="w">                          </span><span class="bp">NSString</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">version</span><span class="p">,</span><span class="w"></span>
+<span class="w">                          </span><span class="bp">NSString</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"></span>
+<span class="w">                          </span><span class="bp">NSString</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">explain</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id14">
+<h3>4.2 方法<a class="headerlink" href="#id14" title="永久链接至标题"></a></h3>
+<section id="id15">
+<h4>4.2.1 文件下载<a class="headerlink" href="#id15" title="永久链接至标题"></a></h4>
+<ol class="arabic simple">
+<li><p><em><em>-(void)cmdGetOtaFileKey:(NSString</em>)key Code:(NSString</em>)code Result:(JL_OTA_URL __nullable)result**</p></li>
+</ol>
+<p><strong>描述</strong>：
+根据授权 <strong>key</strong> 和 <strong>code</strong>，下载指定的 OTA 升级文件。</p>
+<p><strong>参数</strong>：</p>
+<ul class="simple">
+<li><p><strong>key</strong>：授权的密钥。</p></li>
+<li><p><strong>code</strong>：授权码。</p></li>
+<li><p><strong>result</strong>：下载结果回调，返回文件信息和状态。</p></li>
+</ul>
+<p><strong>使用示例</strong>：</p>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="n">JLOTAFile</span><span class="w"> </span><span class="o">*</span><span class="n">otaFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLOTAFile</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="p">[</span><span class="n">otaFile</span><span class="w"> </span><span class="n">cmdGetOtaFileKey</span><span class="o">:</span><span class="s">@&quot;yourKey&quot;</span><span class="w"></span>
+<span class="w">                     </span><span class="nl">Code</span><span class="p">:</span><span class="s">@&quot;yourCode&quot;</span><span class="w"></span>
+<span class="w">                   </span><span class="nl">Result</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">JL_OTAUrlResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">explain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAUrlResultSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;文件下载成功，版本：%@，链接：%@，说明：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;文件下载失败，状态：%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><em><em>-(void)cmdGetOtaFileKey:(NSString</em>)key Code:(NSString</em>)code hash:(NSString*)hash Result:(JL_OTA_URL __nullable)result**</p></li>
+</ol>
+<p><strong>描述</strong>：
+根据授权 <strong>key</strong>、<strong>code</strong> 和文件 <strong>MD5</strong> 值，下载指定的 OTA 升级文件。</p>
+<p><strong>参数</strong>：</p>
+<ul class="simple">
+<li><p><strong>key</strong>：授权的密钥。</p></li>
+<li><p><strong>code</strong>：授权码。</p></li>
+<li><p><strong>hash</strong>：文件的 MD5 值，用于校验文件完整性。</p></li>
+<li><p><strong>result</strong>：下载结果回调，返回文件信息和状态。</p></li>
+</ul>
+<p><strong>使用示例</strong>：</p>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">otaFile</span><span class="w"> </span><span class="n">cmdGetOtaFileKey</span><span class="o">:</span><span class="s">@&quot;yourKey&quot;</span><span class="w"></span>
+<span class="w">                     </span><span class="nl">Code</span><span class="p">:</span><span class="s">@&quot;yourCode&quot;</span><span class="w"></span>
+<span class="w">                     </span><span class="nl">hash</span><span class="p">:</span><span class="s">@&quot;yourFileMD5&quot;</span><span class="w"></span>
+<span class="w">                   </span><span class="nl">Result</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">JL_OTAUrlResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">explain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAUrlResultSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;文件下载成功，版本：%@，链接：%@，说明：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;文件下载失败，状态：%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h3>4.3 注意事项<a class="headerlink" href="#id16" title="永久链接至标题"></a></h3>
+<ol class="arabic simple">
+<li><p>确保 <strong>key</strong> 和 <strong>code</strong> 的有效性，避免因授权失败导致文件无法下载。</p></li>
+<li><p>如果使用 MD5 校验，请正确传入文件的 <strong>hash</strong> 值，以确保文件完整性。</p></li>
+<li><p>回调参数 <strong>version</strong>、<strong>url</strong> 和 <strong>explain</strong> 可能为空，请在使用前进行有效性检查。</p></li>
+<li><p>为了提高下载的稳定性，建议在失败时添加重试机制。</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api_desc.html" class="btn btn-neutral float-left" title="3.使用JL_BLEKit.framework蓝牙连接方式" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../../Other/debug.html" class="btn btn-neutral float-right" title="测试调试" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd.
+      <span class="lastupdated">最后更新于 12月 12, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

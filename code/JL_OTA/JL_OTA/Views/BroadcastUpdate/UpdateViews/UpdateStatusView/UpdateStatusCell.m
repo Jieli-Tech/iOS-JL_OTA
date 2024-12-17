@@ -108,7 +108,7 @@
         [self.checkStatusTimer invalidate];
         self.checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkTime) userInfo:nil repeats:true];
         [self.checkStatusTimer fire];
-//        NSLog(@"timer start:%@",self);
+//        kJLLog(JLLOG_DEBUG, @"timer start:%@",self);
     }
 }
 
@@ -117,14 +117,14 @@
     if(_countTime>_maxTime){
         [self status:JL_OTAResultFailCmdTimeout];
     }
-//    NSLog(@"timer add:%@",self);
+//    kJLLog(JLLOG_DEBUG, @"timer add:%@",self);
 }
 
 
 -(void)endTimer{
     [self.checkStatusTimer invalidate];
     _countTime = 0;
-//    NSLog(@"timer end:%@",self);
+//    kJLLog(JLLOG_DEBUG, @"timer end:%@",self);
 }
 
 
@@ -266,7 +266,7 @@
 }
 
 -(void)dealloc{
-    NSLog(@"dealloc %@",self);
+    kJLLog(JLLOG_DEBUG, @"dealloc %@",self);
 }
 
 @end

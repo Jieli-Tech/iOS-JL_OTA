@@ -14,12 +14,13 @@
 #import "JLShareLogViewController.h"
 #import "AppDelegate.h"
 #import "JLMainViewController.h"
+#import "JL_RunSDK.h"
+#import "AboutViewController.h"
 
 @interface AutoSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,strong)UITableView *subTable;
 @property(nonatomic,strong)UILabel *logLab;
-@property(nonatomic,strong)UILabel *sdkVersionLab;
 @property(nonatomic,strong)TestNumberView *testNumberView;
 
 @property(nonatomic,strong)NSMutableArray *itemsArray;
@@ -36,26 +37,31 @@
 
 -(void)initData{
     self.itemsArray = [NSMutableArray new];
-    NSArray *pairArray = @[kJL_TXT("device_pair"),kJL_TXT("HID_device")];
+    NSArray *pairArray = @[kJL_TXT("device_pair"),kJL_TXT("hid_device")];
     [_itemsArray addObject:pairArray];
-
+    
     NSArray *autoArray = @[kJL_TXT("auto_test_ota"),kJL_TXT("test_number"),kJL_TXT("fault_tolerant"),kJL_TXT("fault_tolerant_times")];
     [_itemsArray addObject:autoArray];
     
     NSArray *logArray = @[kJL_TXT("log_file")];
     [_itemsArray addObject:logArray];
-    NSArray *appVersion = @[kJL_TXT("app_version")];
-    [_itemsArray addObject:appVersion];
+    
+    NSArray *sdkVersionCodeArray = @[kJL_TXT("sdk_version_code")];
+    [_itemsArray addObject:sdkVersionCodeArray];
+    
+    NSArray *aboutAppArray = @[kJL_TXT("about_app")];
+    [_itemsArray addObject:aboutAppArray];
+    
 }
 
 -(void)initUI{
     self.title = kJL_TXT("setting");
     self.view.backgroundColor = [UIColor colorFromHexString:@"#F4F7FB"];
-
+    
     _logLab = [UILabel new];
     _logLab.font = [UIFont systemFontOfSize:13];
     _logLab.textColor = [UIColor colorFromHexString:@"#6F6F6F"];
-    _logLab.text = [NSString stringWithFormat:@"%@:../Document/JL_LOG_xxxx-xx-xx-xx-xx-xx.txt",kJL_TXT("log_file_path")];
+    _logLab.text = [NSString stringWithFormat:@"%@:../Document/JL_LOG.txt",kJL_TXT("log_file_path")];
     _logLab.numberOfLines = 0;
     [self.view addSubview:_logLab];
     [_logLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -70,26 +76,7 @@
         make.height.offset(50);
     }];
     
-    _sdkVersionLab = [UILabel new];
-    _sdkVersionLab.font = [UIFont systemFontOfSize:13];
-    _sdkVersionLab.textColor = [UIColor colorFromHexString:@"#6F6F6F"];
-    _sdkVersionLab.text = [NSString stringWithFormat:@"%@：%@",kJL_TXT("sdk_version"),[JL_OTAManager logSDKVersion]];
-    _sdkVersionLab.textAlignment = NSTextAlignmentCenter;
-    _sdkVersionLab.numberOfLines = 0;
-    [self.view addSubview:_sdkVersionLab];
-    [_sdkVersionLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(0);
-        } else {
-            // Fallback on earlier versions
-            make.bottom.equalTo(self.view.mas_bottom).offset(0);
-        }
-        make.left.equalTo(self.view.mas_left).offset(20);
-        make.right.equalTo(self.view.mas_right).offset(-20);
-        make.height.offset(50);
-    }];
-    
-    
+
     _subTable = [UITableView new];
     _subTable.delegate = self;
     _subTable.dataSource = self;
@@ -109,7 +96,12 @@
         make.top.equalTo(_logLab.mas_bottom).offset(0);
         make.left.equalTo(self.view.mas_left).offset(0);
         make.right.equalTo(self.view.mas_right).offset(0);
-        make.bottom.equalTo(_sdkVersionLab.mas_top).offset(-8);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(0);
+        } else {
+            // Fallback on earlier versions
+            make.bottom.equalTo(self.view.mas_bottom).offset(0);
+        }
     }];
     
     _testNumberView = [TestNumberView new];
@@ -163,6 +155,7 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
     NSArray *array = self.itemsArray[indexPath.section];
     cell.mainLab.text = array[indexPath.row];
+    cell.endLeftLayout.constant = 4;
     switch (indexPath.section) {
         case 0:{
             if(indexPath.row == 0){
@@ -176,7 +169,7 @@
                 cell.saveKey = @"SupportHID";
             }
         }break;
-      
+            
         case 1:{
             if(indexPath.row == 0){
                 cell.switchBtn.hidden = NO;
@@ -208,12 +201,20 @@
         default:
             break;
     }
-    if([cell.mainLab.text isEqualToString:kJL_TXT("app_version")]){
+    
+    if([cell.mainLab.text isEqualToString:kJL_TXT("sdk_version_code")]){
+        cell.endLab.hidden = NO;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.endLeftLayout.constant = 16;
+        cell.endLab.text = [[JL_OTAManager logSDKVersion] stringByReplacingOccurrencesOfString:SMALL_V withString:BIG_V];
+    }
+    
+    if([cell.mainLab.text isEqualToString:kJL_TXT("about_app")]){
         cell.endLab.hidden = NO;
         NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-        cell.endLab.text = [NSString stringWithFormat:@"V%@",app_Version];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        cell.endLab.text = [NSString stringWithFormat:@"V%@",appVersion];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
 }
@@ -236,6 +237,11 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
+    if(indexPath.section == 4){
+        AboutViewController *vc = [[AboutViewController alloc] init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 

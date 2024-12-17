@@ -1,1 +1,1 @@
-link ../../../AFNetworking/UIKit+AFNetworking/AFNetworkActivityIndicatorManager.h
+../../../AFNetworking/UIKit+AFNetworking/AFNetworkActivityIndicatorManager.h

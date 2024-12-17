@@ -36,6 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_FmManager : JL_FunctionBaseManager
 
+///Fm状态
+@property (assign,nonatomic) JL_FMStatus        fmStatus;
+
+///Fm 频段范围
+///76.5-108.0Mhz
+///87.5-108.0Mhz
+@property (assign,nonatomic) JL_FMMode          fmMode;
+
+///当前fm
+@property (strong,nonatomic) JLModel_FM          *currentFm;
+
+///Fm列表
+@property (strong,nonatomic) NSArray            *fmArray;
+
 #pragma mark ---> FM相关操作
 /**
  @param cmd FM功能

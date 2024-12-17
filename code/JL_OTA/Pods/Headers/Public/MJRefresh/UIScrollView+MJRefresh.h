@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/UIScrollView+MJRefresh.h
+../../../MJRefresh/MJRefresh/UIScrollView+MJRefresh.h

@@ -128,7 +128,7 @@
     
     __weak typeof(self) weakSelf = self;
     _header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        NSLog(@"--->开始刷新...");
+        kJLLog(JLLOG_DEBUG, @"--->开始刷新...");
         [weakSelf startScanDevice];
     }];
     _subTableView.mj_header = _header;
@@ -237,7 +237,7 @@
     /*--- 搜索蓝牙设备 ---*/
     [[BroadcastBleManager sharedInstance] startScanBLE];
     [JL_Tools delay:2.0 Task:^{
-        NSLog(@"--->已刷完.");
+        kJLLog(JLLOG_DEBUG, @"--->已刷完.");
         [[BroadcastBleManager sharedInstance] stopScanBLE];
         [self.subTableView.mj_header endRefreshing];
     }];
@@ -255,7 +255,8 @@
                 [self tapToDismissPop];
             }break;
             case 1:{
-                AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+                [ToolsHelper setBroadcast:false];
+                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 delegate.window.rootViewController = [JLMainViewController prepareViewControllers];
                 [delegate.window makeKeyAndVisible];
             }break;
@@ -299,7 +300,7 @@
     if ([name isEqual:kBDM_BLE_PAIRED]) {
         [self startLoadingView:kJL_TXT("connect_ok") Delay:1.0];
         CBPeripheral *pl = [note object];
-        NSLog(@"FTL BLE Paired ---> %@ UUID:%@",pl.name,pl.identifier.UUIDString);
+        kJLLog(JLLOG_DEBUG, @"FTL BLE Paired ---> %@ UUID:%@",pl.name,pl.identifier.UUIDString);
         [_subTableView reloadData];
         [self hideLoadingView];
     }
@@ -365,7 +366,7 @@
         return;
     }
     
-    NSLog(@"蓝牙正在连接... ==> %@",item.name);
+    kJLLog(JLLOG_DEBUG, @"蓝牙正在连接... ==> %@",item.name);
     [self startLoadingView:kJL_TXT("connecting") Delay:5.0];
     [[BroadcastBleManager sharedInstance] connectBLE:item];
     

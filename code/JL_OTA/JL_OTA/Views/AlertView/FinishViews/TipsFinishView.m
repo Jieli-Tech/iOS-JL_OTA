@@ -112,6 +112,7 @@
         [_autoView failedStatus];
         _autoView.errorLab.text = [NSString stringWithFormat:@"%@:%@",kJL_TXT("reason"),[ToolsHelper errorReason:result]];
         if(![ToolsHelper getFaultTolerant]){
+            kJLLog(JLLOG_ERROR, @"发生错误导致关闭自动化升级！！！");
             [[LoopUpdateManager share] cleanList];
         }
         _autoView.testNumberLab.text = [NSString stringWithFormat:@"%@%d,%@%d",kJL_TXT("number_of_test_tasks"),(int)[ToolsHelper getAutoTestOtaNumber],kJL_TXT("number_of_successful_tests"),(int)[[LoopUpdateManager share] finishNumber]];

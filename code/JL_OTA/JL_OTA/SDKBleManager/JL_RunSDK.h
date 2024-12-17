@@ -8,6 +8,17 @@
 #import <Foundation/Foundation.h>
 #import <JL_BLEKit/JL_BLEKit.h>
 
+#define SMALL_V @"v"
+
+#define BIG_V   @"V"
+
+#define kJL_AGRESS_PROTOCOL @"agress_protocol"
+
+#define KEY_COMMIT_PROTOCOL  @"commit_protocol"
+
+#define kJL_HeightNavBar ([UIApplication sharedApplication].delegate.window.safeAreaInsets.top+44.0)
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol JL_RunSDKOtaDelegate <NSObject>
@@ -50,6 +61,10 @@ typedef void(^GET_DEVICE_CALLBACK)(BOOL needForcedUpgrade);
  *  OTA升级
  */
 - (void)otaFuncWithFilePath:(NSString *)otaFilePath;
+
++(double)getWidthWithString:(NSString*)str font:(UIFont*)font;
+
++(NSAttributedString *)getAttributeWith:(id)sender string:(NSString *)string orginFont:(CGFloat)orginFont orginColor:(UIColor *)orginColor attributeFont:(CGFloat)attributeFont attributeColor:(UIColor *)attributeColor;
 
 @end
 

@@ -151,7 +151,7 @@
     
     __weak typeof(self) weakSelf = self;
     _header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        NSLog(@"--->开始刷新...");
+        kJLLog(JLLOG_DEBUG, @"--->开始刷新...");
         [weakSelf startScanDevice];
     }];
     _subTableView.mj_header = _header;
@@ -223,7 +223,7 @@
     [[JLBleManager sharedInstance] startScanBLE];
     self.showAnimation = YES;
     [JL_Tools delay:2.0 Task:^{
-        NSLog(@"--->已刷完.");
+        kJLLog(JLLOG_DEBUG, @"--->已刷完.");
         [[JLBleManager sharedInstance] stopScanBLE];
         [self.subTableView.mj_header endRefreshing];
         self.showAnimation = NO;
@@ -268,15 +268,15 @@
             
             CBPeripheral *pl = [note object];
             
-            NSLog(@"FTL BLE Paired ---> %@ UUID:%@",pl.name,pl.identifier.UUIDString);
+            kJLLog(JLLOG_DEBUG, @"FTL BLE Paired ---> %@ UUID:%@",pl.name,pl.identifier.UUIDString);
             [_subTableView reloadData];
             [self hideLoadingView];
             if(![ToolsHelper isConnectBySDK]){
                 [JL_Tools delay:0.5 Task:^{
                     [[JLBleManager sharedInstance] getDeviceInfo:^(BOOL needForcedUpgrade) {
-                        NSLog(@"getDeviceInfo:%d",__LINE__);
+                        kJLLog(JLLOG_DEBUG, @"getDeviceInfo:%d",__LINE__);
                         if (needForcedUpgrade) {
-                            NSLog(@"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
+                            kJLLog(JLLOG_DEBUG, @"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
                             [self startLoadingView:kJL_TXT("need_upgrade_now") Delay:1.0];
                         }
                         //当自动刚升级时触发以下方法
@@ -353,7 +353,7 @@
     }
     
     [JLBleManager sharedInstance].isPaired = [ToolsHelper isSupportPair];
-    NSLog(@"蓝牙正在连接... ==> %@",item.name);
+    kJLLog(JLLOG_DEBUG, @"蓝牙正在连接... ==> %@",item.name);
     [self startLoadingView:kJL_TXT("connecting") Delay:5.0];
     
     [[JLBleManager sharedInstance] connectBLE:item];

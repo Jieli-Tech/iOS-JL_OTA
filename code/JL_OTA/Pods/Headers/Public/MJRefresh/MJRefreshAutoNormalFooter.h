@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/Custom/Footer/Auto/MJRefreshAutoNormalFooter.h
+../../../MJRefresh/MJRefresh/Custom/Footer/Auto/MJRefreshAutoNormalFooter.h

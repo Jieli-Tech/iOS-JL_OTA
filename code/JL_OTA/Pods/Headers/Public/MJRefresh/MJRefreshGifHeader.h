@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/Custom/Header/MJRefreshGifHeader.h
+../../../MJRefresh/MJRefresh/Custom/Header/MJRefreshGifHeader.h

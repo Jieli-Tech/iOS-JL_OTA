@@ -16,4 +16,12 @@ FOUNDATION_EXPORT const unsigned char JL_AdvParseVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <JL_AdvParse/PublicHeader.h>
 #import <JL_AdvParse/JLAdvParse.h>
+#import <JL_AdvParse/JLDevicesAdv.h>
+#import <JL_AdvParse/JLTwsAdv.h>
+#import <JL_AdvParse/JLSoundBoxAdv.h>
+#import <JL_AdvParse/JLSoundCardAdv.h>
+#import <JL_AdvParse/JLChargingBoxAdv.h>
+#import <JL_AdvParse/JLEarphoneAdv.h>
+#import <JL_AdvParse/JLWatchAdv.h>
+#import <JL_AdvParse/JLOtaAdv.h>
 

@@ -171,7 +171,7 @@
         self.hidden = YES;
     }else {
         // 其余错误码详细 Command+点击JL_OTAResult 查看说明
-        NSLog(@"ota update result: %d", result);
+        kJLLog(JLLOG_DEBUG, @"ota update result: %@", [ToolsHelper errorReason:result]);
         
     }
     

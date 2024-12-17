@@ -39,6 +39,7 @@
 @property(nonatomic,strong)TipsFinishView *finishView;
 @property(nonatomic,strong)TipsProgressView *progressView;
 @property(nonatomic,strong)TipsComputerView *transportComputerView;
+@property(nonatomic,strong)DownloadView *ufwDownloadView;
 
 //MARK: - data
 @property(nonatomic,strong)NSArray *itemArray;
@@ -64,6 +65,7 @@
     self.selectedArray = [NSMutableArray new];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlerNotifi:) name:nil object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleQrresult:) name:QR_SCAN_RESULT object:nil];
 }
 
 -(void)initUI{
@@ -231,7 +233,7 @@
         make.top.equalTo(_fileTransportBtn.mas_bottom).offset(4);
         make.right.equalTo(self.view.mas_right).offset(-16);
         make.width.offset(125);
-        make.height.offset(96);
+        make.height.offset(141);
     }];
     UITapGestureRecognizer *tapges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapgesToDismissPopView)];
     [_popSuperView addGestureRecognizer:tapges];
@@ -267,6 +269,13 @@
         make.right.equalTo(windows.mas_right).offset(0);
         make.bottom.equalTo(windows.mas_bottom).offset(0);
     }];
+    
+    _ufwDownloadView = [[DownloadView alloc] initWithFrame:CGRectZero];
+    [windows addSubview:_ufwDownloadView];
+    [_ufwDownloadView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(windows);
+    }];
+    _ufwDownloadView.hidden = true;
 }
 
 //MARK: - Button action
@@ -288,6 +297,8 @@
         return;
     }
     if(self.selectedArray.count > 0){
+        [[LoopUpdateManager share] setFinishNumber:0];
+        [[LoopUpdateManager share] setFailedNumber:0];
         //开始升级
         [[LoopUpdateManager share] startLoopUpdate:self.selectedArray];
         
@@ -327,6 +338,10 @@
         }
     }
     
+}
+-(void)handleQrresult:(NSNotification *)note{
+    NSString *url = note.object;
+    [_ufwDownloadView downloadAction:url];
 }
 
 //MARK: - tools
@@ -381,18 +396,18 @@
         self.finishView.hidden = YES;
         [self otaTimeCheck];//增加超时检测
     } else if (result == JL_OTAResultPrepared) {
-        NSLog(@"---> 检验文件【完成】");
+        kJLLog(JLLOG_DEBUG, @"---> 检验文件【完成】");
         [self otaTimeCheck];//增加超时检测
         [LoopUpdateManager share].status = DeviceOtaStatusStepI;
     } else if (result == JL_OTAResultReconnect) {
-        NSLog(@"---> OTA正在回连设备... %@", [JLBleManager sharedInstance].mBlePeripheral.name);
+        kJLLog(JLLOG_DEBUG, @"---> OTA正在回连设备... %@", [JLBleManager sharedInstance].mBlePeripheral.name);
         [[JLBleManager sharedInstance] connectPeripheralWithUUID:[JLBleManager sharedInstance].lastUUID];
         [self otaTimeCheck];//增加超时检测
     } else if (result == JL_OTAResultReconnectWithMacAddr) {
         
 //        JLModel_Device *model = [[JLBleManager sharedInstance].mAssist.mCmdManager outputDeviceModel];
         JL_OTAManager *model = [JLBleManager sharedInstance].otaManager;
-        NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", model.bleAddr);
+        kJLLog(JLLOG_DEBUG, @"---> OTA正在通过Mac Addr方式回连设备... %@", model.bleAddr);
         
         [JLBleManager sharedInstance].lastBleMacAddress = model.bleAddr;
         [[JLBleManager sharedInstance] startScanBLE];
@@ -401,7 +416,9 @@
         [LoopUpdateManager share].status = DeviceOtaStatusStepII;
         [self otaTimeCheck];//增加超时检测
     } else if (result == JL_OTAResultSuccess) {
-        NSLog(@"--->升级成功.");
+        kJLLog(JLLOG_DEBUG, @"--->升级成功.");
+    } else if (result == JL_OTAResultReboot) {
+        kJLLog(JLLOG_DEBUG, @"--->升级完成设备重启.");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.finishView succeed];
             [self otaTimeClose];//关闭超时检测
@@ -417,26 +434,23 @@
                 self.finishView.hidden = YES;
             });
             [DFUITools showText:kJL_TXT("wait_connect") onView:self.view delay:4];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(16 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [[LoopUpdateManager share] startLoopOta];
                 [self startReconnect];
             });
         }
-        
-    } else if (result == JL_OTAResultReboot) {
-        NSLog(@"--->设备重启.");
-        
-    } else {
+    } else if (result == JL_OTAResultDisconnect){
+        kJLLog(JLLOG_DEBUG, @"--->设备断开连接.");
+        [self otaTimeClose];//关闭超时检测
+    }else {
+        self.progressView.hidden = YES;
         [self otaTimeClose];
         [DFUITools showText:kJL_TXT("update_failed") onView:self.view delay:1.0];
-        self.progressView.hidden = YES;
         [self.finishView failed:result];
         [LoopUpdateManager share].failedNumber+=1;
         [self faultTolerantHandle];
         // 其余错误码详细 Command+点击JL_OTAResult 查看说明
-        NSLog(@"ota update result: %d", result);
-        //[[JLBleManager sharedInstance].otaManager resetOTAManager];
-       
+        kJLLog(JLLOG_DEBUG, @"ota update result: %@", [ToolsHelper errorReason:result]);
     }
 }
 
@@ -445,12 +459,25 @@
 -(void)faultTolerantHandle{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
+        if (![[LoopUpdateManager share] shouldLoopUpdate]){
+            [[LoopUpdateManager share] cleanList];
+            [self.finishView succeed];
+            return;
+        }
+        
         if([ToolsHelper getFaultTolerant] && [ToolsHelper getFaultTolerantTimes]>=[[LoopUpdateManager share] failedNumber]){
             
+            self.finishView.hidden = YES;
+            self.progressView.hidden = false;
+            [self.progressView setWithOtaResult:JL_OTAResultReconnect withProgress:0.0];
             [[JLBleManager sharedInstance] disconnectBLE];
             if([LoopUpdateManager share].status == DeviceOtaStatusPrepare || [LoopUpdateManager share].status == DeviceOtaStatusFinish){
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [[JLBleManager sharedInstance] connectPeripheralWithUUID:[JLBleManager sharedInstance].lastUUID];
+                    if ([ToolsHelper isSupportHID]) {
+                        [[LoopUpdateManager share] startLoopOta];
+                    }else{
+                        [[JLBleManager sharedInstance] connectPeripheralWithUUID:[JLBleManager sharedInstance].lastUUID];
+                    }
                 });
             }else{
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -488,7 +515,7 @@ static int      otaTimeout= 0;
     otaTimeout++;
     if (otaTimeout == _maxOtaTime) {
         [self otaTimeClose];
-        NSLog(@"OTA ---> 超时了！！！");
+        kJLLog(JLLOG_DEBUG, @"OTA ---> 超时了！！！");
         [DFUITools showText:kJL_TXT("update_timeout") onView:self.view delay:1.0];
         [self.progressView timeOutShow];
         [self.finishView failed:JL_OTAResultFailCmdTimeout];
@@ -500,17 +527,21 @@ static int      otaTimeout= 0;
 -(void)startReconnect{
     self.connectTimerCount = 0;
     [self.connectTimer invalidate];
-    self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(reconnectAdd) userInfo:nil repeats:true];
+    self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(reconnectAdd) userInfo:nil repeats:true];
     [self.connectTimer fire];
 }
 
 -(void)reconnectAdd{
     self.connectTimerCount+=1;
-    if(self.connectTimerCount > 40){
+    if(self.connectTimerCount > 5){
+        [[LoopUpdateManager share] startLoopOta];
+    }
+    if (self.connectTimerCount > 10){
         [self.connectTimer invalidate];
         self.connectTimer = nil;
         [self.progressView timeOutShow];
         [self.finishView failed:JL_OTAResultFailTWSDisconnect];
+        kJLLog(JLLOG_DEBUG, @"---> 重连超时");
     }
 }
 
@@ -571,6 +602,7 @@ static int      otaTimeout= 0;
     [DFFile removePath:path];
     [_selectedArray removeAllObjects];
     [self reflashFileArray];
+    [self checkDeviceConnected];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -600,6 +632,11 @@ static int      otaTimeout= 0;
             }break;
             case 1:{
                 self.transportComputerView.hidden = NO;
+            }break;
+            case 2:{
+                ScanQRCodeVC *scv = [[ScanQRCodeVC alloc] init];
+                [scv setHidesBottomBarWhenPushed:true];
+                [self.navigationController pushViewController:scv animated:true];
             }break;
             default:
                 break;

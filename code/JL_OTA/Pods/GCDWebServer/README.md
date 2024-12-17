@@ -104,7 +104,7 @@ int main(int argc, const char* argv[]) {
     // Use convenience method that runs server on port 8080
     // until SIGINT (Ctrl-C in Terminal) or SIGTERM is received
     [webServer runWithPort:8080 bonjourName:nil];
-    NSLog(@"Visit %@ in your web browser", webServer.serverURL);
+    kJLLog(JLLOG_DEBUG, @"Visit %@ in your web browser", webServer.serverURL);
     
   }
   return 0;
@@ -139,7 +139,7 @@ int main(int argc, const char* argv[]) {
   
   // Start server on port 8080
   [_webServer startWithPort:8080 bonjourName:nil];
-  NSLog(@"Visit %@ in your web browser", _webServer.serverURL);
+  kJLLog(JLLOG_DEBUG, @"Visit %@ in your web browser", _webServer.serverURL);
   
   return YES;
 }
@@ -196,7 +196,7 @@ Simply instantiate and run a ```GCDWebUploader``` instance then visit ```http://
   NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
   _webUploader = [[GCDWebUploader alloc] initWithUploadDirectory:documentsPath];
   [_webUploader start];
-  NSLog(@"Visit %@ in your web browser", _webUploader.serverURL);
+  kJLLog(JLLOG_DEBUG, @"Visit %@ in your web browser", _webUploader.serverURL);
   return YES;
 }
 
@@ -226,7 +226,7 @@ Simply instantiate and run a ```GCDWebDAVServer``` instance then connect to ```h
   NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
   _davServer = [[GCDWebDAVServer alloc] initWithUploadDirectory:documentsPath];
   [_davServer start];
-  NSLog(@"Visit %@ in your WebDAV client", _davServer.serverURL);
+  kJLLog(JLLOG_DEBUG, @"Visit %@ in your WebDAV client", _davServer.serverURL);
   return YES;
 }
 

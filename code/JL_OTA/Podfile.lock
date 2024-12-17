@@ -39,7 +39,7 @@ DEPENDENCIES:
   - MJRefresh
 
 SPEC REPOS:
-  https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - Bugly
     - Colours
@@ -48,13 +48,13 @@ SPEC REPOS:
     - MJRefresh
 
 SPEC CHECKSUMS:
-  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   Bugly: b8715e6ec4004b7f7fbffab0643ba80545aee3da
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
 
-PODFILE CHECKSUM: e6505c6a5776f83c6be598fc517848a71ff9c6bf
+PODFILE CHECKSUM: 3c2692d669a570f08aac53dcefb847fb499af889
 
 COCOAPODS: 1.11.2

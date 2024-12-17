@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/MJRefresh.h
+../../../MJRefresh/MJRefresh/MJRefresh.h

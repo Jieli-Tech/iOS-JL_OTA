@@ -27,8 +27,8 @@ static NSString *reusreIdentifier = @"UITableViewCellStyleDefault";
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        self.itemList = @[kJL_TXT("app_share"),kJL_TXT("computer_share")];
-        self.imageList = @[@"icon_phone",@"icon_computer"];
+        self.itemList = @[kJL_TXT("app_share"),kJL_TXT("computer_share"),kJL_TXT("scan_to_download")];
+        self.imageList = @[@"icon_phone",@"icon_computer",@"icon_scan"];
         self.type = PopoverTypeAdd;
         _popBgImg = [UIImage imageNamed:@"popout_bg"];
     }

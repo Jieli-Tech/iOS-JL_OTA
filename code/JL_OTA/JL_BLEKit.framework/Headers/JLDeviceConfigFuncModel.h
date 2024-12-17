@@ -71,6 +71,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign)BOOL spSyncWeather;
 /// 支持找手机/设备
 @property(nonatomic,assign)BOOL spFindPhoneOrDevice;
+/// Ai 云功能
+@property(nonatomic,assign)BOOL spAiCloud;
+/// Ai 表盘
+@property(nonatomic,assign)BOOL spAiDial;
+/// 平台接口信息获取
+@property(nonatomic,assign)BOOL spOpenInfo;
+/// 支持4G模块
+@property(nonatomic,assign)BOOL sp4GModel;
+
+/// 支持表盘信息拓展
+@property(nonatomic,assign)BOOL spDialInfoExtend;
 
 -(instancetype)init:(NSData *)data;
 
@@ -190,15 +201,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-//MARK: - 手表配置信息数据结构解析
+//MARK: - 设备配置信息
 
-/// 手表配置信息数据结构
-@interface JLDeviceConfigModel:NSObject
+/// 设备配置信息
+@interface JLDeviceConfigBasic:NSObject
 /// 产品标志类型
-/// 0 - 运动手表
+/// 0 - 手表
+/// 1 - TWS耳机
 @property(nonatomic,assign)int deviceType;
 /// 版本
 @property(nonatomic,assign)int version;
+
+/// 数据
+@property(nonatomic,copy)NSData *basicData;
+
+/// 功能配置所属设备的UUID
+@property(nonatomic,strong)NSString  * _Nullable mbleIdentifyStr;
+
+-(instancetype)init:(NSData *)data;
+
+@end
+
+//MARK: - 手表配置信息数据结构解析
+
+/// 手表配置信息数据结构
+@interface JLDeviceConfigModel:JLDeviceConfigBasic
 /// - 必须功能
 @property(nonatomic,strong)JLDeviceBasicFuncModel *basicFunc;
 /// - 系统功能
@@ -207,10 +234,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)JLDeviceExportFuncModel * exportFunc;
 /// - 运动健康
 @property(nonatomic,strong)JLDeviceHealthFuncModel *healthFunc;
-/// 功能配置所属设备的UUID
-@property(nonatomic,strong)NSString  * _Nullable mbleIdentifyStr;
-
--(instancetype)init:(NSData *)data;
 
 @end
 

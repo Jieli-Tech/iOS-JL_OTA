@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>欢迎使用杰理OTA升级(iOS)开发说明 &mdash; 杰理OTA升级开发文档(iOS) v2.3.1 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="SDK架构" href="Framework/framework.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> 杰理OTA升级开发文档(iOS)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/import.html">1.项目配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/api_desc.html">3.使用JL_BLEKit.framework蓝牙连接方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/API/api_docs.html">4. API 说明</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Other/otaQa.html">常见问题答疑</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>欢迎使用杰理OTA升级(iOS)开发说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <figure class="align-right">
+<a class="reference internal image-reference" href="_images/JL_LOGO.png"><img alt="_images/JL_LOGO.png" src="_images/JL_LOGO.png" style="width: 70%;" /></a>
+</figure>
+<section id="ota-ios">
+<h1>欢迎使用杰理OTA升级(iOS)开发说明<a class="headerlink" href="#ota-ios" title="永久链接至标题"></a></h1>
+<p><strong>版本: V2.3.1</strong></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>本开源项目文档由杰理官方推出，让OTA升级功快速接入到iOS平台的APP项目之中。</p>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Framework/framework.html">SDK架构</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/import.html">1.项目配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/api_desc.html">3.使用JL_BLEKit.framework蓝牙连接方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Development/Content/API/api_docs.html">4. API 说明</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Other/otaQa.html">常见问题答疑</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Other/version.html">发布记录</a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Framework/framework.html" class="btn btn-neutral float-right" title="SDK架构" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd.
+      <span class="lastupdated">最后更新于 12月 13, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,1 +1,1 @@
-link ../../../Masonry/Masonry/MASViewConstraint.h
+../../../Masonry/Masonry/MASViewConstraint.h

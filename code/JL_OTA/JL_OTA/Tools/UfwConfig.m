@@ -21,7 +21,7 @@
         JLUfwInfo *info = [self getFirmInfo:data];
         if(info.pid == pid && info.uid == uid){
             [machArray addObject:targetPath];
-//            NSLog(@"filePath:%@",targetPath);
+//            kJLLog(JLLOG_DEBUG, @"filePath:%@",targetPath);
         }
     }
     return machArray;
@@ -40,7 +40,7 @@
     info.pid = fw_id_info[0] << 8 | fw_id_info[1];
     info.uid = fw_id_info[2] << 8 | fw_id_info[3];
     info.version = fw_id_info[4] << 8 | fw_id_info[5];
-//    NSLog(@"pid:%hx,uid:%hx",info.pid,info.uid);
+//    kJLLog(JLLOG_DEBUG, @"pid:%hx,uid:%hx",info.pid,info.uid);
     if (fw_id_info) free(fw_id_info);
     return info;
 }

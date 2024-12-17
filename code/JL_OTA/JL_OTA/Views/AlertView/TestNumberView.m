@@ -199,9 +199,7 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    [ToolsHelper setAutoTestOtaNumber:[textfixed.text intValue]];
-//    self.numberText = textfixed.text;
-    [textfixed endEditing:YES];
+    [self confirmBtnAction];
     return true;
 }
 

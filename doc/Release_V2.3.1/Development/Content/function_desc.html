@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.使用自定义的蓝牙连接API进行OTA &mdash; 杰理OTA升级开发文档(iOS) v2.3.1 文档</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+        <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3.使用JL_BLEKit.framework蓝牙连接方式" href="api_desc.html" />
+    <link rel="prev" title="1.项目配置" href="import.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> 杰理OTA升级开发文档(iOS)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="import.html">1.项目配置</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2.使用自定义的蓝牙连接API进行OTA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#jl-otalib">2.1. JL_OTALib工作时序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sdk">2.2. 初始化SDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ble">2.3. BLE设备特征回调</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">2.4. BLE更新通知特征的状态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.5. BLE设备返回的数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2.6. BLE设备断开连接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">2.7. 手机蓝牙状态更新</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">2.8. 获取设备信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ota">2.9. 固件OTA升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">2.10. 取消固件OTA升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#otamanager-delegate">2.11. OTAManager 的delegate回调处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delegate">2.12. 设备认证的delegate回调</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">2.13. 数据发送</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_desc.html">3.使用JL_BLEKit.framework蓝牙连接方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API/api_docs.html">API 说明</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/otaQa.html">常见问题答疑</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>2.使用自定义的蓝牙连接API进行OTA</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="apiota">
+<h1>2.使用自定义的蓝牙连接API进行OTA<a class="headerlink" href="#apiota" title="永久链接至标题"></a></h1>
+<section id="jl-otalib">
+<h2>2.1. JL_OTALib工作时序<a class="headerlink" href="#jl-otalib" title="永久链接至标题"></a></h2>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/ota_seq.png"><img alt="../../_images/ota_seq.png" src="../../_images/ota_seq.png" style="width: 100%;" /></a>
+</figure>
+<p><strong>参考Demo：「JL_OTA项目的BleManager文件夹」</strong></p>
+<p><strong>支持的功能：</strong></p>
+<ul class="simple">
+<li><p>BLE设备握手连接；</p></li>
+<li><p>获取设备信息；</p></li>
+<li><p>OTA升级能实现；</p></li>
+</ul>
+<p><strong>用到的库和相关类：</strong></p>
+<p>用到的库：</p>
+<ul class="simple">
+<li><p>JL_OTALib.framework —-OTA升级业务库</p></li>
+<li><p>JL_AdvParse.framework——杰理蓝牙设备广播包解析业务库</p></li>
+<li><p>JL_HashPair.framework——设备认证业务库</p></li>
+<li><p>JLLogHelper.frmework——日志打印业务库</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>在OTA过程中不允许进行其他命令的交互</p>
+</div>
+<p>相关类说明：
+<strong>JL_OTAManager：</strong> OTA升级业务管理类</p>
+<ul class="simple">
+<li><p>获取设备信息（是否需要升级/强制升级）</p>
+<ul>
+<li><p>cmdTargetFeature</p></li>
+</ul>
+</li>
+<li><p>设备端发过来的数据解析接口</p>
+<ul>
+<li><p>cmdOTADataReceive：</p></li>
+</ul>
+</li>
+<li><p>请求进入loader状态,需要携带升数据bfu</p>
+<ul>
+<li><p>cmdOTAData：Result：</p></li>
+</ul>
+</li>
+<li><p>进行数据传输（进入loader，重连后需要再次调用）</p>
+<ul>
+<li><p>cmdOTAData：Result：</p></li>
+</ul>
+</li>
+<li><p>重启设备命令</p>
+<ul>
+<li><p>cmdRebootDevice</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>JLHashHandler：</strong> 设备认证业务类</p>
+<p><strong>JL_AdvParse：</strong> 广播包内容解析类</p>
+<p><strong>BLE特征参数</strong></p>
+<ul class="simple">
+<li><p><strong>【服务号】</strong> ：AE00</p></li>
+<li><p><strong>【写】特征值</strong> ：AE01</p></li>
+<li><p><strong>【读 】特征值</strong> ：AE02</p></li>
+</ul>
+</section>
+<section id="sdk">
+<h2>2.2. 初始化SDK<a class="headerlink" href="#sdk" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">@interface</span> <span class="nc">JLBleManager</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="n">JL_OTAManagerDelegate</span><span class="p">,</span><span class="n">JLHashHandlerDelegate</span><span class="o">&gt;</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">strong</span><span class="p">,</span><span class="w"> </span><span class="k">nonatomic</span><span class="p">)</span><span class="w"> </span><span class="n">JLHashHandler</span><span class="w"> </span><span class="o">*</span><span class="n">pairHash</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">@end</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="n">init</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="nb">self</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">super</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="n">_otaManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_OTAManager</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="n">_otaManager</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pairHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLHashHandler</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pairHash</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="w">        </span><span class="p">[</span><span class="n">JL_OTAManager</span><span class="w"> </span><span class="n">logSDKVersion</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">        </span><span class="p">[</span><span class="n">JLHashHandler</span><span class="w"> </span><span class="n">sdkVersion</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="ble">
+<h2>2.3. BLE设备特征回调<a class="headerlink" href="#ble" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#pragma mark 设备特征回调</span>
+<span class="linenos"> 2</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">peripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">didDiscoverCharacteristicsForService:</span><span class="p">(</span><span class="bp">CBService</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">service</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="n">nullable</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Err: Discovered Characteristics fail.&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">service</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="w"> </span><span class="n">isEqual</span><span class="o">:</span><span class="n">FLT_BLE_SERVICE</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="bp">CBCharacteristic</span><span class="w"> </span><span class="o">*</span><span class="n">character</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="n">characteristics</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="cm">/*--- RCSP ---*/</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">character</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="w"> </span><span class="n">isEqual</span><span class="o">:</span><span class="n">FLT_BLE_RCSP_W</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">                </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BLE Get Rcsp(Write) Channel ---&gt; %@&quot;</span><span class="p">,</span><span class="n">character</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">                </span><span class="nb">self</span><span class="p">.</span><span class="n">mRcspWrite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">character</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">character</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="w"> </span><span class="n">isEqual</span><span class="o">:</span><span class="n">FLT_BLE_RCSP_R</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">                </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BLE Get Rcsp(Read) Channel ---&gt; %@&quot;</span><span class="p">,</span><span class="n">character</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">                </span><span class="nb">self</span><span class="p">.</span><span class="n">mRcspRead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">character</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">                </span><span class="p">[</span><span class="n">peripheral</span><span class="w"> </span><span class="n">setNotifyValue</span><span class="o">:</span><span class="nb">YES</span><span class="w"> </span><span class="n">forCharacteristic</span><span class="o">:</span><span class="n">character</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">mRcspRead</span><span class="p">.</span><span class="n">properties</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CBCharacteristicPropertyRead</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">                    </span><span class="p">[</span><span class="n">peripheral</span><span class="w"> </span><span class="n">readValueForCharacteristic</span><span class="o">:</span><span class="n">character</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">                    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BLE  Rcsp(Read) Read Value For Characteristic.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">26</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>2.4. BLE更新通知特征的状态<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#pragma mark 更新通知特征的状态</span>
+<span class="linenos"> 2</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">peripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">didUpdateNotificationStateForCharacteristic:</span><span class="p">(</span><span class="n">nonnull</span><span class="w"> </span><span class="bp">CBCharacteristic</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">characteristic</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="n">nullable</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Err: Update NotificationState For Characteristic fail.&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">characteristic</span><span class="p">.</span><span class="n">service</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="w"> </span><span class="n">isEqual</span><span class="o">:</span><span class="n">FLT_BLE_SERVICE</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="p">[</span><span class="n">characteristic</span><span class="p">.</span><span class="n">UUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="w"> </span><span class="n">isEqual</span><span class="o">:</span><span class="n">FLT_BLE_RCSP_R</span><span class="p">]</span><span class="w">          </span><span class="o">&amp;&amp;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="n">characteristic</span><span class="p">.</span><span class="n">isNotifying</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">YES</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">        </span><span class="k">__weak</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="n">weakSelf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">bleMtu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">peripheral</span><span class="w"> </span><span class="n">maximumWriteValueLengthForType</span><span class="o">:</span><span class="n">CBCharacteristicWriteWithoutResponse</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BLE ---&gt; MTU:%lu&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="nb">self</span><span class="p">.</span><span class="n">bleMtu</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">isPaired</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">YES</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">            </span><span class="p">[</span><span class="n">_pairHash</span><span class="w"> </span><span class="n">hashResetPair</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">            </span><span class="n">dispatch_after</span><span class="p">(</span><span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">int64_t</span><span class="p">)(</span><span class="mf">0.3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NSEC_PER_SEC</span><span class="p">)),</span><span class="w"> </span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span><span class="w"> </span><span class="o">^</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">                </span><span class="c1">//设备认证</span>
+<span class="linenos">18</span><span class="w">                </span><span class="p">[</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_pairHash</span><span class="w"> </span><span class="n">bluetoothPairingKey</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">pairKey</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="kt">BOOL</span><span class="w"> </span><span class="n">ret</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">                    </span><span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">                        </span><span class="n">weakSelf</span><span class="p">.</span><span class="n">lastUUID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">peripheral</span><span class="p">.</span><span class="n">identifier</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">                        </span><span class="n">weakSelf</span><span class="p">.</span><span class="n">lastBleMacAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">                        </span><span class="p">[[</span><span class="bp">NSNotificationCenter</span><span class="w"> </span><span class="n">defaultCenter</span><span class="p">]</span><span class="w"> </span><span class="n">postNotificationName</span><span class="o">:</span><span class="n">kFLT_BLE_PAIRED</span><span class="w"> </span><span class="n">object</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">                        </span><span class="p">[</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">otaManager</span><span class="w"> </span><span class="n">noteEntityConnected</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">                        </span><span class="n">weakSelf</span><span class="p">.</span><span class="n">pairStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">                    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">                        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;JL_Assist Err: bluetooth pairing fail.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">                        </span><span class="p">[</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">bleManager</span><span class="w"> </span><span class="n">cancelPeripheralConnection</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">                    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">                </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">30</span><span class="w">            </span><span class="p">});</span><span class="w"></span>
+<span class="linenos">31</span><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">32</span><span class="w">            </span><span class="nb">self</span><span class="p">.</span><span class="n">lastUUID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">peripheral</span><span class="p">.</span><span class="n">identifier</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">33</span><span class="w">            </span><span class="nb">self</span><span class="p">.</span><span class="n">lastBleMacAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">34</span><span class="w">            </span><span class="p">[[</span><span class="bp">NSNotificationCenter</span><span class="w"> </span><span class="n">defaultCenter</span><span class="p">]</span><span class="w"> </span><span class="n">postNotificationName</span><span class="o">:</span><span class="n">kFLT_BLE_PAIRED</span><span class="w"> </span><span class="n">object</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">35</span><span class="w">            </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">otaManager</span><span class="w"> </span><span class="n">noteEntityConnected</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">37</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">38</span><span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">isConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">39</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>2.5. BLE设备返回的数据<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+<p>设备端返回的数据需要放入到SDK中解析，其中 <strong>设备认证部分</strong> 和 <strong>通讯部分</strong> 的处理是分开的</p>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma mark 设备返回的数据 GET</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">peripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">didUpdateValueForCharacteristic:</span><span class="p">(</span><span class="bp">CBCharacteristic</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">characteristic</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Err: receive data fail.&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">_isPaired</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">YES</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">_pairStatus</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NO</span><span class="p">){</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//收到设备的认证交互数据</span>
+<span class="w">        </span><span class="p">[</span><span class="n">_pairHash</span><span class="w"> </span><span class="n">inputPairData</span><span class="o">:</span><span class="n">characteristic</span><span class="p">.</span><span class="n">value</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//收到的设备数据，正常通讯数据</span>
+<span class="w">        </span><span class="p">[</span><span class="n">_otaManager</span><span class="w"> </span><span class="n">cmdOtaDataReceive</span><span class="o">:</span><span class="n">characteristic</span><span class="p">.</span><span class="n">value</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>2.6. BLE设备断开连接<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma mark 设备断开连接</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">centralManager:</span><span class="p">(</span><span class="bp">CBCentralManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">central</span><span class="w"> </span><span class="nf">didDisconnectPeripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="n">nullable</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BLE Disconnect ---&gt; Device %@ error:%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peripheral</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">[</span><span class="n">_otaManager</span><span class="w"> </span><span class="n">noteEntityDisconnected</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">isConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">pairStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/*--- UI刷新，设备断开 ---*/</span><span class="w"></span>
+<span class="w">    </span><span class="p">[[</span><span class="bp">NSNotificationCenter</span><span class="w"> </span><span class="n">defaultCenter</span><span class="p">]</span><span class="w"> </span><span class="n">postNotificationName</span><span class="o">:</span><span class="n">kFLT_BLE_DISCONNECTED</span><span class="w"> </span><span class="n">object</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>2.7. 手机蓝牙状态更新<a class="headerlink" href="#id4" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//外部蓝牙，手机蓝牙状态回调处，实现以下：</span>
+<span class="linenos"> 2</span><span class="cp">#pragma mark - 蓝牙初始化 Callback</span>
+<span class="linenos"> 3</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">centralManagerDidUpdateState:</span><span class="p">(</span><span class="bp">CBCentralManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">central</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="n">_mBleManagerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">central</span><span class="p">.</span><span class="n">state</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_mBleManagerState</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CBManagerStatePoweredOn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">mBlePeripheral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">blePeripheralArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2>2.8. 获取设备信息<a class="headerlink" href="#id5" title="永久链接至标题"></a></h2>
+<p>BLE连接且配对后必须执行一次</p>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w">    </span><span class="p">[</span><span class="n">_otaManager</span><span class="w"> </span><span class="n">cmdTargetFeature</span><span class="p">];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="ota">
+<h2>2.9. 固件OTA升级<a class="headerlink" href="#ota" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/**</span>
+<span class="linenos"> 2</span><span class="cm">*  ota升级</span>
+<span class="linenos"> 3</span><span class="cm">*  @param otaFilePath ota升级文件路径</span>
+<span class="linenos"> 4</span><span class="cm">*/</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaFuncWithFilePath:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">otaFilePath</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;current otaFilePath ---&gt; %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">otaFilePath</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">otaFilePath</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">otaData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSData</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithContentsOfFile</span><span class="o">:</span><span class="n">otaFilePath</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="w">    </span><span class="p">[</span><span class="n">_otaManager</span><span class="w"> </span><span class="n">cmdOTAData</span><span class="o">:</span><span class="n">otaData</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_OTAResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">progress</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLBleManagerOtaDelegate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">objc</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">delegates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">            </span><span class="k">if</span><span class="p">([</span><span class="n">objc</span><span class="w"> </span><span class="n">respondsToSelector</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">otaProgressWithOtaResult</span><span class="o">:</span><span class="n">withProgress</span><span class="o">:</span><span class="p">)]){</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">                </span><span class="p">[</span><span class="n">objc</span><span class="w"> </span><span class="n">otaProgressWithOtaResult</span><span class="o">:</span><span class="n">result</span><span class="w"> </span><span class="n">withProgress</span><span class="o">:</span><span class="n">progress</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">    </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">18</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h2>2.10. 取消固件OTA升级<a class="headerlink" href="#id6" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaFuncCancel:</span><span class="p">(</span><span class="n">CANCEL_CALLBACK</span><span class="w"> </span><span class="n">_Nonnull</span><span class="p">)</span><span class="nv">result</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="w">    </span><span class="p">[</span><span class="n">_otaManager</span><span class="w"> </span><span class="n">cmdOTACancelResult</span><span class="o">:^</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sn</span><span class="p">,</span><span class="w"> </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">        </span><span class="n">result</span><span class="p">(</span><span class="n">status</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">    </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">6</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="otamanager-delegate">
+<h2>2.11. OTAManager 的delegate回调处理<a class="headerlink" href="#otamanager-delegate" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//MARK: - ota manager delegate callback</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">///取消升级回调</span>
+<span class="linenos"> 4</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaCancel</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="c1">//TODO: 取消OTA升级回调</span>
+<span class="linenos"> 6</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">///升级状态进度回调</span>
+<span class="linenos"> 9</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaUpgradeResult:</span><span class="p">(</span><span class="n">JL_OTAResult</span><span class="p">)</span><span class="nv">result</span><span class="w"> </span><span class="nf">Progress:</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="nv">progress</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="c1">//TODO: 设备升级过程回调，包括进度状态</span>
+<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">///即将发送给设备的数据</span>
+<span class="linenos">14</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaDataSend:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">    </span><span class="c1">//TODO: 开发者需要在这里要把数据发送到设备</span>
+<span class="linenos">16</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">writeDataByCbp</span><span class="o">:</span><span class="n">data</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">17</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">18</span><span class="c1">///设备信息回调</span>
+<span class="linenos">19</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaFeatureResult:</span><span class="p">(</span><span class="n">JL_OTAManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;getDeviceInfo:%d&quot;</span><span class="p">,</span><span class="n">__LINE__</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">manager</span><span class="p">.</span><span class="n">otaStatus</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OtaStatusForce</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 进入强制升级.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">            </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">otaFuncWithFilePath</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">            </span><span class="n">_getCallback</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">30</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">31</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">manager</span><span class="p">.</span><span class="n">otaHeadset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OtaHeadsetYES</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">32</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 进入强制升级: OTA另一只耳机.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">33</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">34</span><span class="w">                </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">otaFuncWithFilePath</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">35</span><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">                </span><span class="n">_getCallback</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">37</span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">38</span><span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">39</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">40</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">41</span><span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 设备正常使用...&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">42</span><span class="w">    </span><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span><span class="w"> </span><span class="o">^</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">43</span><span class="w">        </span><span class="cm">/*--- 获取公共信息 ---*/</span><span class="w"></span>
+<span class="linenos">44</span><span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_otaManager</span><span class="w"> </span><span class="n">cmdSystemFunction</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">45</span><span class="w">        </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_getCallback</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">46</span><span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="delegate">
+<h2>2.12. 设备认证的delegate回调<a class="headerlink" href="#delegate" title="永久链接至标题"></a></h2>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">//MARK: - Hash pair delegate callback</span>
+<span class="linenos">2</span><span class="c1">///即将发送到设备的认证数据</span>
+<span class="linenos">3</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">hashOnPairOutputData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="c1">//TODO: 开发者需要在这里要把数据发送到设备</span>
+<span class="linenos">5</span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">writeDataByCbp</span><span class="o">:</span><span class="n">data</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">6</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h2>2.13. 数据发送<a class="headerlink" href="#id7" title="永久链接至标题"></a></h2>
+<ul class="simple">
+<li><p>iOS设备与固件通讯之间的最大MTU需要在连上后获取</p></li>
+</ul>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">elf</span><span class="p">.</span><span class="n">bleMtu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">peripheral</span><span class="w"> </span><span class="n">maximumWriteValueLengthForType</span><span class="o">:</span><span class="n">CBCharacteristicWriteWithoutResponse</span><span class="p">];</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>发送到设备的数据需要进行分包发送</p></li>
+</ul>
+<p>代码参考如下：</p>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//MARK: - data send manager</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">/// 需要分包发送</span>
+<span class="linenos"> 4</span><span class="c1">/// - Parameter data: 数据</span>
+<span class="linenos"> 5</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">writeDataByCbp:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="c1">//    NSLog(@&quot;%s:data:%@&quot;,__func__,data);</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_mBlePeripheral</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mRcspWrite</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">                </span><span class="n">NSInteger</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">_bleMtu</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">                        </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">mtuData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">subdataWithRange</span><span class="o">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">length</span><span class="p">)];</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">                        </span><span class="p">[</span><span class="n">_mBlePeripheral</span><span class="w"> </span><span class="n">writeValue</span><span class="o">:</span><span class="n">mtuData</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">                        </span><span class="nl">forCharacteristic</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">mRcspWrite</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">                                    </span><span class="nl">type</span><span class="p">:</span><span class="n">CBCharacteristicWriteWithoutResponse</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">                        </span><span class="n">len</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">                    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">                        </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">mtuData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">subdataWithRange</span><span class="o">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">_bleMtu</span><span class="p">)];</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">                        </span><span class="p">[</span><span class="n">_mBlePeripheral</span><span class="w"> </span><span class="n">writeValue</span><span class="o">:</span><span class="n">mtuData</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">                        </span><span class="nl">forCharacteristic</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">mRcspWrite</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">                                    </span><span class="nl">type</span><span class="p">:</span><span class="n">CBCharacteristicWriteWithoutResponse</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">                        </span><span class="n">len</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">_bleMtu</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">                        </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">subdataWithRange</span><span class="o">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="n">_bleMtu</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">)];</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">                    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">            </span><span class="c1">//需要先赋值写特征的内容</span>
+<span class="linenos">29</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;need to init&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">30</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">31</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="import.html" class="btn btn-neutral float-left" title="1.项目配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="api_desc.html" class="btn btn-neutral float-right" title="3.使用JL_BLEKit.framework蓝牙连接方式" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd.
+      <span class="lastupdated">最后更新于 12月 12, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -11,7 +11,7 @@
 #import "JL_RunSDK.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+#define JL_BLE_CONNECTWAY_CHANGE @"JL_BLE_CONNECTWAY_CHANGE"
 
 @protocol JLBleHandlDelegate <NSObject>
 

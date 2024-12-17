@@ -117,7 +117,7 @@ NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:reques
     NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
     return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
 } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
-    NSLog(@"File downloaded to: %@", filePath);
+    kJLLog(JLLOG_DEBUG, @"File downloaded to: %@", filePath);
 }];
 [downloadTask resume];
 ```
@@ -134,9 +134,9 @@ NSURLRequest *request = [NSURLRequest requestWithURL:URL];
 NSURL *filePath = [NSURL fileURLWithPath:@"file://path/to/image.png"];
 NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request fromFile:filePath progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
     if (error) {
-        NSLog(@"Error: %@", error);
+        kJLLog(JLLOG_DEBUG, @"Error: %@", error);
     } else {
-        NSLog(@"Success: %@ %@", response, responseObject);
+        kJLLog(JLLOG_DEBUG, @"Success: %@ %@", response, responseObject);
     }
 }];
 [uploadTask resume];
@@ -164,9 +164,9 @@ uploadTask = [manager
               }
               completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
                   if (error) {
-                      NSLog(@"Error: %@", error);
+                      kJLLog(JLLOG_DEBUG, @"Error: %@", error);
                   } else {
-                      NSLog(@"%@ %@", response, responseObject);
+                      kJLLog(JLLOG_DEBUG, @"%@ %@", response, responseObject);
                   }
               }];
 
@@ -184,9 +184,9 @@ NSURLRequest *request = [NSURLRequest requestWithURL:URL];
 
 NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
     if (error) {
-        NSLog(@"Error: %@", error);
+        kJLLog(JLLOG_DEBUG, @"Error: %@", error);
     } else {
-        NSLog(@"%@ %@", response, responseObject);
+        kJLLog(JLLOG_DEBUG, @"%@ %@", response, responseObject);
     }
 }];
 [dataTask resume];
@@ -252,7 +252,7 @@ See also [WWDC 2012 session 706, "Networking Best Practices."](https://developer
 
 ```objective-c
 [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-    NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+    kJLLog(JLLOG_DEBUG, @"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
 }];
 
 [[AFNetworkReachabilityManager sharedManager] startMonitoring];

@@ -7,6 +7,7 @@
 //
 
 #import "AutoFinishView.h"
+#import "LoopUpdateManager.h"
 
 @implementation AutoFinishView
 
@@ -110,9 +111,22 @@
 }
 
 -(void)confirmBtnAction{
-    self.hidden = YES;
-    self.hiddOrNot = YES;
-    
+    if ([[LoopUpdateManager share] shouldLoopUpdate]){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:kJL_TXT("tips") message:kJL_TXT("current_update_task") preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:kJL_TXT("cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            self.hidden = YES;
+            self.hiddOrNot = YES;
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:kJL_TXT("confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[LoopUpdateManager share] cleanList];
+            self.hidden = YES;
+            self.hiddOrNot = YES;
+        }]];
+        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    } else {
+        self.hidden = YES;
+        self.hiddOrNot = YES;
+    }
 }
 
 -(void)failedStatus{
@@ -138,7 +152,6 @@
     _finishImgv.image = [UIImage imageNamed:@"icon_success_nol"];
     _updateFinishLab.text = kJL_TXT("update_finish");
     _autoLab.text = kJL_TXT("auto_test_progress");
-    
 }
 
 

@@ -74,3 +74,10 @@ typedef NS_ENUM(int64_t,JL_CLASS) {
 //---------------------------------------------------------//
 
 
+///命令发起者
+typedef NS_ENUM(UInt8, JLCMDOriginator) {
+    ///SDK端发起
+    JLCMDOriginatorApp = 0x00,
+    ///设备端发起
+    JLCMDOriginatorDevice = 0x01
+};

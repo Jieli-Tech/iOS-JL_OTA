@@ -16,6 +16,7 @@
 #import "JLAutoViewsController.h"
 #import "BroadcastMainViewController.h"
 #import "JLMainViewController.h"
+#import "AboutViewController.h"
 
 @interface JLSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -40,12 +41,18 @@
     self.itemsArray = [NSMutableArray new];
     NSArray *pairArray = @[kJL_TXT("device_pair")];
     [_itemsArray addObject:pairArray];
+    
     NSArray *useSDKArray = @[kJL_TXT("use_sdk_connect")];
     [_itemsArray addObject:useSDKArray];
+    
     NSArray *logArray = @[kJL_TXT("log_file")];
     [_itemsArray addObject:logArray];
-    NSArray *appVersion = @[kJL_TXT("app_version")];
-    [_itemsArray addObject:appVersion];
+    
+    NSArray *sdkVersionCodeArray = @[kJL_TXT("sdk_version_code")];
+    [_itemsArray addObject:sdkVersionCodeArray];
+    
+    NSArray *aboutAppArray = @[kJL_TXT("about_app")];
+    [_itemsArray addObject:aboutAppArray];
 }
 
 -(void)initUI{
@@ -55,7 +62,7 @@
     _logLab = [UILabel new];
     _logLab.font = [UIFont systemFontOfSize:13];
     _logLab.textColor = [UIColor colorFromHexString:@"#6F6F6F"];
-    _logLab.text = [NSString stringWithFormat:@"%@:../Document/JL_LOG_xxxx-xx-xx-xx-xx-xx.txt",kJL_TXT("log_file_path")];
+    _logLab.text = [NSString stringWithFormat:@"%@:../Document/JL_LOG.txt",kJL_TXT("log_file_path")];
     _logLab.numberOfLines = 0;
     [self.view addSubview:_logLab];
     [_logLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -71,11 +78,8 @@
     }];
     
     _sdkVersionBtn = [UIButton new];
-    _sdkVersionBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-    [_sdkVersionBtn setTitleColor:[UIColor colorFromHexString:@"#6F6F6F"] forState:UIControlStateNormal];
     [_sdkVersionBtn setBackgroundColor:[UIColor clearColor]];
     [_sdkVersionBtn addTarget:self action:@selector(sdkVersionBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [_sdkVersionBtn setTitle:[NSString stringWithFormat:@"%@：%@",kJL_TXT("sdk_version"),[JL_OTAManager logSDKVersion]] forState:UIControlStateNormal];
     [self.view addSubview:_sdkVersionBtn];
     
     [_sdkVersionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -164,6 +168,7 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
     NSArray *array = self.itemsArray[indexPath.section];
     cell.mainLab.text = array[indexPath.row];
+        
     switch (indexPath.section) {
         case 0:{
             cell.switchBtn.hidden = NO;
@@ -190,26 +195,42 @@
         default:
             break;
     }
-    if([cell.mainLab.text isEqualToString:kJL_TXT("app_version")]){
+    
+    if([cell.mainLab.text isEqualToString:kJL_TXT("sdk_version_code")]){
+        cell.endLab.hidden = NO;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.endLeftLayout.constant = 16;
+        cell.endLab.text = [[JL_OTAManager logSDKVersion] stringByReplacingOccurrencesOfString:SMALL_V withString:BIG_V];
+    }
+        
+    if([cell.mainLab.text isEqualToString:kJL_TXT("about_app")]){
         cell.endLab.hidden = NO;
         NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-        NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-        cell.endLab.text = [NSString stringWithFormat:@"V%@",app_Version];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        cell.endLab.text = [NSString stringWithFormat:@"V%@",appVersion];
+        cell.endLeftLayout.constant = 4;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    if(indexPath.section == self.itemsArray.count-2){
+        
+    if(indexPath.section == self.itemsArray.count-3){
         JLShareLogViewController *vc = [[JLShareLogViewController alloc] init];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    if(indexPath.section == self.itemsArray.count-1){
+    
+    if(indexPath.section == self.itemsArray.count-2){
         [self touchToShow];
+    }
+    
+    if(indexPath.section == self.itemsArray.count-1){
+        AboutViewController *vc = [[AboutViewController alloc] init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -246,6 +267,7 @@
         if(type == 0){
             [DFUITools showText:@"Add auto test model" onView:self.view delay:2];
             [ToolsHelper setAutoTestOta:YES];
+            [ToolsHelper setConnectBySDK:false];
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Tips" message:@"Add auto test model" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 delegate.window.rootViewController = [JLAutoViewsController prepareViewControllers];
@@ -278,7 +300,7 @@
     }else{
         _touchTime = 0;
     }
-    NSLog(@"end of touch check");
+    kJLLog(JLLOG_DEBUG, @"end of touch check");
     
 }
 

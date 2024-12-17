@@ -1,1 +1,1 @@
-link ../../../GCDWebServer/GCDWebUploader/GCDWebUploader.h
+../../../GCDWebServer/GCDWebUploader/GCDWebUploader.h

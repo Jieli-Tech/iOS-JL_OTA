@@ -98,7 +98,7 @@
                     }
                 });
             }
-            NSLog(@"assist is null");
+            kJLLog(JLLOG_DEBUG, @"assist is null");
             return;
         }
         [assist.mCmdManager.mOTAManager cmdOTAData:data Result:^(JL_OTAResult result, float progress) {
@@ -112,19 +112,19 @@
             }
             
             
-            //NSLog(@"cbp:%@ ,progress:%f",info.cbp.identifier.UUIDString,progress);
+            //kJLLog(JLLOG_DEBUG, @"cbp:%@ ,progress:%f",info.cbp.identifier.UUIDString,progress);
             
             if(result == JL_OTAResultReconnectWithMacAddr){
                 JLModel_Device *dev = [device.manager outputDeviceModel];
                 BroadcastOtaInfo *cpInfo = [info copy];
                 [wself.reconnectDict setValue:cpInfo forKey:dev.bleAddr];
-                NSLog(@"ToReconnect:%@",dev.bleAddr);
+                kJLLog(JLLOG_DEBUG, @"ToReconnect:%@",dev.bleAddr);
                 [[BroadcastBleManager sharedInstance] connectPeripheralWithMacAddr:dev.bleAddr];
             }
             
         }];
     }else{
-        NSLog(@"找不到该内容，进行升级失败");
+        kJLLog(JLLOG_DEBUG, @"找不到该内容，进行升级失败");
     }
 }
 
@@ -144,7 +144,7 @@
 
     JL_Assist *assist = [[BroadcastBleManager sharedInstance] assistDicts][cbp.identifier.UUIDString];
     
-    NSLog(@"startOtaII:%@ \nByUUID:%@\noldUUID:%@",oldInfo.updatePath,cbp.identifier.UUIDString,oldInfo.cbp.identifier.UUIDString);
+    kJLLog(JLLOG_DEBUG, @"startOtaII:%@ \nByUUID:%@\noldUUID:%@",oldInfo.updatePath,cbp.identifier.UUIDString,oldInfo.cbp.identifier.UUIDString);
     
     if(oldInfo.updatePath){
         //        __weak typeof(self) wself = self;
@@ -161,7 +161,7 @@
            
         }];
     }else{
-        NSLog(@"找不到该内容，进行升级失败");
+        kJLLog(JLLOG_DEBUG, @"找不到该内容，进行升级失败");
     }
     
 }

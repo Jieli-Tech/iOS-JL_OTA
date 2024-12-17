@@ -25,4 +25,23 @@ typedef NS_ENUM(UInt8,JL_AncMode) {
 -(NSData*)dataModel;
 @end
 
+
+
+/// 手机名/经典蓝牙地址信息
+@interface JLTWSAddrNameInfo : NSObject
+
+/// 是否被绑定
+@property(nonatomic,assign)uint8_t isBind;
+
+/// 手机蓝牙地址
+@property(nonatomic,strong)NSData *phoneEdrAddr;
+
+/// 手机名称
+@property(nonatomic,strong)NSString *phoneName;
+
+/// 初始化数据成对象
+/// - Parameter data: 数据内容
++(NSArray<JLTWSAddrNameInfo *>*)dataBeObjc:(NSData *)data;
+
+@end
 NS_ASSUME_NONNULL_END

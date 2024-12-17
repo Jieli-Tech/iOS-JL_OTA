@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)removeDelegate:(id)delegate;
 -(void)removeAll;
 -(void)inputPKG:(JL_PKG*)pkg;
+-(void)inputPKG:(JL_PKG *)pkg Manager:(JL_ManagerM *)mgr;
 
 @end
 

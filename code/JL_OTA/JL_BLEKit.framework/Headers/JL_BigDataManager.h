@@ -31,7 +31,10 @@ typedef void(^JL_BIGDATA_RT)(JL_BigData *bigData);
 
 @interface JL_BigDataManager : JL_FunctionBaseManager
 
+//设立大数据监听（接收阿里数据，必须放在单利类中!!!）
 -(void)cmdBigDataMonitor:(JL_BIGDATA_RT)result;
+
+//发送大数据
 -(void)cmdInputBigData:(JL_BigData*)data;
 
 @end
@@ -39,7 +42,14 @@ typedef void(^JL_BIGDATA_RT)(JL_BigData *bigData);
 @interface JL_BigData : NSObject
 @property(nonatomic,assign)JL_BigDataStatus mResult;
 @property(nonatomic,assign)NSInteger        mIndex;
-@property(nonatomic,assign)uint8_t          mType;  //0:原始数据 1:阿里云数据 2：RTC数据
+
+///0:原始数据
+///1:阿里云数据
+///2：RTC数据
+///3: AI云
+///4：TTS语音合成
+///5: 平台接口认证信息
+@property(nonatomic,assign)uint8_t          mType;
 @property(nonatomic,assign)uint8_t          mVersion;
 @property(nonatomic,strong)NSData           *mData;
 @end

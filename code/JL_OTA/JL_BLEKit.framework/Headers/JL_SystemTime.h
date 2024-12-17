@@ -15,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_SystemTime : JL_FunctionBaseManager
 
+
+/// 设备当前时间
+@property(nonatomic,strong)JLModel_RTC *rtc;
+
 #pragma mark ---> 设置系统时间
 /**
  @param date 时间类

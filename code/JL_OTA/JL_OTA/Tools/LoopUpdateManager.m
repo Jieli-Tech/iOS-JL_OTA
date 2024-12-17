@@ -50,28 +50,31 @@
 
 
 -(BOOL)startLoopUpdate:(NSArray *)filePaths{
-    if(updatePath.count>0){
+    if(updatePath.count > 0){
         [self toNextUpdate];
         return YES;
     }
     
     self.reConnectUUID = [JLBleManager sharedInstance].mBlePeripheral.identifier.UUIDString;
-    NSLog(@"self.reConnectUUID:%@",self.reConnectUUID);
+    kJLLog(JLLOG_DEBUG, @"self.reConnectUUID:%@",self.reConnectUUID);
     _finishNumber = 0;
     NSInteger number = [ToolsHelper getAutoTestOtaNumber];
     if(number == 0){
         return NO;
     }
-    int index = 0;
-    for (int i = 0; i<number; i++) {
-        if(index>(filePaths.count-1)){
-            index = 0;
+    int count = 0;
+    while(count < number){
+        for (NSString *path in filePaths) {
+            NSString *filePath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:path];
+            [updatePath addObject:filePath];
+            count++;
+            if (count == number){
+                break;
+            }
         }
-        NSString *path = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:filePaths[index]];
-        index+=1;
-        [updatePath addObject:path];
-        
     }
+    kJLLog(JLLOG_DEBUG, @"auto update count:%d",updatePath.count);
+    
     [[JLBleManager sharedInstance] otaFuncWithFilePath:updatePath.firstObject];
     
     self.info.name = [updatePath.firstObject lastPathComponent];
@@ -86,14 +89,13 @@
 
 -(BOOL)toNextUpdate{
     
-    
     if([ToolsHelper getFaultTolerant]){
         if([ToolsHelper getFaultTolerantTimes] > self.failedNumber){
             if(_status == DeviceOtaStatusPrepare || _status == DeviceOtaStatusFinish){
                 @try {
                     [updatePath removeObjectAtIndex:0];
                 } @catch (NSException *exception) {
-                    NSLog(@"自动升级队列为空");
+                    kJLLog(JLLOG_DEBUG, @"自动升级队列为空");
                     return NO;
                 } @finally {
                     
@@ -106,15 +108,15 @@
         @try {
             [updatePath removeObjectAtIndex:0];
         } @catch (NSException *exception) {
-            NSLog(@"自动升级队列为空");
+            kJLLog(JLLOG_DEBUG, @"自动升级队列为空");
             return NO;
         } @finally {
             
         }
     }
    
-    if([ToolsHelper isAutoTestOta] && updatePath.count>0){
-        
+    if([ToolsHelper isAutoTestOta] && updatePath.count > 0){
+        kJLLog(JLLOG_DEBUG, @"toNextUpdate 剩余:%d 次", updatePath.count);
         [[JLBleManager sharedInstance] otaFuncWithFilePath:updatePath.firstObject];
         self.info.name = [updatePath.firstObject lastPathComponent];
         NSInteger max = [ToolsHelper getAutoTestOtaNumber];
@@ -134,8 +136,6 @@
         }
     }
 }
-
-
 
 
 

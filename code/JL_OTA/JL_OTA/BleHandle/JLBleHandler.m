@@ -112,23 +112,23 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
 }
 
 -(void)handleDisconnect{
-    if(![ToolsHelper isConnectBySDK]){
+//    if(![ToolsHelper isConnectBySDK]){
         JL_EntityM *entity = [[JL_RunSDK sharedInstance] mBleEntityM];
         [sdkManager disconnectEntity:entity Result:^(JL_EntityM_Status status) {
             
         }];
-    }else{
+//    }else{
         [userManager disconnectBLE];
-    }
+//    }
 }
 
 -(void)handleReconnectByMac{
     if([ToolsHelper isConnectBySDK]){
-        NSLog(@"---> OTA SDK 正在通过Mac Addr方式回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mBleAddr);
+        kJLLog(JLLOG_DEBUG, @"---> OTA SDK 正在通过Mac Addr方式回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mBleAddr);
         [sdkManager scanStart];
     }else{
         
-        NSLog(@"---> OTA正在通过Mac Addr方式回连设备... %@", userManager.otaManager.bleAddr);
+        kJLLog(JLLOG_DEBUG, @"---> OTA正在通过Mac Addr方式回连设备... %@", userManager.otaManager.bleAddr);
         [JLBleManager sharedInstance].lastBleMacAddress = userManager.otaManager.bleAddr;
         [[JLBleManager sharedInstance] startScanBLE];
     }
@@ -137,12 +137,12 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
 -(void)handleReconnectByUUID{
     if([ToolsHelper isConnectBySDK]){
         sdkManager.BLE_PAIR_ENABLE = [ToolsHelper isSupportPair];
-        NSLog(@"---> OTA SDK 正在回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mItem);
+        kJLLog(JLLOG_DEBUG, @"---> OTA SDK 正在回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mItem);
         [sdkManager connectEntityForMac:[JL_RunSDK sharedInstance].mBleEntityM.mEdr Result:^(JL_EntityM_Status status) {
             
         }];
     }else{
-        NSLog(@"---> OTA正在回连设备... %@,%@", [JLBleManager sharedInstance].mBlePeripheral.name,userManager.lastUUID);
+        kJLLog(JLLOG_DEBUG, @"---> OTA正在回连设备... %@,%@", [JLBleManager sharedInstance].mBlePeripheral.name,userManager.lastUUID);
         [userManager connectPeripheralWithUUID:userManager.lastUUID];
     }
 }

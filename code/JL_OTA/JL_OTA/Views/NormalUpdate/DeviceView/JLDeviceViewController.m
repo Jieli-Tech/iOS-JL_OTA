@@ -151,7 +151,7 @@
     
     __weak typeof(self) weakSelf = self;
     _header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        NSLog(@"--->开始刷新...");
+        kJLLog(JLLOG_DEBUG, @"--->开始刷新...");
         [weakSelf startScanDevice];
     }];
     _subTableView.mj_header = _header;
@@ -250,7 +250,7 @@
     [super viewDidAppear:animated];
     [_btEnityList removeAllObjects];
     [self.subTableView reloadData];
-    NSLog(@"_btEnityList.count:%d,%d",(int)_btEnityList.count,__LINE__);
+    kJLLog(JLLOG_DEBUG, @"_btEnityList.count:%d,%d",(int)_btEnityList.count,__LINE__);
     [self startScanDevice];
 }
 
@@ -272,6 +272,9 @@
             }break;
             case 1:{
                 [self tapToDismissPop];
+            }break;
+            case 2:{
+                
             }break;
             default:
                 break;
@@ -296,7 +299,7 @@
     [[JLBleHandler share] handleScanDevice];
     self.showAnimation = YES;
     [JL_Tools delay:2.0 Task:^{
-        NSLog(@"--->已刷完.");
+        kJLLog(JLLOG_DEBUG, @"--->已刷完.");
         [[JLBleHandler share] handleStopScanDevice];
         [self.subTableView.mj_header endRefreshing];
         self.showAnimation = NO;
@@ -311,6 +314,10 @@
 - (void)allNoteListen:(NSNotification*)note {
     NSString *name = note.name;
 
+    if ([name isEqual:JL_BLE_CONNECTWAY_CHANGE]) {
+        [_btEnityList removeAllObjects];
+        [self.subTableView reloadData];
+    }
 //NOTE: User Custom BLE connect
     if(![ToolsHelper isConnectBySDK]){
         if ([name isEqual:kFLT_BLE_FOUND]) {
@@ -341,15 +348,15 @@
             
             CBPeripheral *pl = [note object];
             
-            NSLog(@"FTL BLE Paired ---> %@ UUID:%@",pl.name,pl.identifier.UUIDString);
+            kJLLog(JLLOG_DEBUG, @"FTL BLE Paired ---> %@ UUID:%@",pl.name,pl.identifier.UUIDString);
             [_subTableView reloadData];
             [self hideLoadingView];
             if(![ToolsHelper isConnectBySDK]){
                 [JL_Tools delay:0.5 Task:^{
                     [[JLBleManager sharedInstance] getDeviceInfo:^(BOOL needForcedUpgrade) {
-                        NSLog(@"getDeviceInfo:%d",__LINE__);
+                        kJLLog(JLLOG_DEBUG, @"getDeviceInfo:%d",__LINE__);
                         if (needForcedUpgrade) {
-                            NSLog(@"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
+                            kJLLog(JLLOG_DEBUG, @"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
                             [self startLoadingView:kJL_TXT("need_upgrade_now") Delay:1.0];
                         }
                     }];
@@ -383,7 +390,7 @@
             [JL_Tools delay:0.5 Task:^{
                 [[JL_RunSDK sharedInstance] getDeviceInfo:^(BOOL needForcedUpgrade) {
                     if(needForcedUpgrade){
-                        NSLog(@"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
+                        kJLLog(JLLOG_DEBUG, @"设备需要强制升级，请到升级界面选择ota升级文件进行升级！");
                         [self startLoadingView:kJL_TXT("need_upgrade_now") Delay:1.0];
                     }
         
@@ -467,7 +474,7 @@
         }
         
         [JLBleManager sharedInstance].isPaired = [ToolsHelper isSupportPair];
-        NSLog(@"蓝牙正在连接... ==> %@",item.name);
+        kJLLog(JLLOG_DEBUG, @"蓝牙正在连接... ==> %@",item.name);
         [self startLoadingView:kJL_TXT("connecting") Delay:5.0];
         
         [[JLBleManager sharedInstance] connectBLE:item];

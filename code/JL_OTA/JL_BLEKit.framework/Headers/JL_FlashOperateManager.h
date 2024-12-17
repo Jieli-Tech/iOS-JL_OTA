@@ -59,6 +59,9 @@ typedef void(^JL_FlashUpdate_BK)(uint8_t flag);
 typedef void(^JL_FlashFileInfo_BK)(uint32_t size,uint16_t crc16);
 typedef void(^JL_FlashLeftSize_BK)(uint32_t leftSize);
 
+/// Flash Info 
+@property(nonatomic,strong)JLModel_Flash *flashInfo;
+
 #pragma mark ---> 获取外置Flash信息
 /**
  获取外置Flash信息
@@ -148,7 +151,7 @@ extern NSString *kJL_MANAGER_WATCH_FACE;
  @param flag        开始:0x01  结束:0x00
  */
 -(void)cmdUpdateResourceFlashFlag:(JL_FlashOperateFlag)flag Result:(JL_FlashUpdate_BK __nullable)result __attribute__((deprecated ( "The current interface is about to be canceled in version 2.0.0, please use cmdUpdateResourceFlashFlagAsync:Result:  instead")));
-
+-(void)cmdUpdateResourceFlashFlag:(JL_FlashOperateFlag)flag;
 /// 外挂Flash（资源更新）操作
 /// 异步回调
 /// - Parameters:

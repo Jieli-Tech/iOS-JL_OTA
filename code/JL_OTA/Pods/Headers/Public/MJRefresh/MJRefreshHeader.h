@@ -1,1 +1,1 @@
-link ../../../MJRefresh/MJRefresh/Base/MJRefreshHeader.h
+../../../MJRefresh/MJRefresh/Base/MJRefreshHeader.h

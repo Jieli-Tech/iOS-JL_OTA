@@ -20,6 +20,7 @@
     [DFTools setUser:[NSNumber numberWithBool:bol] forKey:self.saveKey];
     if([self.saveKey isEqualToString:@"ConnectBySDK"]){
         [[JLBleHandler share] handleDisconnect];
+        [[NSNotificationCenter defaultCenter] postNotificationName:JL_BLE_CONNECTWAY_CHANGE object:nil];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CHANGE_SWITCH_CELL" object:self.saveKey];
