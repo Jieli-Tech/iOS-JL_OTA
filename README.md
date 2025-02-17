@@ -71,6 +71,20 @@ JLLogHelper.framework 是默认开启了日志打印和存储的，如果开发�
 [JLLogManager setLog:false IsMore:false Level:JLLOG_COMPLETE]; // 关闭日志打印
 [JLLogManager saveLogAsFile:false]; // 关闭日志存储
 [JLLogManager logWithTimestamp:false]; // 关闭日志打印时间
+
+//BetaBuild 内容
+JLLogManager.saveLog(asFile: true)
+JLLogManager.setLog(true, isMore: false, level: .COMPLETE)
+JLLogManager.log(withTimestamp: true)
+let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! + "/abc.txt"
+// 重置保存的路径
+JLLogManager.redirectLogPath(path)
+JLLogManager.clearLog()
+ //回调所有的日志打印内容
+JLLogManager.collectLog { str in
+    print(str)
+}
+JLLogManager.logSomething("abcd")
 ```
 
 ## 备注
