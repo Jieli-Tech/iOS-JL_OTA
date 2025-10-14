@@ -235,7 +235,7 @@
     [_popSuperView addGestureRecognizer:tapges];
     [_popView addObserver:self forKeyPath:@"selectIndex" options:NSKeyValueObservingOptionNew context:nil];
     
-    _finishView = [TipsFinishView new];
+    _finishView = [[TipsFinishView alloc] init:JLTipsNormal];
     UIWindow *windows = [[UIApplication sharedApplication] keyWindow];
     [windows addSubview:_finishView];
     _finishView.hidden = YES;
@@ -386,12 +386,18 @@
         kJLLog(JLLOG_DEBUG, @"---> 检验文件【完成】");
         [self otaTimeCheck];//增加超时检测
        
-    } else if (result == JL_OTAResultReconnect) {
-        [[JLBleHandler share] handleReconnectByUUID];
+    } else if (result == JL_OTAResultReconnect
+               || result == JL_OTAResultReconnectUpdateSource) {
+        [[JLBleHandler share] handleDisconnect];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[JLBleHandler share] handleReconnectByUUID];
+            kJLLog(JLLOG_DEBUG, @"OTA 重连设备 UUID %d", result);
+        });
         [self otaTimeCheck];//关闭超时检测
     } else if (result == JL_OTAResultReconnectWithMacAddr) {
         [[JLBleHandler share] handleReconnectByMac];
         [self otaTimeCheck];//关闭超时检测
+        kJLLog(JLLOG_DEBUG, @"OTA 重连设备 MAC %d", result);
     } else if (result == JL_OTAResultSuccess) {
         kJLLog(JLLOG_DEBUG, @"--->升级成功.");
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -1,0 +1,31 @@
+测试调试
+=====================================
+1. 打印文件输出
+---------------
+.. code:: objectivec
+
+    //开启log需要在AppDegate.h中执行以下代码：
+     /*--- 记录NSLOG ---*/
+    [JLLogManager setLog:true IsMore:false Level:JLLOG_COMPLETE];
+    [JLLogManager saveLogAsFile:true];
+    [JLLogManager logWithTimestamp:true];
+    [JLLogManager clearLog];
+
+
+
+2. 打印文件
+-----------------
+1. 打印文件格式
+| 格式： JL_LOG.txt
+
+
+2. 文件存储路径
+
+存储在APP的沙盒根目录下。
+
+
+3. 异常处理步骤
+---------------------
+1. **简单描述问题现象 (必要)**
+2. **提供最接近时间戳的log文件 (必要)**
+3. 提供现象的截图或者视频

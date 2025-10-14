@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C5399D7AC519C6A120ED68B /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A486839D535FC18D31E32D4 /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1D02819D29345430001EE828 /* PopoverViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D02819C29345430001EE828 /* PopoverViewCell.m */; };
 		1D0281A129346791001EE828 /* BroadcastMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0281A029346791001EE828 /* BroadcastMainViewController.m */; };
 		1D0281A429346837001EE828 /* FileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0281A329346837001EE828 /* FileViewController.m */; };
@@ -56,11 +57,6 @@
 		1DC4DD2A29370ADA00E157EB /* UfwConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC4DD2929370ADA00E157EB /* UfwConfig.m */; };
 		1DC4DD2E2937321D00E157EB /* UpdateStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC4DD2D2937321D00E157EB /* UpdateStatusView.m */; };
 		1DC4DD35293734BA00E157EB /* UpdateStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC4DD34293734BA00E157EB /* UpdateStatusCell.m */; };
-		1DD6CEDA2D0BDB0B00E60099 /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD6CED92D0BDB0B00E60099 /* JL_BLEKit.framework */; };
-		1DD6CEE02D0BDCA100E60099 /* JL_OTALib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD6CEDF2D0BDCA100E60099 /* JL_OTALib.framework */; };
-		1DD6CEE22D0BDD0100E60099 /* JL_AdvParse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD6CEE12D0BDD0100E60099 /* JL_AdvParse.framework */; };
-		1DD6CEE42D0BDD8500E60099 /* JL_HashPair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD6CEE32D0BDD8500E60099 /* JL_HashPair.framework */; };
-		1DD6CEE62D0BDDE500E60099 /* JLLogHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD6CEE52D0BDDE500E60099 /* JLLogHelper.framework */; };
 		1DD757B3294AEEAB00DE5702 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD757B2294AEEAB00DE5702 /* libc++.tbd */; };
 		1DD757B5294AEEB600DE5702 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD757B4294AEEB600DE5702 /* Security.framework */; };
 		1DD757B7294AEEBD00DE5702 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DD757B6294AEEBD00DE5702 /* SystemConfiguration.framework */; };
@@ -87,6 +83,9 @@
 		485354C627390335004B426F /* SJXCSMIPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 485354B227390335004B426F /* SJXCSMIPHelper.m */; };
 		485354F32739081B004B426F /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 485354F22739081B004B426F /* libxml2.tbd */; };
 		485354F527390825004B426F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 485354F427390825004B426F /* libz.tbd */; };
+		67D4477077076F61977E4F9C /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0171A2504CE0F6FF1DD0512B /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		720382EFDE7AF994D8A07C37 /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7B798E8E311B38843672C31 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A382F11EDACB548BC47BAC62 /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 630A3DFBB24A1C10E12705DB /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		B2586349BAABE434E407B5A7 /* libPods-JL_OTA.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E09C2BB6B03B592389252C0C /* libPods-JL_OTA.a */; };
 		BE8A22F127153A2C00589FB3 /* JLMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22F027153A2C00589FB3 /* JLMainViewController.m */; };
 		BE8A22F627156DD300589FB3 /* JLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8A22F527156DD300589FB3 /* JLBaseViewController.m */; };
@@ -104,6 +103,7 @@
 		BECEAD6A271423C90090027A /* JLOtaFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD69271423C90090027A /* JLOtaFileManager.m */; };
 		BECEAD74271441B70090027A /* UITableViewCell+JLCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */; };
 		C201E4032CF45E4800338FB0 /* user_protocol.html in Resources */ = {isa = PBXBuildFile; fileRef = C201E4022CF45E4800338FB0 /* user_protocol.html */; };
+		C27DAF824648232D8A8F37F5 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C00E0D4ABF68E66DB488CAEA /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C2D469882CF16EEC0085DEA6 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D469852CF16EEC0085DEA6 /* AboutViewController.m */; };
 		C2D4698C2CF17A3B0085DEA6 /* AboutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D4698B2CF17A3B0085DEA6 /* AboutCell.m */; };
 		C2D469902CF17CB00085DEA6 /* user_privacy_policy.html in Resources */ = {isa = PBXBuildFile; fileRef = C2D4698E2CF17CB00085DEA6 /* user_privacy_policy.html */; };
@@ -112,9 +112,34 @@
 		C2E36AA82CF55DE600668227 /* OpenShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E36AA52CF55DE600668227 /* OpenShowView.m */; };
 		C2E36AAB2CF564E400668227 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2E36AAA2CF564E400668227 /* LaunchScreen.storyboard */; };
 		C2E5231C2CF85A52009C7120 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2E5231A2CF85A52009C7120 /* WebViewController.m */; };
+		CD2A648CC0BC4D222FC49E13 /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 630A3DFBB24A1C10E12705DB /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DF997EBBA62AAF9241A1CBF2 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0171A2504CE0F6FF1DD0512B /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		E7E2CB8C5EC5A48F1DB072F2 /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00E0D4ABF68E66DB488CAEA /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		F49DB80F42EA953A44CEF621 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7B798E8E311B38843672C31 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		FD1356ACDA6E6AF6E2C6AC06 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A486839D535FC18D31E32D4 /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1DFF8F732E78165000D20A75 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD2A648CC0BC4D222FC49E13 /* JL_AdvParse.xcframework in Embed Frameworks */,
+				67D4477077076F61977E4F9C /* JL_BLEKit.xcframework in Embed Frameworks */,
+				1C5399D7AC519C6A120ED68B /* JL_HashPair.xcframework in Embed Frameworks */,
+				C27DAF824648232D8A8F37F5 /* JL_OTALib.xcframework in Embed Frameworks */,
+				720382EFDE7AF994D8A07C37 /* JLLogHelper.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0171A2504CE0F6FF1DD0512B /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
+		1A486839D535FC18D31E32D4 /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
 		1D02819B29345430001EE828 /* PopoverViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopoverViewCell.h; sourceTree = "<group>"; };
 		1D02819C29345430001EE828 /* PopoverViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopoverViewCell.m; sourceTree = "<group>"; };
 		1D02819F29346791001EE828 /* BroadcastMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BroadcastMainViewController.h; sourceTree = "<group>"; };
@@ -216,11 +241,6 @@
 		1DC4DD2D2937321D00E157EB /* UpdateStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateStatusView.m; sourceTree = "<group>"; };
 		1DC4DD33293734BA00E157EB /* UpdateStatusCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpdateStatusCell.h; sourceTree = "<group>"; };
 		1DC4DD34293734BA00E157EB /* UpdateStatusCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateStatusCell.m; sourceTree = "<group>"; };
-		1DD6CED92D0BDB0B00E60099 /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
-		1DD6CEDF2D0BDCA100E60099 /* JL_OTALib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_OTALib.framework; sourceTree = "<group>"; };
-		1DD6CEE12D0BDD0100E60099 /* JL_AdvParse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_AdvParse.framework; sourceTree = "<group>"; };
-		1DD6CEE32D0BDD8500E60099 /* JL_HashPair.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_HashPair.framework; sourceTree = "<group>"; };
-		1DD6CEE52D0BDDE500E60099 /* JLLogHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JLLogHelper.framework; sourceTree = "<group>"; };
 		1DD757B2294AEEAB00DE5702 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		1DD757B4294AEEB600DE5702 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1DD757B6294AEEBD00DE5702 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -263,6 +283,7 @@
 		485354B227390335004B426F /* SJXCSMIPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJXCSMIPHelper.m; sourceTree = "<group>"; };
 		485354F22739081B004B426F /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		485354F427390825004B426F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		630A3DFBB24A1C10E12705DB /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
 		B338BE157734E70B6A35FD8C /* Pods-JL_OTA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JL_OTA.release.xcconfig"; path = "Target Support Files/Pods-JL_OTA/Pods-JL_OTA.release.xcconfig"; sourceTree = "<group>"; };
 		BE8A22EF27153A2C00589FB3 /* JLMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLMainViewController.h; sourceTree = "<group>"; };
 		BE8A22F027153A2C00589FB3 /* JLMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLMainViewController.m; sourceTree = "<group>"; };
@@ -293,6 +314,7 @@
 		BECEAD69271423C90090027A /* JLOtaFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLOtaFileManager.m; sourceTree = "<group>"; };
 		BECEAD72271441B70090027A /* UITableViewCell+JLCustom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+JLCustom.h"; sourceTree = "<group>"; };
 		BECEAD73271441B70090027A /* UITableViewCell+JLCustom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+JLCustom.m"; sourceTree = "<group>"; };
+		C00E0D4ABF68E66DB488CAEA /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
 		C057BFA0D8007BF50224E58C /* Pods-JL_OTA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JL_OTA.debug.xcconfig"; path = "Target Support Files/Pods-JL_OTA/Pods-JL_OTA.debug.xcconfig"; sourceTree = "<group>"; };
 		C201E4022CF45E4800338FB0 /* user_protocol.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = user_protocol.html; sourceTree = "<group>"; };
 		C2D469842CF16EEC0085DEA6 /* AboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -310,6 +332,7 @@
 		C2E523192CF85A52009C7120 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C2E5231A2CF85A52009C7120 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		E09C2BB6B03B592389252C0C /* libPods-JL_OTA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JL_OTA.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7B798E8E311B38843672C31 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,18 +340,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DD6CEE42D0BDD8500E60099 /* JL_HashPair.framework in Frameworks */,
 				1DD757B7294AEEBD00DE5702 /* SystemConfiguration.framework in Frameworks */,
 				1DD757B5294AEEB600DE5702 /* Security.framework in Frameworks */,
 				1DD757B3294AEEAB00DE5702 /* libc++.tbd in Frameworks */,
 				485354F527390825004B426F /* libz.tbd in Frameworks */,
-				1DD6CEE02D0BDCA100E60099 /* JL_OTALib.framework in Frameworks */,
 				1DDE6A1F29152955009BD1BA /* DFUnits.framework in Frameworks */,
 				485354F32739081B004B426F /* libxml2.tbd in Frameworks */,
 				B2586349BAABE434E407B5A7 /* libPods-JL_OTA.a in Frameworks */,
-				1DD6CEE62D0BDDE500E60099 /* JLLogHelper.framework in Frameworks */,
-				1DD6CEE22D0BDD0100E60099 /* JL_AdvParse.framework in Frameworks */,
-				1DD6CEDA2D0BDB0B00E60099 /* JL_BLEKit.framework in Frameworks */,
+				A382F11EDACB548BC47BAC62 /* JL_AdvParse.xcframework in Frameworks */,
+				DF997EBBA62AAF9241A1CBF2 /* JL_BLEKit.xcframework in Frameworks */,
+				FD1356ACDA6E6AF6E2C6AC06 /* JL_HashPair.xcframework in Frameworks */,
+				E7E2CB8C5EC5A48F1DB072F2 /* JL_OTALib.xcframework in Frameworks */,
+				F49DB80F42EA953A44CEF621 /* JLLogHelper.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +414,13 @@
 				1D05BBA728E592630033BD28 /* JLDeviceViewController.m */,
 			);
 			path = DeviceView;
+			sourceTree = "<group>";
+		};
+		1D0B4ECF2B99BAED003CC173 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		1D21A81429309AF7002E8D6B /* BroadcastUpdate */ = {
@@ -827,11 +857,6 @@
 		BECEACFB2711416E0090027A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1DD6CEE52D0BDDE500E60099 /* JLLogHelper.framework */,
-				1DD6CEE32D0BDD8500E60099 /* JL_HashPair.framework */,
-				1DD6CEE12D0BDD0100E60099 /* JL_AdvParse.framework */,
-				1DD6CEDF2D0BDCA100E60099 /* JL_OTALib.framework */,
-				1DD6CED92D0BDB0B00E60099 /* JL_BLEKit.framework */,
 				1DD757B6294AEEBD00DE5702 /* SystemConfiguration.framework */,
 				1DD757B4294AEEB600DE5702 /* Security.framework */,
 				1DD757B2294AEEAB00DE5702 /* libc++.tbd */,
@@ -839,6 +864,11 @@
 				485354F22739081B004B426F /* libxml2.tbd */,
 				1DDE6A1E29152955009BD1BA /* DFUnits.framework */,
 				E09C2BB6B03B592389252C0C /* libPods-JL_OTA.a */,
+				630A3DFBB24A1C10E12705DB /* JL_AdvParse.xcframework */,
+				0171A2504CE0F6FF1DD0512B /* JL_BLEKit.xcframework */,
+				1A486839D535FC18D31E32D4 /* JL_HashPair.xcframework */,
+				C00E0D4ABF68E66DB488CAEA /* JL_OTALib.xcframework */,
+				E7B798E8E311B38843672C31 /* JLLogHelper.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -968,6 +998,7 @@
 				BECEACB6271132DE0090027A /* Frameworks */,
 				BECEACB7271132DE0090027A /* Resources */,
 				5E2C286442DE7B55B1EA6AF1 /* [CP] Copy Pods Resources */,
+				1DFF8F732E78165000D20A75 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1007,6 +1038,11 @@
 			mainGroup = BECEACB0271132DE0090027A;
 			productRefGroup = BECEACBA271132DE0090027A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1D0B4ECF2B99BAED003CC173 /* Products */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				BECEACB8271132DE0090027A /* JL_OTA */,
@@ -1069,9 +1105,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JL_OTA/Pods-JL_OTA-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JL_OTA/Pods-JL_OTA-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1319,7 +1359,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1344,7 +1384,7 @@
 					"@executable_path/Frameworks",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MARKETING_VERSION = 3.5.0;
+				MARKETING_VERSION = 3.5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1371,7 +1411,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1396,7 +1436,7 @@
 					"@executable_path/Frameworks",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MARKETING_VERSION = 3.5.0;
+				MARKETING_VERSION = 3.5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",

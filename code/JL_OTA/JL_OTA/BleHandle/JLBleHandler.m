@@ -37,7 +37,7 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
     if (self) {
         sdkManager = [JL_RunSDK sharedInstance].mBleMultiple;
         [JL_RunSDK sharedInstance].otaDelegate = self;
-        sdkManager.BLE_FILTER_ENABLE = NO;
+        sdkManager.BLE_FILTER_ENABLE = YES;
         
         userManager = [JLBleManager sharedInstance];
         [userManager addDelegate:self];
@@ -137,9 +137,9 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
 -(void)handleReconnectByUUID{
     if([ToolsHelper isConnectBySDK]){
         sdkManager.BLE_PAIR_ENABLE = [ToolsHelper isSupportPair];
-        kJLLog(JLLOG_DEBUG, @"---> OTA SDK 正在回连设备... %@", [JL_RunSDK sharedInstance].mBleEntityM.mItem);
-        [sdkManager connectEntityForMac:[JL_RunSDK sharedInstance].mBleEntityM.mEdr Result:^(JL_EntityM_Status status) {
-            
+        kJLLog(JLLOG_DEBUG, @"---> OTA SDK 正在回连设备... %@,%@", [JL_RunSDK sharedInstance].mBleEntityM.mItem, [JL_RunSDK sharedInstance].lastUUID);
+        JL_EntityM *entity = [sdkManager makeEntityWithUUID:[JL_RunSDK sharedInstance].lastUUID];
+        [sdkManager connectEntity:entity Result:^(JL_EntityM_Status status) {
         }];
     }else{
         kJLLog(JLLOG_DEBUG, @"---> OTA正在回连设备... %@,%@", [JLBleManager sharedInstance].mBlePeripheral.name,userManager.lastUUID);

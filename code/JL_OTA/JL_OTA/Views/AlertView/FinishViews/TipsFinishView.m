@@ -17,15 +17,15 @@
 @property(nonatomic,strong)UIImageView *bgView;
 @property(nonatomic,strong)AutoFinishView *autoView;
 @property(nonatomic,strong)NormalFinishView *normalView;
+@property(nonatomic,assign)JLTipsViewType tipsType;
 @end
 
 @implementation TipsFinishView
 
-- (instancetype)initWithFrame:(CGRect)frame{
-    self = [super initWithFrame:frame];
-    if(self){
-        [self initUI];
-    }
+-(instancetype)init:(JLTipsViewType) type {
+    self = [super init];
+    _tipsType = type;
+    [self initUI];
     return self;
 }
 
@@ -42,36 +42,38 @@
         make.right.equalTo(self.mas_right);
     }];
     
-    _normalView = [[NormalFinishView alloc] initWithFrame:CGRectZero];
-    [self addSubview:_normalView];
-    [_normalView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(196);
-        make.left.equalTo(self.mas_left).offset(12);
-        make.right.equalTo(self.mas_right).offset(-12);
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
-        } else {
-            // Fallback on earlier versions
-            make.bottom.equalTo(self.mas_bottom).offset(-10);
-        }
-    }];
+    if (_tipsType == JLTipsNormal) {
+        _normalView = [[NormalFinishView alloc] initWithFrame:CGRectZero];
+        [self addSubview:_normalView];
+        [_normalView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.offset(196);
+            make.left.equalTo(self.mas_left).offset(12);
+            make.right.equalTo(self.mas_right).offset(-12);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
+            } else {
+                // Fallback on earlier versions
+                make.bottom.equalTo(self.mas_bottom).offset(-10);
+            }
+        }];
+    }
     
     
-    
-    _autoView = [[AutoFinishView alloc] initWithFrame:CGRectZero];
-    [self addSubview:_autoView];
-    [_autoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(254);
-        make.left.equalTo(self.mas_left).offset(12);
-        make.right.equalTo(self.mas_right).offset(-12);
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
-        } else {
-            // Fallback on earlier versions
-            make.bottom.equalTo(self.mas_bottom).offset(-10);
-        }
-    }];
-    
+    if (_tipsType == JLTipsAuto) {
+        _autoView = [[AutoFinishView alloc] initWithFrame:CGRectZero];
+        [self addSubview:_autoView];
+        [_autoView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.offset(254);
+            make.left.equalTo(self.mas_left).offset(12);
+            make.right.equalTo(self.mas_right).offset(-12);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
+            } else {
+                // Fallback on earlier versions
+                make.bottom.equalTo(self.mas_bottom).offset(-10);
+            }
+        }];
+    }
     _autoView.hidden = true;
     _normalView.hidden = true;
     

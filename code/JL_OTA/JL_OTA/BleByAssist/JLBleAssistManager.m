@@ -195,7 +195,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     NSDictionary *info = [JL_BLEAction bluetoothKey_1:self.mAssist.mPairKey Filter:advertisementData];
     if (ble_name.length == 0) return;
     
-    kJLLog(JLLOG_DEBUG, @"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
+    kJLLog(JLLOG_COMPLETE, @"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
     
     NSString *key = [[FittingView getFitterKey] uppercaseString];
     if ([key isEqualToString:@""]) {

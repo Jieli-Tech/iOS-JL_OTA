@@ -503,8 +503,7 @@
             if(status == JL_EntityM_StatusPaired){
                 [weakSelf.subTableView reloadData];
                 [weakSelf hideLoadingView];
-                
-                
+                [JL_RunSDK sharedInstance].lastUUID = item.identifier.UUIDString;
             }
             
         }];

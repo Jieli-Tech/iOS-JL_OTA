@@ -1,0 +1,6 @@
+framework module JLBmpConvertKit {
+  umbrella header "JLBmpConvertKit.h"
+  export *
+
+  module * { export * }
+}

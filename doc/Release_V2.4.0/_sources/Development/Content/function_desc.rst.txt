@@ -1,0 +1,408 @@
+2.使用自定义的蓝牙连接API进行OTA
+=========================================
+
+2.1. JL_OTALib工作时序
+--------------------------
+
+.. figure:: ../../_static/ota_seq.png
+    :align: center
+    :width: 100%
+
+
+
+**参考Demo：「JL_OTA项目的BleManager文件夹」**
+
+**支持的功能：**
+
+- BLE设备握手连接；
+- 获取设备信息；
+- OTA升级能实现；
+
+**用到的库和相关类：**
+
+用到的库：
+
+* JL_OTALib.xcframework —-OTA升级业务库
+* JL_AdvParse.xcframework——杰理蓝牙设备广播包解析业务库
+* JL_HashPair.xcframework——设备认证业务库
+* JLLogHelper.xcframework——日志打印业务库
+
+.. important::
+    
+    在OTA过程中不允许进行其他命令的交互
+
+
+相关类说明：
+**JL_OTAManager：** OTA升级业务管理类
+
+- 获取设备信息（是否需要升级/强制升级）
+
+  - cmdTargetFeature 
+
+- 设备端发过来的数据解析接口 
+
+  - cmdOTADataReceive： 
+
+- 请求进入loader状态,需要携带升数据bfu
+ 
+  - cmdOTAData：Result： 
+
+- 进行数据传输（进入loader，重连后需要再次调用） 
+ 
+  - cmdOTAData：Result： 
+
+- 重启设备命令
+
+  - cmdRebootDevice 
+
+
+**JLHashHandler：** 设备认证业务类
+
+**JL_AdvParse：** 广播包内容解析类
+
+**BLE特征参数**
+
+- **【服务号】** ：AE00
+
+- **【写】特征值** ：AE01
+- **【读 】特征值** ：AE02
+
+2.2. 初始化SDK 
+-----------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    @interface JLBleManager() <JL_OTAManagerDelegate,JLHashHandlerDelegate>
+    @property (strong, nonatomic) JLHashHandler *pairHash;
+
+    @end
+    - (instancetype)init {
+        self = [super init];
+        if (self) {
+            _otaManager = [[JL_OTAManager alloc] init];
+            _otaManager.delegate = self;        
+            self.pairHash = [[JLHashHandler alloc] init];
+            self.pairHash.delegate = self;
+        
+            [JL_OTAManager logSDKVersion];
+            [JLHashHandler sdkVersion];
+        }
+        return self;
+    }
+
+
+2.3. BLE设备特征回调
+-----------------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    #pragma mark 设备特征回调
+    - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(nullable NSError *)error {
+        if (error) { NSLog(@"Err: Discovered Characteristics fail."); return; }
+        
+        if ([service.UUID.UUIDString isEqual:FLT_BLE_SERVICE]) {
+            
+            for (CBCharacteristic *character in service.characteristics) {
+                /*--- RCSP ---*/
+                if ([character.UUID.UUIDString isEqual:FLT_BLE_RCSP_W]) {
+                    NSLog(@"BLE Get Rcsp(Write) Channel ---> %@",character.UUID.UUIDString);
+                    self.mRcspWrite = character;
+                }
+                
+                if ([character.UUID.UUIDString isEqual:FLT_BLE_RCSP_R]) {
+                    NSLog(@"BLE Get Rcsp(Read) Channel ---> %@",character.UUID.UUIDString);
+                    self.mRcspRead = character;
+                    [peripheral setNotifyValue:YES forCharacteristic:character];
+                    
+                    if(self.mRcspRead.properties == CBCharacteristicPropertyRead){
+                        [peripheral readValueForCharacteristic:character];
+                        NSLog(@"BLE  Rcsp(Read) Read Value For Characteristic.");
+                    }
+                }
+            }
+        }
+    }
+
+
+2.4. BLE更新通知特征的状态
+-------------------------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    #pragma mark 更新通知特征的状态
+    - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(nonnull CBCharacteristic *)characteristic error:(nullable NSError *)error {
+        
+        if (error) { NSLog(@"Err: Update NotificationState For Characteristic fail."); return; }
+        
+        if ([characteristic.service.UUID.UUIDString isEqual:FLT_BLE_SERVICE] &&
+            [characteristic.UUID.UUIDString isEqual:FLT_BLE_RCSP_R]          &&
+            characteristic.isNotifying == YES)
+        {
+            
+            __weak typeof(self) weakSelf = self;
+            self.bleMtu = [peripheral maximumWriteValueLengthForType:CBCharacteristicWriteWithoutResponse];
+            NSLog(@"BLE ---> MTU:%lu",(unsigned long)self.bleMtu);
+            if (self.isPaired == YES) {
+                [_pairHash hashResetPair];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    //设备认证
+                    [self->_pairHash bluetoothPairingKey:self.pairKey Result:^(BOOL ret) {
+                        if(ret){
+                            weakSelf.lastUUID = peripheral.identifier.UUIDString;
+                            weakSelf.lastBleMacAddress = nil;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_PAIRED object:peripheral];
+                            [weakSelf.otaManager noteEntityConnected];
+                            weakSelf.pairStatus = YES;
+                        }else{
+                            NSLog(@"JL_Assist Err: bluetooth pairing fail.");
+                            [weakSelf.bleManager cancelPeripheralConnection:peripheral];
+                        }
+                    }];
+                });
+            }else{
+                self.lastUUID = peripheral.identifier.UUIDString;
+                self.lastBleMacAddress = nil;
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_PAIRED object:peripheral];
+                [self.otaManager noteEntityConnected];
+            }
+        }
+        self.isConnected = YES;
+    }
+
+
+2.5. BLE设备返回的数据
+----------------------------
+
+设备端返回的数据需要放入到SDK中解析，其中 **设备认证部分** 和 **通讯部分** 的处理是分开的
+
+.. code:: objective-c
+
+    #pragma mark 设备返回的数据 GET
+    - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+        if (error) { NSLog(@"Err: receive data fail."); return; }
+
+        if(_isPaired == YES && _pairStatus == NO){
+            //收到设备的认证交互数据
+            [_pairHash inputPairData:characteristic.value];
+        }else{
+            //收到的设备数据，正常通讯数据
+            [_otaManager cmdOtaDataReceive:characteristic.value];
+        }
+
+    }
+
+
+
+2.6. BLE设备断开连接
+--------------------------
+
+.. code:: objective-c
+
+    #pragma mark 设备断开连接
+    - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error {
+        NSLog(@"BLE Disconnect ---> Device %@ error:%d", peripheral.name, (int)error.code);
+        
+        [_otaManager noteEntityDisconnected];
+        self.isConnected = NO;
+        self.pairStatus = NO;
+        /*--- UI刷新，设备断开 ---*/
+        [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_DISCONNECTED object:peripheral];
+    }
+
+
+2.7. 手机蓝牙状态更新
+--------------------------
+.. code-block:: obj-c
+    :linenos:
+
+    //外部蓝牙，手机蓝牙状态回调处，实现以下：
+    #pragma mark - 蓝牙初始化 Callback
+    - (void)centralManagerDidUpdateState:(CBCentralManager *)central
+    {
+    _mBleManagerState = central.state;
+        
+        if (_mBleManagerState != CBManagerStatePoweredOn) {
+            self.mBlePeripheral = nil;
+            self.blePeripheralArr = [NSMutableArray array];
+        }
+    }
+
+
+2.8. 获取设备信息 
+------------------------
+
+
+BLE连接且配对后必须执行一次
+
+.. code-block:: obj-c
+    :linenos:
+
+	[_otaManager cmdTargetFeature];
+
+
+2.9. 固件OTA升级
+------------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    /**
+    *  ota升级
+    *  @param otaFilePath ota升级文件路径
+    */
+    - (void)otaFuncWithFilePath:(NSString *)otaFilePath {
+        NSLog(@"current otaFilePath ---> %@", otaFilePath);
+        self.selectedOtaFilePath = otaFilePath;
+        NSData *otaData = [[NSData alloc] initWithContentsOfFile:otaFilePath];
+        
+        [_otaManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
+            for (id<JLBleManagerOtaDelegate> objc in self.delegates) {
+                if([objc respondsToSelector:@selector(otaProgressWithOtaResult:withProgress:)]){
+                    [objc otaProgressWithOtaResult:result withProgress:progress];
+                }
+            }
+            
+        }];
+    }
+
+
+2.10. 取消固件OTA升级
+------------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    - (void)otaFuncCancel:(CANCEL_CALLBACK _Nonnull)result{
+        
+        [_otaManager cmdOTACancelResult:^(uint8_t status, uint8_t sn, NSData * _Nullable data) {
+            result(status);
+        }];
+    }
+
+
+
+2.11. OTAManager 的delegate回调处理
+------------------------------------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    //MARK: - ota manager delegate callback
+
+    ///取消升级回调
+    -(void)otaCancel{
+        //TODO: 取消OTA升级回调
+    }
+
+    ///升级状态进度回调
+    -(void)otaUpgradeResult:(JL_OTAResult)result Progress:(float)progress{
+        //TODO: 设备升级过程回调，包括进度状态
+    }
+
+    ///即将发送给设备的数据
+    -(void)otaDataSend:(NSData *)data{
+        //TODO: 开发者需要在这里要把数据发送到设备
+        [self writeDataByCbp:data];
+    }
+    ///设备信息回调
+    -(void)otaFeatureResult:(JL_OTAManager *)manager{
+        
+        NSLog(@"getDeviceInfo:%d",__LINE__);
+        if (manager.otaStatus == JL_OtaStatusForce) {
+            NSLog(@"---> 进入强制升级.");
+            if (self.selectedOtaFilePath) {
+                [self otaFuncWithFilePath:self.selectedOtaFilePath];
+            } else {
+                _getCallback(true);
+            }
+            return;
+        } else {
+            if (manager.otaHeadset == JL_OtaHeadsetYES) {
+                NSLog(@"---> 进入强制升级: OTA另一只耳机.");
+                if (self.selectedOtaFilePath) {
+                    [self otaFuncWithFilePath:self.selectedOtaFilePath];
+                } else {
+                    _getCallback(true);
+                }
+                return;
+            }
+        }
+        NSLog(@"---> 设备正常使用...");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            /*--- 获取公共信息 ---*/
+            [self->_otaManager cmdSystemFunction];
+            self->_getCallback(false);
+        });
+
+    }
+
+
+2.12. 设备认证的delegate回调
+------------------------------------------------
+
+.. code-block:: obj-c
+    :linenos:
+
+    //MARK: - Hash pair delegate callback
+    ///即将发送到设备的认证数据
+    -(void)hashOnPairOutputData:(NSData *)data{
+    //TODO: 开发者需要在这里要把数据发送到设备
+    [self writeDataByCbp:data];
+    }
+
+
+
+2.13. 数据发送
+------------------------
+
+- iOS设备与固件通讯之间的最大MTU需要在连上后获取
+
+.. code-block:: obj-c
+    :linenos:
+
+    elf.bleMtu = [peripheral maximumWriteValueLengthForType:CBCharacteristicWriteWithoutResponse];
+
+
+- 发送到设备的数据需要进行分包发送
+
+代码参考如下：
+
+.. code-block:: obj-c
+    :linenos:
+
+    //MARK: - data send manager
+
+    /// 需要分包发送
+    /// - Parameter data: 数据
+    -(void)writeDataByCbp:(NSData *)data{
+        //    NSLog(@"%s:data:%@",__func__,data);
+            if (_mBlePeripheral && self.mRcspWrite) {
+                if (data.length > 0 ) {
+                    NSInteger len = data.length;
+                    while (len>0) {
+                        if (len <= _bleMtu) {
+                            NSData *mtuData = [data subdataWithRange:NSMakeRange(0, data.length)];
+                            [_mBlePeripheral writeValue:mtuData
+                            forCharacteristic:self.mRcspWrite
+                                        type:CBCharacteristicWriteWithoutResponse];
+                            len -= data.length;
+                        }else{
+                            NSData *mtuData = [data subdataWithRange:NSMakeRange(0, _bleMtu)];
+                            [_mBlePeripheral writeValue:mtuData
+                            forCharacteristic:self.mRcspWrite
+                                        type:CBCharacteristicWriteWithoutResponse];
+                            len -= _bleMtu;
+                            data = [data subdataWithRange:NSMakeRange(_bleMtu, len)];
+                        }
+                    }
+                }
+            }else{
+                //需要先赋值写特征的内容
+                NSLog(@"need to init");
+            }
+    }
+
+

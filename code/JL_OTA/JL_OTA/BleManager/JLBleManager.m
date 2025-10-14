@@ -39,6 +39,8 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 @property (strong, nonatomic) GET_DEVICE_CALLBACK getCallback;
 
+@property (strong, nonatomic) NSArray *cbuuidArray;
+
 
 @end
 
@@ -73,6 +75,8 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         self.pairHash.delegate = self;
         
         _connectByUUID = nil;
+        
+        _cbuuidArray = @[[CBUUID UUIDWithString:FLT_BLE_SERVICE]];
 #if SENDBYSINGLE
         [[SingleDataSender share] addDelegate:self];
 #endif
@@ -207,7 +211,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     NSDictionary *info = [JLAdvParse bluetoothAdvParse:self.pairKey AdvData:advertisementData];
     if (ble_name.length == 0) return;
     
-    kJLLog(JLLOG_DEBUG, @"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
+    kJLLog(JLLOG_COMPLETE, @"发现 ----> NAME:%@ RSSI:%@ AD:%@", ble_name,RSSI,ble_AD);
     
     NSString *key = [[FittingView getFitterKey] uppercaseString];
     if ([key isEqualToString:@""]) {
@@ -247,7 +251,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         bleEntity.mRSSI = rssi;
         bleEntity.mType = [info[@"TYPE"] intValue];
         bleEntity.edrMacAddress = info[@"EDR"];
-        kJLLog(JLLOG_DEBUG, @"type:%d,name:%@",[info[@"TYPE"] intValue],name);
+        kJLLog(JLLOG_DEBUG, @"type:%d,name:%@, uuid:%@",[info[@"TYPE"] intValue],name, peripheral.identifier.UUIDString);
         bleEntity.mPeripheral = peripheral;
         [_blePeripheralArr addObject:bleEntity];
     }
@@ -353,7 +357,10 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
                 //设备认证
                 [self->_pairHash bluetoothPairingKey:self.pairKey Result:^(BOOL ret) {
                     if(ret){
-                        weakSelf.lastUUID = peripheral.identifier.UUIDString;
+                        if (weakSelf.lastBleMacAddress == nil) {
+                            weakSelf.lastUUID = peripheral.identifier.UUIDString;
+                        }
+                        kJLLog(JLLOG_DEBUG, @"bluetooth pairing success. UUID:%@", weakSelf.lastUUID);
                         weakSelf.lastBleMacAddress = nil;
                         [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_PAIRED object:peripheral];
                         [weakSelf.otaManager noteEntityConnected];
@@ -365,7 +372,10 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
                 }];
             });
         }else{
-            self.lastUUID = peripheral.identifier.UUIDString;
+            if (weakSelf.lastBleMacAddress == nil) {
+                self.lastUUID = peripheral.identifier.UUIDString;
+            }
+            kJLLog(JLLOG_DEBUG, @"bluetooth pairing success. UUID:%@", weakSelf.lastUUID);
             self.lastBleMacAddress = nil;
             [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_PAIRED object:peripheral];
             [self.otaManager noteEntityConnected];
@@ -416,7 +426,6 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     kJLLog(JLLOG_DEBUG, @"current otaFilePath ---> %@", otaFilePath);
     self.selectedOtaFilePath = otaFilePath;
     NSData *otaData = [[NSData alloc] initWithContentsOfFile:otaFilePath];
-    
     [_otaManager cmdOTAData:otaData Result:^(JL_OTAResult result, float progress) {
         for (id<JLBleManagerOtaDelegate> objc in self.delegates) {
             if([objc respondsToSelector:@selector(otaProgressWithOtaResult:withProgress:)]){
@@ -426,6 +435,28 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         
     }];
 }
+
+/**
+ *  ota升级（SDK 内置回连）
+ *  @param otaFilePath ota升级文件路径
+ */
+- (void)otaFuncWithFilePathInner:(NSString *)otaFilePath {
+    kJLLog(JLLOG_DEBUG, @"current otaFilePath Inner ---> %@", otaFilePath);
+    self.selectedOtaFilePath = otaFilePath;
+    NSData *otaData = [[NSData alloc] initWithContentsOfFile:otaFilePath];
+    
+    JLOtaReConnectOption *option = [JLOtaReConnectOption defaultOption];
+    //若需要调整 service uuid 或者其他特征需要对 option 进行设置
+    option.serviceUUID = @"AE00";
+    [_otaManager cmdUpgrade:otaData Option:option Result:^(JL_OTAResult result, float progress) {
+        for (id<JLBleManagerOtaDelegate> objc in self.delegates) {
+            if([objc respondsToSelector:@selector(otaProgressWithOtaResult:withProgress:)]){
+                [objc otaProgressWithOtaResult:result withProgress:progress];
+            }
+        }
+    }];
+}
+
 
 - (void)otaFuncCancel:(CANCEL_CALLBACK _Nonnull)result{
     
@@ -452,11 +483,25 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     
     kJLLog(JLLOG_DEBUG, @"getDeviceInfo:%d",__LINE__);
     if (manager.otaStatus == JL_OtaStatusForce) {
+        if (manager.isSupportReuseSpaceOTA) {
+            if (manager.otaSourceMode  == JLSourcesExtendModeNormal
+                || manager.otaSourceMode == JLSourcesExtendModeDisable) {
+                if (manager.bootloaderType == JL_BootLoaderYES) {
+                    kJLLog(JLLOG_DEBUG, @"---> 进入 Loader 升级.");
+                }else{
+                    kJLLog(JLLOG_DEBUG, @"---> 进入资源升级.");
+                }
+            }
+            kJLLog(JLLOG_DEBUG, @"---> 当前模式是：otaSourceMode：%d，bootloaderType：%d",manager.otaSourceMode, manager.bootloaderType);
+        }
         kJLLog(JLLOG_DEBUG, @"---> 进入强制升级.");
         if (self.selectedOtaFilePath) {
             [self otaFuncWithFilePath:self.selectedOtaFilePath];
         } else {
-            _getCallback(true);
+            if (_getCallback) {
+                _getCallback(true);
+                _getCallback = nil;
+            }
         }
         return;
     } else {
@@ -465,7 +510,22 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
             if (self.selectedOtaFilePath) {
                 [self otaFuncWithFilePath:self.selectedOtaFilePath];
             } else {
-                _getCallback(true);
+                if (_getCallback) {
+                    _getCallback(true);
+                    _getCallback = nil;
+                }
+            }
+            return;
+        }
+        if (manager.otaSourceMode == JLSourcesExtendModeFirmwareOnly) {
+            kJLLog(JLLOG_DEBUG, @"---> 进入固件更新.");
+            if (self.selectedOtaFilePath) {
+                [self otaFuncWithFilePath:self.selectedOtaFilePath];
+            } else {
+                if (_getCallback) {
+                    _getCallback(true);
+                    _getCallback = nil;
+                }
             }
             return;
         }
@@ -474,7 +534,10 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     dispatch_async(dispatch_get_main_queue(), ^{
         /*--- 获取公共信息 ---*/
         [self->_otaManager cmdSystemFunction];
-        self->_getCallback(false);
+        if (self->_getCallback) {
+            self->_getCallback(true);
+            self->_getCallback = nil;
+        }
     });
 
 }

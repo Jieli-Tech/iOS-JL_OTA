@@ -110,10 +110,21 @@
     /*--- 获取设备信息 ---*/
     [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
         if (status == JL_CMDStatusSuccess) {
-            JLModel_Device *model = [weakSelf.mBleEntityM.mCmdManager outputDeviceModel];
-            JL_OtaStatus upSt = model.otaStatus;
-            if (upSt == JL_OtaStatusForce) {
-                kJLLog(JLLOG_DEBUG, @"---> 进入强制升级.");
+            JL_OTAManager *otaManager = [self.mBleEntityM.mCmdManager mOTAManager];
+            JLOtaSourcesExtendMode upSt = otaManager.otaSourceMode;
+            if (otaManager.otaStatus == JL_OtaStatusForce) {
+                if (otaManager.isSupportReuseSpaceOTA) {
+                    if (otaManager.otaSourceMode  == JLSourcesExtendModeNormal
+                        || otaManager.otaSourceMode == JLSourcesExtendModeDisable) {
+                        if (otaManager.bootloaderType == JL_BootLoaderYES) {
+                            kJLLog(JLLOG_DEBUG, @"---> 进入 Loader 升级.");
+                        }else{
+                            kJLLog(JLLOG_DEBUG, @"---> 进入资源升级.");
+                        }
+                    }
+                }else{
+                    kJLLog(JLLOG_DEBUG, @"---> 进入强制升级.");
+                }
                 if (weakSelf.selectedOtaFilePath) {
                     [weakSelf otaFuncWithFilePath:weakSelf.selectedOtaFilePath];
                 } else {
@@ -121,8 +132,17 @@
                 }
                 return;
             } else {
-                if (model.otaHeadset == JL_OtaHeadsetYES) {
+                if (otaManager.otaHeadset == JL_OtaHeadsetYES) {
                     kJLLog(JLLOG_DEBUG, @"---> 进入强制升级: OTA另一只耳机.");
+                    if (weakSelf.selectedOtaFilePath) {
+                        [weakSelf otaFuncWithFilePath:weakSelf.selectedOtaFilePath];
+                    } else {
+                        callback(true);
+                    }
+                    return;
+                }
+                if (upSt == JLSourcesExtendModeFirmwareOnly) {
+                    kJLLog(JLLOG_DEBUG, @"---> 进入固件更新.");
                     if (weakSelf.selectedOtaFilePath) {
                         [weakSelf otaFuncWithFilePath:weakSelf.selectedOtaFilePath];
                     } else {

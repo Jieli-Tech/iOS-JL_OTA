@@ -1,0 +1,439 @@
+<h1><center><b>杰理OTA SDK<br/>常见问题答疑</b></center></h1>
+
+# 1. 前言
+
+​	本文档主要记录比较经常遇到的问题，统一进行答疑，方便快速开发。开发者可以先检索已有的问题是否符合你遇到的问题；如果是新的问题，请按照以下步骤进行提问，我们将尽快解答。
+
+描述问题的情况以及测试环境，请参考提问格式：
+
+>  提供打印日志，输出方式请参考[测试调试](https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/Other/debug.html#id1)，最好可以提供现象截图或视频
+
+提问格式
+
+```
+问题描述: XXXXXX
+测试环境: 固件: ACxxx_xxx_SDK_Vxxx   软件: JL_OTA_Vxxx
+问题标签: SDK接入 资源更新(固件升级)  其他
+复现步骤: 1. xxxx 2. xxxx 3.xxxx
+复现概率: 必现, 1/20, n / m 
+公版Demo是否复现: 是，否
+问题出现时间段: yyyy/MM/dd hh:mm - yyyy/MM/dd hh:mm 例如: 2022/05/28 17:00 - 2022/05/28 17:02
+备注: xxxx
+```
+
+重点: 开发前，请阅读[杰理OTA SDK开发文档 ](https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html#ota-ios)
+
+# 2. 常见问题
+
+## 2.1. 自定义蓝牙接入时，如何使用设备的广播包信息？
+
+利用系统提供的搜索蓝牙设备接口，从回调中获取广播包信息操作如下：
+
+```objective-c
+-(void)centralManager:(CBCentralManager *)central
+didDiscoverPeripheral:(CBPeripheral *)peripheral
+    advertisementData:(NSDictionary<NSString *,id> *)advertisementData
+                 RSSI:(NSNumber *)RSSI
+{
+    NSString *ble_name = advertisementData[@"kCBAdvDataLocalName"];
+    //NSLog(@"---> Found Name:%@ Rssi:%@",ble_name,RSSI);
+    if (ble_name.length == 0) return;
+    
+    NSData *ble_AD = advertisementData[@"kCBAdvDataManufacturerData"];
+    NSDictionary *info = [JL_BLEAction bluetoothKey_1:_filterKey Filter:advertisementData];
+    NSString *ble_addr = [JL_BLEAction otaBleMacAddressFromCBAdvDataManufacturerData:ble_AD];
+    /*--- 过滤蓝牙设备 ---*/
+    BOOL isOk = [info[@"ISOK"] boolValue];
+    //设备类型
+    JL_DeviceType deviceType = [info[@"TYPE"] intValue];
+
+    //转换成JL_EntityM对象
+    NSMutableDictionary *mDic = [NSMutableDictionary new];
+    [mDic setObject:peripheral forKey:@"BLE"];
+    [mDic setObject:rssi       forKey:@"RSSI"];
+    [mDic setObject:info?:@{}  forKey:@"INFO"];
+    JL_EntityM *entity = [JL_EntityM changeToEntity:mDic];
+}
+```
+
+当完成转换时，即可获得以下的属性值
+
+```objective-c
+ 
+@property(strong,nonatomic) NSString        *mUUID;
+@property(strong,nonatomic) NSNumber        *mRSSI;
+@property(readonly,copy,nonatomic)NSString  *mItem;
+/**
+ * mType值说明：
+ *  -1：传统设备
+ *  0：AI音箱
+ *  1：TWS
+ *  2：数码充电仓
+ *  3：普通耳机
+ *  4：声卡类型
+ *  5：手表类型
+ */
+@property(assign,nonatomic) JL_DeviceType   mType;
+@property(assign,nonatomic) BOOL            isExclusive;
+@property(assign,nonatomic) BOOL            isBound;
+@property(assign,nonatomic) BOOL            isEdrLinked;
+@property(assign,nonatomic) BOOL            isCharging;
+@property(assign,nonatomic) BOOL            isCharging_L;
+@property(assign,nonatomic) BOOL            isCharging_R;
+@property(assign,nonatomic) BOOL            isCharging_C;
+@property(assign,nonatomic) uint8_t         mPower;
+@property(assign,nonatomic) uint8_t         mPower_L;
+@property(assign,nonatomic) uint8_t         mPower_R;
+@property(assign,nonatomic) uint8_t         mPower_C;
+@property(strong,nonatomic) NSString        *mVID;
+@property(strong,nonatomic) NSString        *mPID;
+@property(strong,nonatomic) NSString        *mEdr;
+@property(strong,nonatomic) NSString        *mBleAddr;            //OTA设备需要
+@property(assign,nonatomic) uint8_t         mChipType;            //0：690x 1：692x 2：693x
+@property(assign,nonatomic) uint8_t         mProtocolType;        //默认0x00
+/**
+ 0x00 - dismiss 不显示弹窗
+ 0x01 - unconnected 经典蓝牙未连接
+    iOS : 不显示电量，请手动连接XXX
+    Android：不显示电量，显示连接按钮
+ 0x02 - connected 经典蓝牙已连接
+    iOS：判断已连接的经典蓝牙名是否一致，若未连接或蓝牙名不一致，
+         显示“设备已被占用”。若一致，显示电量等信息。
+    Android：判断已连接的经典蓝牙Mac是否一致，若未连接或蓝牙Mac不一致，
+             显示“设备已被占用”。若一致，显示电量等信息。
+ 0x03 - connecting 设备正在自动回连
+    Android 和 iOS 显示“设备正在自动回连 ”
+ 0x04 - connectionless 设备不可连接（需要按下配对按键）
+    Android 和 iOS 显示配对操作方式
+ */
+@property(assign,nonatomic) int8_t          mScene;
+@property(assign,nonatomic) uint8_t         mSeq;                   //Seq 每次开机会加 1，用于app区分是否同一次开机
+@property(assign,nonatomic) uint8_t         mTWS_Paired;            //TWS配对标识，0:未配对 1:已配对
+@property(assign,nonatomic) uint8_t         mTWS_Cap;               //0:关盖 1:开盖
+@property(assign,nonatomic) uint8_t         mTWS_Mode;              //0:充电模式 1:发射模式
+@property(assign,nonatomic) uint8_t         mHeadsetMaster;         //主从标识 (0:从机， 1:主机)
+@property(assign,nonatomic) uint8_t         mHeadsetLinkEnable;     //连接标识
+
+```
+
+> 这里部分属性值会根据设备类型来判断是否具备实际实用意义
+
+## 2.2. 为什么BLE握手认证执行了两次或者多次，导致BLE握手失败？
+
+- 设备必须固定有一个BLE服务号，和2两个读写特征值（分别是读和写），来实现数据交互。
+- 目前SDK使用的默认服务号为AE00，写特征是AE01，读特征AE02，保证设备端有一组AE00、AE01、AE02且不能重复。
+- 可以添加其他服务号和特征值，但不要与SDK正在使用的服务号和特征值名字重复。
+
+## 2.3. 为什么OTA升级结束但升级结果是失败？
+
+参考结果提示：
+```
+/--- 0x01 升级数据校验失败 ---/
+/--- 0x02 升级失败 ---/
+/--- 0x03 加密Key不对 ---/
+/--- 0x04 升级文件出错 ---/
+/--- 0x05 uboot不匹配 ---/
+/--- 0x06 升级过程长度出错 ---/
+/--- 0x07 升级过程flash读写失败 ---/
+/--- 0x08 升级过程指令超时 ---/
+NSLog(@"【%@】OTA --> Fail: %d",self.mBLE_NAME,otaSt);
+
+```
+如果出错是0x03或者0x04，请确保固件升级文件是否设置了加密key；其他出错，如注释解析。
+有其他问题疑问也可以将APP和固件端的log发给杰理。
+
+## 2.4. APP断开重连ANCS设备，回连失败怎么处理？
+
+1、ANCS设备连接APP就算APP断开BLE，但设备的BLE依然会与iPhone保持后台连接。那么此时在APP中搜索设备BLE是搜不到，需要用通过UUID回连设备，可以暂存上次连接时的UUID。
+
+2、就算连接上了BLE握手配对失败如何处理？那么请将固件Log发送给我们的杰理OTA固件同事。
+
+[ANCS参考资料](https://www.jianshu.com/p/43836fd36595)
+
+
+## 2.5. 升级过程出现BLE断开或者超时
+
+此时APP的Log相当于停止在某个0xe5的命令之中：
+
+> (GET)-->JL_CMD Opcode:0xe5 SN:1 Reply:1 Param:(6)000000000200
+
+这种情况是固件端没有继续发0xe5命令来取数据（0xe5携带着seek和length，APP会根据这两参数从固件的升级文件里找到对应数据发回给设备）。
+
+或者还伴随着BLE断开的打印，也请将App和固件Log发给杰理。
+
+
+## 2.6. 如何导出APP中的日志信息
+
+
+1. 安装[爱思助手](https://www.i4.cn/)
+
+2. 手机连接电脑以及打开爱思助手
+
+![image-20230210115224990](../_static/image-20230210115224990.png)
+
+
+1. 按照步骤选中内容
+
+![image-20230210115349379](../_static/image-20230210115349379.png)
+
+4. 选中对应的日志，选择导出。
+
+![image-20230210115441823](../_static/image-20230210115441823.png)
+
+## 2.7. OTA升级问题
+
+### 2.7.1. 单备份升级
+
+**问题：** AC701N的单备份升级时，v1.6.3版本SDK接入时的内容细节是什么？
+
+**解答：** 由于OTA单备份升级涉及到一个断开回连的操作，所以需要在OTA的回调中处理一下，参考以下代码：
+
+```objc
+if(result == JL_OTAResultReconnectWithMacAddr){
+    [[JL_RunSDK sharedMe] setIsOTAFailRelink:NO];
+
+    [self otaTimeCheck]; // 增加超时检测
+    self->_isOtaRelink = YES;
+    
+    NSLog(@"---> OTA 设备当前UUID... %@", self.otaUUID);
+    
+    /*
+     * 连接方案选择：
+     * 1. 如果使用的是SDK提供的蓝牙连接方案，则需要在此处，调用搜索设备接口即可，
+     *    库里面做了自动回连的流程，只是需要从这里激活一下它。
+     *    [self.mBleMultiple scanStart];
+     * 
+     * 2. 如果使用的自定义蓝牙连接方案，则可以详细参考以下的开源库。
+     *    https://gitee.com/Jieli-Tech/iOS-JL_OTA
+     */
+}
+```
+
+回连上设备之后，需要继续获取设备的信息：
+
+```objc
+[self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData _Nullable data) {
+    // 判断状态，并再次进入OTA升级
+}];
+```
+### 2.7.2. 单备份升级的步骤是什么？为什么要这么做？
+
+**问题：** 单备份升级的步骤是什么？为什么要这么做？
+
+**解答：** 
+- **升级步骤：** 单备份升级会被分为两部分：传输文件内容 + 校验升级内容
+- **操作流程：** 需要先第一次进行内容传输，再次回连后进行升级
+- **技术原因：** 因为设备的flash过小，无法一次性完全装载所有的升级文件内容
+
+### 2.7.3. 升级过程中可能会遇到的问题有那些？
+
+#### 问题1：第一阶段升级后，无法回连设备的问题
+
+**解决方案：** 检查升级步骤到了哪儿停止的，一般出现如下打印，是说明第一阶段已经升级完成，需要重新连接设备进行第二阶段的升级。
+
+**典型日志输出：**
+```
+2022-09-20 10:11:55.155658+0800 JL_OTA[64857:10204438] 【AC701N_WATCH】(SEND)-->JL_CMD Opcode:0x b SN:6 Reply:1 Param:(2)0001 
+2022-09-20 10:11:55.195791+0800 JL_OTA[64857:10204438] 【AC701N_WATCH】(GET)-->JL_RSP Opcode:0x b SN:6 Status:0 Param:(1)01
+2022-09-20 10:11:55.196640+0800 JL_OTA[64857:10204438] 【AC701N_WATCH】OTA --> (APP relink type: JL_OTAResultReconnectWithMacAddr)
+2022-09-20 10:11:55.310501+0800 JL_OTA[64857:10204438] BLE Disconnect ---> Device AC701N_WATCH error:7
+```
+**重连注意事项：** 设备的UUID已发生了改变，无法通过前一个UUID去回连设备，这时候分为两种情况：
+
+#### 方案1：使用SDK的蓝牙连接方式
+
+1. 再次执行搜索设备的方法：
+   ```objc
+   [self.mBleMultiple scanContinue]; // mBleMultiple为 JL_BLEMultiple 类对象
+   ```
+
+2. 当收到连接成功的回调后，再次请求查询设备状态：
+   ```objc
+   [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+       // 处理结果
+   }]; // mBleEntityM 为 JL_EntityM 类对象
+   ```
+
+#### 方案2：使用自定义蓝牙连接方式
+
+1. 在收到 `JL_OTAResultReconnectWithMacAddr` 回调之后，执行扫描蓝牙设备的任务
+2. 通过匹配广播包信息的方式进行回连：
+   ```objc
+   // OTA升级过程，回连使用
+   if ([JL_BLEAction otaBleMacAddress:self.lastBleMacAddress 
+                isEqualToCBAdvDataManufacturerData:ble_AD]) {
+       [self connectBLE:peripheral]; // 连接对应的蓝牙
+   }
+   ```
+
+3. 之后请求查询设备状态：
+   ```objc
+   [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+       // 处理结果
+   }]; // mBleEntityM 为 JL_EntityM 类对象
+   ```
+
+### 2.7.4. 传输/校验/升级过程中断开的情况分析
+
+#### 传输过程中断开的可能原因
+
+| 原因类别 | 具体原因 | 解决方案 |
+|---------|---------|----------|
+| 设备电量 | 设备电量不足，导致设备关机 | 确保设备电量充足，建议电量>30% |
+| 信号问题 | 设备距离过远，导致信号不稳定 | 保持设备与手机距离在1米以内 |
+| 设备异常 | 设备异常，导致设备重启 | 检查设备状态，必要时重启设备 |
+| 手机蓝牙 | 手机蓝牙异常，导致连接断开 | 重启手机蓝牙或重启手机 |
+
+#### 校验过程中断开的可能原因
+
+| 原因类别 | 具体原因 | 解决方案 |
+|---------|---------|----------|
+| 设备电量 | 设备电量不足，导致设备关机 | 确保设备电量充足，建议电量>30% |
+| 信号问题 | 设备距离过远，导致信号不稳定 | 保持设备与手机距离在1米以内 |
+| 设备异常 | 设备异常，导致设备重启 | 检查设备状态，必要时重启设备 |
+| 手机蓝牙 | 手机蓝牙异常，导致连接断开 | 重启手机蓝牙或重启手机 |
+| 文件问题 | 升级文件损坏，导致校验失败 | 重新下载升级文件，检查文件完整性 |
+
+#### 升级过程中断开的可能原因
+
+| 原因类别 | 具体原因 | 解决方案 |
+|---------|---------|----------|
+| 设备电量 | 设备电量不足，导致设备关机 | 确保设备电量充足，建议电量>30% |
+| 信号问题 | 设备距离过远，导致信号不稳定 | 保持设备与手机距离在1米以内 |
+| 设备异常 | 设备异常，导致设备重启 | 检查设备状态，必要时重启设备 |
+| 手机蓝牙 | 手机蓝牙异常，导致连接断开 | 重启手机蓝牙或重启手机 |
+| 文件问题 | 升级文件损坏，导致升级失败 | 重新下载升级文件，检查文件完整性 |
+| 存储空间 | 设备存储空间不足，导致升级失败 | 清理设备存储空间或使用更小的升级包 |
+
+#### 日志分析方法
+
+这种情况常见于传输过程中断导致无法继续升级，解决方式：一般这种异常，都属于数据传输过程中，命令不回复/超时导致的，可分析log中的SN以及命令号状态错误信息，具体可参考上文的日志分析。
+
+### 2.7.5. 升级过程中可能出现的命令错误
+
+#### 命令错误类型分析
+
+##### Opcode: 0xe2 - 发送升级文件头部偏移信息给设备的命令
+
+**命令结构：**
+| 字段 | 说明 |
+|------|------|
+| status | 命令状态 |
+| opCode | 操作码 |
+| sn | 序列号 |
+| result | 结果 |
+
+**返回结果说明：**
+
+| 结果码 | 含义 | 解决方案 |
+|--------|------|---------|
+| 0x00 | 可以升级 | 正常，继续升级流程 |
+| 0x01 | 设备电量过低 | 充电后再进行升级 |
+| 0x02 | 升级固件信息错误 | 检查升级文件是否正确 |
+| 0x03 | 升级文件版本一致 | 确认是否需要升级，或使用新版本文件 |
+| 0x04 | TWS未连接 | 确保TWS设备已正确连接 |
+| 0x05 | 耳机未在充电仓 | 将耳机放入充电仓后再升级 |
+
+##### Opcode: 0xe3 - 进入升级模式请求命令
+
+**命令结构：**
+| 字段 | 说明 |
+|------|------|
+| status | 命令状态 |
+| param | 参数 |
+
+**返回结果说明：**
+
+| 结果码 | 含义 |
+|--------|------|
+| 0x00 | 可以升级 |
+| 0x01 | 不可以升级 |
+
+##### Opcode: 0xe4 - 退出升级模式
+
+**说明：** 收/发退出升级模式，这时候要分析是哪一端发起的退出升级模式
+
+##### Opcode: 0xe5 - 设备请求升级文件数据
+
+**说明：** 设备主动请求升级文件的数据，SDK端收到后，按照请求大小发送给设备
+
+##### Opcode: 0xe6 - 读取设备升级状态指令
+
+**说明：** SDK端发起，设备会在param里回复状态信息（1Byte）
+
+**升级状态码：**
+
+| 状态码 | 含义 | 说明 |
+|--------|------|------|
+| 0x00 | 升级完成 | 升级成功完成 |
+| 0x01 | 升级数据校验出错 | 数据完整性校验失败 |
+| 0x02 | 升级失败 | 一般性升级失败 |
+| 0x03 | 加密key不匹配 | 加密密钥验证失败 |
+| 0x04 | 升级文件出错 | 升级文件格式或内容错误 |
+| 0x05 | uboot不匹配 | 引导程序版本不兼容 |
+| 0x06 | 升级过程中出现长度错误 | 数据长度校验失败 |
+| 0x07 | 出现flash读写错误 | 存储器读写异常 |
+| 0x08 | 升级过程中指令超时 | 命令执行超时 |
+| 0x09 | 相同升级文件 | 升级文件版本相同 |
+| 0x80 | 下载boot loader完成 | 引导程序下载完成 |
+
+**注意：** 升级完成后退出升级模式，0x80只有下载loader完成才回复，其余为错误码
+
+##### Opcode: 0xe7 - 强制设备重启指令
+
+**说明：** SDK发起的设备重启命令
+
+##### Opcode: 0x0b - 切换通信方式
+
+**说明：** SDK主动让固件切换通信方式
+
+##### Opcode: 0xe8 - 通知APP升级内容长度
+
+**说明：** 通知APP升级内容长度，由设备端发起
+
+---
+
+### 2.7.6. OTA 后台升级问题
+
+#### iOS 蓝牙后台权限配置
+
+iOS 的蓝牙后台权限需要在工程中手动配置。要设置应用程序在后台使用蓝牙的权限，需要在项目的 Info.plist 文件中添加相应的权限描述。
+
+#### 配置步骤
+
+1. **打开 Xcode 项目**
+
+2. **编辑 Info.plist 文件**
+   - 找到项目导航栏中的 Info.plist 文件
+   - 右键选择 Open As -> Source Code，以便直接编辑 XML
+
+3. **添加后台模式权限**
+   在 `<dict>` 标签中添加以下键值对：
+   ```xml
+   <key>UIBackgroundModes</key>
+   <array>
+       <string>bluetooth-central</string>
+   </array>
+   ```
+   这个键值对告诉系统你的应用程序需要在后台使用 CoreBluetooth 框架。
+
+4. **请求蓝牙后台传输权限**
+   在应用程序启动时，使用以下代码请求蓝牙后台传输权限：
+   ```objc
+   if ([_centralManager respondsToSelector:@selector(scanForPeripheralsWithServices:options:)]) {
+       [_centralManager scanForPeripheralsWithServices:nil 
+                                               options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@(YES)}];
+   }
+   ```
+   这将启动蓝牙扫描，并在后台继续扫描外围设备。
+
+5. **配置 Capabilities**
+   在项目的 Capabilities 面板中确保开启了 Background Modes，并勾选了 Uses Bluetooth LE Accessories 选项。
+
+#### 注意事项
+
+完成以上步骤后，你的应用程序就可以在后台使用蓝牙了。请注意：
+
+- 后台蓝牙传输会消耗较多的电量
+- 请根据实际需求谨慎使用
+- 仅推荐双备份版本的设备升级使用此功能

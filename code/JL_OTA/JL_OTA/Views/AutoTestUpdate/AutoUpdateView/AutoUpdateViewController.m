@@ -239,7 +239,7 @@
     [_popSuperView addGestureRecognizer:tapges];
     [_popView addObserver:self forKeyPath:@"selectIndex" options:NSKeyValueObservingOptionNew context:nil];
     
-    _finishView = [TipsFinishView new];
+    _finishView = [[TipsFinishView alloc] init:JLTipsAuto];
     UIWindow *windows = [[UIApplication sharedApplication] keyWindow];
     [windows addSubview:_finishView];
     _finishView.hidden = YES;
@@ -297,12 +297,17 @@
         return;
     }
     if(self.selectedArray.count > 0){
+        [[LoopUpdateManager share] cleanList];
         [[LoopUpdateManager share] setFinishNumber:0];
         [[LoopUpdateManager share] setFailedNumber:0];
-        //开始升级
-        [[LoopUpdateManager share] startLoopUpdate:self.selectedArray];
+        [[JLBleManager sharedInstance] getDeviceInfo:^(BOOL needForcedUpgrade) {
+            //开始升级
+            [[LoopUpdateManager share] startLoopUpdate:self.selectedArray];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_progressView.hidden = NO;
+            });
+        }];
         
-        _progressView.hidden = NO;
     }
 }
 
@@ -325,11 +330,6 @@
         
         JLBleEntity * entity = [[JLBleManager sharedInstance] currentEntity];
         if(entity){
-//            [[[JLBleManager sharedInstance] mAssist].mCmdManager.mOTAManager cmdOTACancelResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
-//                if(status == JL_CMDStatusSuccess){
-//                    weakSelf.progressView.hidden = YES;
-//                }
-//            }];
             [[JLBleManager sharedInstance] otaFuncCancel:^(uint8_t status) {
                 if(status == JL_CMDStatusSuccess){
                     weakSelf.progressView.hidden = YES;
@@ -399,9 +399,12 @@
         kJLLog(JLLOG_DEBUG, @"---> 检验文件【完成】");
         [self otaTimeCheck];//增加超时检测
         [LoopUpdateManager share].status = DeviceOtaStatusStepI;
-    } else if (result == JL_OTAResultReconnect) {
+    } else if (result == JL_OTAResultReconnect
+               || result == JL_OTAResultReconnectUpdateSource) {
         kJLLog(JLLOG_DEBUG, @"---> OTA正在回连设备... %@", [JLBleManager sharedInstance].mBlePeripheral.name);
-        [[JLBleManager sharedInstance] connectPeripheralWithUUID:[JLBleManager sharedInstance].lastUUID];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[LoopUpdateManager share] startLoopOta];
+        });
         [self otaTimeCheck];//增加超时检测
     } else if (result == JL_OTAResultReconnectWithMacAddr) {
         
@@ -442,11 +445,13 @@
     } else if (result == JL_OTAResultDisconnect){
         kJLLog(JLLOG_DEBUG, @"--->设备断开连接.");
         [self otaTimeClose];//关闭超时检测
-    }else {
+    } else {
         self.progressView.hidden = YES;
         [self otaTimeClose];
         [DFUITools showText:kJL_TXT("update_failed") onView:self.view delay:1.0];
-        [self.finishView failed:result];
+        if ([[LoopUpdateManager share] shouldLoopUpdate]){
+            [self.finishView failed:result];
+        }
         [LoopUpdateManager share].failedNumber+=1;
         [self faultTolerantHandle];
         // 其余错误码详细 Command+点击JL_OTAResult 查看说明
@@ -460,8 +465,8 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
         if (![[LoopUpdateManager share] shouldLoopUpdate]){
-            [[LoopUpdateManager share] cleanList];
-            [self.finishView succeed];
+//            [[LoopUpdateManager share] cleanList];
+//            [self.finishView succeed];
             return;
         }
         
@@ -495,9 +500,9 @@ static NSTimer  *otaTimer = nil;
 static int      otaTimeout= 0;
 - (void)otaTimeCheck {
     otaTimeout = 0;
-    _maxOtaTime = 10;
+    _maxOtaTime = 20;
     if([ToolsHelper isSupportHID]){
-        _maxOtaTime = 25;
+        _maxOtaTime = 60;
     }
     if (otaTimer == nil) {
         otaTimer = [JL_Tools timingStart:@selector(otaTimeAdd) target:self Time:1.0];

@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) JL_BLEMultiple *mBleMultiple;
 @property (weak, nonatomic) JL_EntityM *__nullable mBleEntityM;
 @property (weak, nonatomic) id<JL_RunSDKOtaDelegate> otaDelegate;
+@property (strong, nonatomic) NSString *lastUUID;
 
 /**
  * 单例

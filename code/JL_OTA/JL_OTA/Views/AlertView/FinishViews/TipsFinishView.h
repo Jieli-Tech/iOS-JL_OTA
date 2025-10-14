@@ -10,8 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum : NSUInteger {
+    JLTipsNormal,
+    JLTipsAuto,
+} JLTipsViewType;
+
 @interface TipsFinishView : UIView
 
+-(instancetype)init:(JLTipsViewType) type;
 
 -(void)succeed;
 

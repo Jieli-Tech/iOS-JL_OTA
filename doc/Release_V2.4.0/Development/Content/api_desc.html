@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.使用JL_BLEKit.xcframework蓝牙连接方式 &mdash; 杰理OTA升级开发文档(iOS) v2.4.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=873fbbe3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+      <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4. API 说明" href="API/api_docs.html" />
+    <link rel="prev" title="2.使用自定义的蓝牙连接API进行OTA" href="function_desc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="import.html">1.项目配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3.使用JL_BLEKit.xcframework蓝牙连接方式</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sdk">3.1. SDK外部蓝牙管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.1.1. 初始化SDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ble">3.1.2. BLE设备特征回调</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.1.3. BLE更新通知特征的状态</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.1.4. BLE设备返回的数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.1.5. BLE设备断开连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">3.1.6. 手机蓝牙状态更新</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.1.7. 获取设备信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ota">3.1.8. 固件OTA升级</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">3.2. SDK内部蓝牙管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">3.2.1. 初始化SDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">3.2.2. 扫描设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">3.2.3. 连接和断开设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">3.2.4. 获取设备信息(必须)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">3.2.5. 固件OTA升级</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="API/api_docs.html">4. API 说明</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/jl_ota_sdk_qa.html">1. 前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/jl_ota_sdk_qa.html#id2">2. 常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">3.使用JL_BLEKit.xcframework蓝牙连接方式</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="jl-blekit-xcframework">
+<h1>3.使用JL_BLEKit.xcframework蓝牙连接方式<a class="headerlink" href="#jl-blekit-xcframework" title="Link to this heading"></a></h1>
+<p>JL_BLEKit.xcframework依赖于其他的SDK，所以在导入时应包含以下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>JL_OTALib.xcframework——OTA升级业务库
+JL_AdvParse.xcframework——杰理蓝牙设备广播包解析业务库
+JL_HashPair.xcframework——设备认证业务库
+JLLogHelper.xcframework——日志打印业务库
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>在OTA过程中不允许进行其他命令的交互</p>
+</div>
+<section id="sdk">
+<h2>3.1. SDK外部蓝牙管理<a class="headerlink" href="#sdk" title="Link to this heading"></a></h2>
+<p>外部蓝牙管理，在使用 JL_BLEKit.xcframework 的同时，在蓝牙管理部分交由 <strong>外边（开发者自定义蓝牙）统筹管理</strong> ，可保障使用时的多样化。</p>
+<p><strong>参考Demo：「 JL_OTA项目的 BleByAssist文件夹」</strong>
+<strong>支持的功能</strong> ：</p>
+<ul class="simple">
+<li><p>BLE设备握手连接；</p></li>
+<li><p>获取设备信息；</p></li>
+<li><p>OTA升级能实现；</p></li>
+<li><p>注意：相对于 <strong>3.2.2</strong> 中描述的所有BLE操作都需自行实现；</p></li>
+</ul>
+<p><strong>会用到的类</strong> ：</p>
+<ul class="simple">
+<li><p><strong>JL_Assist</strong> ：部署SDK类；(必须)</p></li>
+<li><p><strong>JL_ManagerM</strong> ：命令处理中心，所有的命令操作都集中于此；(必须)</p></li>
+<li><p><strong>JLModel_Device</strong> ：设备信息存储的数据模型；(必须)</p></li>
+</ul>
+<p><strong>BLE参数</strong> ：</p>
+<ul class="simple">
+<li><p><strong>【服务号】</strong> ：AE00</p></li>
+<li><p><strong>【写】特征值</strong> ：AE01</p></li>
+<li><p><strong>【读 】特征值</strong> ：AE02</p></li>
+</ul>
+<section id="id1">
+<h3>3.1.1. 初始化SDK<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">    </span><span class="cm">/*--- JLSDK ADD ---*/</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="n">_mAssist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_Assist</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="n">_mAssist</span><span class="p">.</span><span class="n">mNeedPaired</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_isPaired</span><span class="p">;</span><span class="w">             </span><span class="c1">//是否需要握手配对</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="cm">/*--- 自定义配对码(16个字节配对码) ---*/</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="c1">//char pairkey[16] = {0x01,0x02,0x03,0x04,</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="c1">//                    0x01,0x02,0x03,0x04,</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="c1">//                    0x01,0x02,0x03,0x04,</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="c1">//                    0x01,0x02,0x03,0x04};</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="c1">//NSData *pairData = [NSData dataWithBytes:pairkey length:16];</span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">_mAssist</span><span class="p">.</span><span class="n">mPairKey</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span><span class="w">             </span><span class="c1">//配对秘钥（或者自定义配对码pairData）</span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">_mAssist</span><span class="p">.</span><span class="n">mService</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_BLE_SERVICE</span><span class="p">;</span><span class="w"> </span><span class="c1">//服务号</span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">_mAssist</span><span class="p">.</span><span class="n">mRcsp_W</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_BLE_RCSP_W</span><span class="p">;</span><span class="w">  </span><span class="c1">//特征「写」</span>
+<span class="linenos">13</span><span class="w">    </span><span class="n">_mAssist</span><span class="p">.</span><span class="n">mRcsp_R</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_BLE_RCSP_R</span><span class="p">;</span><span class="w">  </span><span class="c1">//特征「读」</span>
+</pre></div>
+</div>
+</section>
+<section id="ble">
+<h3>3.1.2. BLE设备特征回调<a class="headerlink" href="#ble" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#pragma mark - 设备特征回调</span>
+<span class="linenos">2</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">peripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">didDiscoverCharacteristicsForService:</span><span class="p">(</span><span class="bp">CBService</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">service</span>
+<span class="linenos">3</span><span class="w">            </span><span class="nl">error</span><span class="p">:(</span><span class="n">nullable</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span>
+<span class="linenos">4</span><span class="p">{</span>
+<span class="linenos">5</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Err: Discovered Characteristics fail.&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">6</span>
+<span class="linenos">7</span><span class="w">    </span><span class="cm">/*--- JLSDK ADD ---*/</span>
+<span class="linenos">8</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="w"> </span><span class="n">assistDiscoverCharacteristicsForService</span><span class="o">:</span><span class="n">service</span><span class="w"> </span><span class="n">Peripheral</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span>
+<span class="linenos">9</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>3.1.3. BLE更新通知特征的状态<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#pragma mark - 更新通知特征的状态</span>
+<span class="linenos"> 2</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">peripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">didUpdateNotificationStateForCharacteristic:</span><span class="p">(</span><span class="n">nonnull</span><span class="w"> </span><span class="bp">CBCharacteristic</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">characteristic</span>
+<span class="linenos"> 3</span><span class="w">            </span><span class="nl">error</span><span class="p">:(</span><span class="n">nullable</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span>
+<span class="linenos"> 4</span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Err: Update NotificationState For Characteristic fail.&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="cm">/*--- JLSDK ADD ---*/</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">__weak</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="n">weakSelf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="w"> </span><span class="n">assistUpdateCharacteristic</span><span class="o">:</span><span class="n">characteristic</span><span class="w"> </span><span class="n">Peripheral</span><span class="o">:</span><span class="n">peripheral</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="kt">BOOL</span><span class="w"> </span><span class="n">isPaired</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isPaired</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">YES</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">            </span><span class="n">weakSelf</span><span class="p">.</span><span class="n">lastUUID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">peripheral</span><span class="p">.</span><span class="n">identifier</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">            </span><span class="n">weakSelf</span><span class="p">.</span><span class="n">lastBleMacAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">            </span><span class="n">weakSelf</span><span class="p">.</span><span class="n">mBlePeripheral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">peripheral</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">            </span><span class="cm">/*--- UI配对成功 ---*/</span>
+<span class="linenos">16</span><span class="w">            </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">post</span><span class="o">:</span><span class="n">kFLT_BLE_PAIRED</span><span class="w"> </span><span class="n">Object</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span>
+<span class="linenos">17</span><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">18</span><span class="w">            </span><span class="p">[</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">bleManager</span><span class="w"> </span><span class="n">cancelPeripheralConnection</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span>
+<span class="linenos">19</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos">20</span><span class="w">    </span><span class="p">}];</span>
+<span class="linenos">21</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>3.1.4. BLE设备返回的数据<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#pragma mark - 设备返回的数据 GET</span>
+<span class="linenos">2</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">peripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span><span class="w"> </span><span class="nf">didUpdateValueForCharacteristic:</span><span class="p">(</span><span class="bp">CBCharacteristic</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">characteristic</span>
+<span class="linenos">3</span><span class="w">            </span><span class="nl">error</span><span class="p">:(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span>
+<span class="linenos">4</span><span class="p">{</span>
+<span class="linenos">5</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Err: receive data fail.&quot;</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">6</span>
+<span class="linenos">7</span><span class="w">    </span><span class="cm">/*--- JLSDK ADD ---*/</span>
+<span class="linenos">8</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="w"> </span><span class="n">assistUpdateValueForCharacteristic</span><span class="o">:</span><span class="n">characteristic</span><span class="p">];</span>
+<span class="linenos">9</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>3.1.5. BLE设备断开连接<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#pragma mark - 设备断开连接</span>
+<span class="linenos"> 2</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">centralManager:</span><span class="p">(</span><span class="bp">CBCentralManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">central</span><span class="w"> </span><span class="nf">didDisconnectPeripheral:</span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">peripheral</span>
+<span class="linenos"> 3</span><span class="w">                </span><span class="nl">error</span><span class="p">:(</span><span class="n">nullable</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span>
+<span class="linenos"> 4</span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;BLE Disconnect ---&gt; Device %@ error:%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peripheral</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="p">);</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">mBlePeripheral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="cm">/*--- JLSDK ADD ---*/</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="w"> </span><span class="n">assistDisconnectPeripheral</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">    </span><span class="cm">/*--- UI刷新，设备断开 ---*/</span>
+<span class="linenos">12</span><span class="w">    </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">post</span><span class="o">:</span><span class="n">kFLT_BLE_DISCONNECTED</span><span class="w"> </span><span class="n">Object</span><span class="o">:</span><span class="n">peripheral</span><span class="p">];</span>
+<span class="linenos">13</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>3.1.6. 手机蓝牙状态更新<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//外部蓝牙，手机蓝牙状态回调处，实现以下：</span>
+<span class="linenos"> 2</span><span class="cp">#pragma mark - 蓝牙初始化 Callback</span>
+<span class="linenos"> 3</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">centralManagerDidUpdateState:</span><span class="p">(</span><span class="bp">CBCentralManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">central</span>
+<span class="linenos"> 4</span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="n">_mBleManagerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">central</span><span class="p">.</span><span class="n">state</span><span class="p">;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="cm">/*--- JLSDK ADD ---*/</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="w"> </span><span class="n">assistUpdateState</span><span class="o">:</span><span class="n">central</span><span class="p">.</span><span class="n">state</span><span class="p">];</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_mBleManagerState</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CBManagerStatePoweredOn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">mBlePeripheral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">blePeripheralArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="n">array</span><span class="p">];</span>
+<span class="linenos">13</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">14</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>3.1.7. 获取设备信息<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p><strong>BLE连接且配对后必须执行一次</strong></p>
+</div>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdTargetFeatureResult</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">intValue</span><span class="p">];</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">st</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_CMDStatusSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">        </span><span class="n">JLModel_Device</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">mAssist</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">outputDeviceModel</span><span class="p">];</span>
+<span class="linenos"> 5</span><span class="w">        </span><span class="n">JL_OtaStatus</span><span class="w"> </span><span class="n">upSt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">otaStatus</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">upSt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OtaStatusForce</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 进入强制升级.&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">                </span><span class="p">[</span><span class="n">weakSelf</span><span class="w"> </span><span class="n">otaFuncWithFilePath</span><span class="o">:</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">];</span>
+<span class="linenos">10</span><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">                </span><span class="n">callback</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos">12</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">13</span><span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">15</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">otaHeadset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OtaHeadsetYES</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">16</span><span class="w">                </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 进入强制升级: OTA另一只耳机.&quot;</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">18</span><span class="w">                    </span><span class="p">[</span><span class="n">weakSelf</span><span class="w"> </span><span class="n">otaFuncWithFilePath</span><span class="o">:</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="p">];</span>
+<span class="linenos">19</span><span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">                    </span><span class="n">callback</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="linenos">21</span><span class="w">                </span><span class="p">}</span>
+<span class="linenos">22</span><span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">23</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">24</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos">25</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 设备正常使用...&quot;</span><span class="p">);</span>
+<span class="linenos">26</span><span class="w">        </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">mainTask</span><span class="o">:^</span><span class="p">{</span>
+<span class="linenos">27</span><span class="w">            </span><span class="cm">/*--- 获取公共信息 ---*/</span>
+<span class="linenos">28</span><span class="w">            </span><span class="p">[</span><span class="n">weakSelf</span><span class="p">.</span><span class="n">mAssist</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdGetSystemInfo</span><span class="o">:</span><span class="n">JL_FunctionCodeCOMMON</span><span class="w"> </span><span class="n">Result</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+<span class="linenos">29</span><span class="w">        </span><span class="p">}];</span>
+<span class="linenos">30</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">31</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; ERROR：设备信息获取错误!&quot;</span><span class="p">);</span>
+<span class="linenos">32</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">33</span><span class="p">}];</span>
+</pre></div>
+</div>
+</section>
+<section id="ota">
+<h3>3.1.8. 固件OTA升级<a class="headerlink" href="#ota" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//升级流程：连接设备--&gt;获取设备信息--&gt;是否强制升级--&gt;(是)则必须调用该API去OTA升级;</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="c1">// (否)则可以正常使用APP;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;current otaFilePath ---&gt; %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">otaFilePath</span><span class="p">);</span>
+<span class="linenos"> 5</span><span class="nb">self</span><span class="p">.</span><span class="n">selectedOtaFilePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">otaFilePath</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">otaData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSData</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithContentsOfFile</span><span class="o">:</span><span class="n">otaFilePath</span><span class="p">];</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">JL_OTAManager</span><span class="w"> </span><span class="o">*</span><span class="n">otaManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mOTAManager</span><span class="p">;</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="p">[</span><span class="n">otaManager</span><span class="w"> </span><span class="n">cmdOTAData</span><span class="o">:</span><span class="n">otaData</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_OTAResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">progress</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultUpgrading</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultPreparing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">13</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultPreparing</span><span class="p">)</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 校验文件中&quot;</span><span class="p">);;</span>
+<span class="linenos">14</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultUpgrading</span><span class="p">)</span><span class="w"> </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 正在升级&quot;</span><span class="p">);</span>
+<span class="linenos">15</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultPrepared</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">16</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 检验文件【完成】&quot;</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultReconnect</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; OTA正在回连设备... %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">);</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="w">        </span><span class="c1">//TODO: 这里需要开发者自行操作回连设备的UUIDString</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">otaTimeClose</span><span class="p">];</span><span class="c1">//关闭超时检测</span>
+<span class="linenos">24</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultReconnectWithMacAddr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; OTA正在通过Mac Addr方式回连设备... %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">JLBleManager</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBlePeripheral</span><span class="p">.</span><span class="n">name</span><span class="p">);</span>
+<span class="linenos">27</span><span class="w">        </span><span class="n">JLModel_Device</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mAssist</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">outputDeviceModel</span><span class="p">];</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="w">        </span><span class="c1">//TODO: 开发者需要利用这里的model.bleAddr地址去搜索回连已经升级了一半的设备，然后继续发起查询，再完成升级</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">otaTimeClose</span><span class="p">];</span><span class="c1">//关闭超时检测</span>
+<span class="linenos">32</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">33</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt;升级成功.&quot;</span><span class="p">);</span>
+<span class="linenos">34</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultReboot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">35</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt;设备重启.&quot;</span><span class="p">);</span>
+<span class="linenos">36</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">37</span><span class="w">        </span><span class="c1">// 其余错误码详细 Command+点击JL_OTAResult 查看说明</span>
+<span class="linenos">38</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;ota update result: %d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="linenos">39</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="p">}];</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2>3.2. SDK内部蓝牙管理<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>以下实现方法基于JL_BLEKit.xcframework的内部集成蓝牙连接方法，开发者无需管理蓝牙对象，只专注升级业务即可。</p>
+<p><strong>参考Demo：「 JL_OTA项目的 SDKBleManager文件夹」</strong></p>
+<p><strong>1. 支持的功能</strong> ：</p>
+<ul class="simple">
+<li><p>BLE设备的扫描、连接、断开、收发数据、回连功能；</p></li>
+<li><p>BLE设备过滤；</p></li>
+<li><p>BLE设备握手连接；</p></li>
+<li><p>BLE连接服务和特征值设置；</p></li>
+<li><p>获取设备信息；</p></li>
+<li><p>OTA升级能实现；</p></li>
+</ul>
+<p><strong>2. 会用到的类</strong> ：</p>
+<ul class="simple">
+<li><p><strong>JL_BLEUsage</strong>  ：可设置BLE过滤、握手、参数；查看蓝牙状态；</p></li>
+<li><p><strong>JL_Entity</strong> ：BLE设备的模型类，记录设备的相关信息（如名字、UUID、UID、PID等）；</p></li>
+<li><p><strong>JL_BLEMultiple</strong> ：BLE扫描、连接、断开、回连；</p></li>
+<li><p><strong>JL_ManagerM</strong> ：获取设备信息、OTA操作；</p></li>
+</ul>
+<section id="id8">
+<h3>3.2.1. 初始化SDK<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_BLEMultiple</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="linenos"> 2</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">BLE_FILTER_ENABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w">                                  </span><span class="c1">// 过滤非杰理蓝牙设备</span>
+<span class="linenos"> 3</span><span class="w">        </span><span class="c1">// self.mBleMultiple.filterKey = nil;                                                                       // 一般情况赋值nil即可</span>
+<span class="linenos"> 4</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">BLE_PAIR_ENABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w">        </span><span class="cm">/*--- 自定义配对码(16个字节配对码) ---*/</span>
+<span class="linenos"> 6</span><span class="c1">//char pairkey[16] = {0x01,0x02,0x03,0x04,</span>
+<span class="linenos"> 7</span><span class="c1">//                    0x01,0x02,0x03,0x04,</span>
+<span class="linenos"> 8</span><span class="c1">//                    0x01,0x02,0x03,0x04,</span>
+<span class="linenos"> 9</span><span class="c1">//                    0x01,0x02,0x03,0x04};</span>
+<span class="linenos">10</span><span class="c1">//NSData *pairData = [NSData dataWithBytes:pairkey length:16];</span>
+<span class="linenos">11</span><span class="c1">// self.mBleMultiple.pairKey    = nil;             // 配对秘钥（或者自定义配对码pairData）</span>
+<span class="linenos">12</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">BLE_TIMEOUT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>3.2.2. 扫描设备<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/*--- 搜索蓝牙设备 ---*/</span>
+<span class="linenos"> 2</span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="n">scanStart</span><span class="p">];</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">// 监听通知【kJL_BLE_M_FOUND】【kJL_BLE_M_FOUND_SINGLE】回调设备数组</span>
+<span class="linenos"> 5</span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">add</span><span class="o">:</span><span class="n">kJL_BLE_M_FOUND</span><span class="w"> </span><span class="n">Action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">reloadTableView</span><span class="p">)</span><span class="w"> </span><span class="n">Own</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="linenos"> 6</span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">add</span><span class="o">:</span><span class="n">kJL_BLE_M_FOUND_SINGLE</span><span class="w"> </span><span class="n">Action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">reloadTableView</span><span class="p">)</span><span class="w"> </span><span class="n">Own</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="c1">// 获取设备数组</span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">reloadTableView</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">            </span><span class="nb">self</span><span class="p">.</span><span class="n">btEnityList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">blePeripheralArr</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleEntityM</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">btEnityList</span><span class="w"> </span><span class="n">containsObject</span><span class="o">:</span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleEntityM</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">12</span><span class="w">                    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">btEnityList</span><span class="w"> </span><span class="n">insertObject</span><span class="o">:</span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleEntityM</span><span class="w"> </span><span class="n">atIndex</span><span class="o">:</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos">13</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">14</span><span class="w">            </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">subTableView</span><span class="w"> </span><span class="n">reloadData</span><span class="p">];</span>
+<span class="linenos">15</span><span class="w">            </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>3.2.3. 连接和断开设备<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//API通过【JL_BLEMultiple】使用</span>
+<span class="linenos"> 2</span><span class="cm">/**</span>
+<span class="linenos"> 3</span><span class="cm">连接设备</span>
+<span class="linenos"> 4</span><span class="cm">@param entity 蓝牙设备类</span>
+<span class="linenos"> 5</span><span class="cm">*/</span>
+<span class="linenos"> 6</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">connectEntity:</span><span class="p">(</span><span class="n">JL_EntityM</span><span class="o">*</span><span class="p">)</span><span class="nv">entity</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_EntityM_STATUS_BK</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="cm">/**</span>
+<span class="linenos"> 9</span><span class="cm">断开连接</span>
+<span class="linenos">10</span><span class="cm">*/</span>
+<span class="linenos">11</span><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">disconnectEntity:</span><span class="p">(</span><span class="n">JL_EntityM</span><span class="o">*</span><span class="p">)</span><span class="nv">entity</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_EntityM_STATUS_BK</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="cm">/**</span>
+<span class="linenos">14</span><span class="cm">*  BLE状态通知</span>
+<span class="linenos">15</span><span class="cm">*/</span>
+<span class="linenos">16</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_FOUND</span><span class="p">;</span><span class="w">               </span><span class="c1">//发现设备</span>
+<span class="linenos">17</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_FOUND_SINGLE</span><span class="p">;</span><span class="w">        </span><span class="c1">//发现单个设备</span>
+<span class="linenos">18</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_ENTITY_CONNECTED</span><span class="p">;</span><span class="w">    </span><span class="c1">//连接有更新</span>
+<span class="linenos">19</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_ENTITY_DISCONNECTED</span><span class="p">;</span><span class="w"> </span><span class="c1">//断开连接</span>
+<span class="linenos">20</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_ON</span><span class="p">;</span><span class="w">                  </span><span class="c1">//BLE开启</span>
+<span class="linenos">21</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_OFF</span><span class="p">;</span><span class="w">                 </span><span class="c1">//BLE关闭</span>
+<span class="linenos">22</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_EDR_CHANGE</span><span class="p">;</span><span class="w">          </span><span class="c1">//经典蓝牙输出通道变化</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>3.2.4. 获取设备信息(必须)<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">]</span><span class="w"> </span><span class="n">getDeviceInfo</span><span class="o">:^</span><span class="p">(</span><span class="kt">BOOL</span><span class="w"> </span><span class="n">needForcedUpgrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">2</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">needForcedUpgrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">                </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;设备需要强制升级，请到升级界面选择ota升级文件进行升级！&quot;</span><span class="p">);</span>
+<span class="linenos">4</span><span class="w">                </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">startLoadingView</span><span class="o">:</span><span class="s">@&quot;设备需要强制升级，请到升级界面选择ota升级文件进行升级！&quot;</span><span class="w"> </span><span class="n">Delay</span><span class="o">:</span><span class="mf">1.0</span><span class="p">];</span>
+<span class="linenos">5</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos">6</span><span class="p">}];</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3>3.2.5. 固件OTA升级<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-obj-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//升级流程：连接设备--&gt;获取设备信息--&gt;是否强制升级--&gt;</span>
+<span class="linenos"> 2</span><span class="c1">//(是)则必须调用该API去OTA升级;</span>
+<span class="linenos"> 3</span><span class="c1">//(否)则可以正常使用APP;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// 设置代理</span>
+<span class="linenos"> 6</span><span class="k">@interface</span> <span class="nc">JLUpdateViewController</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="n">JL_RunSDKOtaDelegate</span><span class="o">&gt;</span>
+<span class="linenos"> 7</span><span class="c1">// 设置ota升级过程状态回调代理</span>
+<span class="linenos"> 8</span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">otaDelegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="cm">/**</span>
+<span class="linenos">11</span><span class="cm">*  选择文件后，点击启动OTA升级</span>
+<span class="linenos">12</span><span class="cm">*/</span>
+<span class="linenos">13</span><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">updateBtnFunc:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleEntityM</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">15</span><span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">updateSeekLabel</span><span class="p">.</span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;&quot;</span><span class="p">;</span>
+<span class="linenos">16</span><span class="w">        </span><span class="p">[</span><span class="n">DFUITools</span><span class="w"> </span><span class="n">showText</span><span class="o">:</span><span class="s">@&quot;请先连接设备&quot;</span><span class="w"> </span><span class="n">onView</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="w"> </span><span class="n">delay</span><span class="o">:</span><span class="mf">1.0</span><span class="p">];</span>
+<span class="linenos">17</span><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">18</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">    </span><span class="cm">/*--- 获取设备信息 ---*/</span>
+<span class="linenos">21</span><span class="w">    </span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">]</span><span class="w"> </span><span class="n">otaFuncWithFilePath</span><span class="o">:</span><span class="n">_selectFilePath</span><span class="p">];</span>
+<span class="linenos">22</span><span class="p">}</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="cp">#pragma mark - JL_RunSDKOtaDelegate</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="cm">/**</span>
+<span class="linenos">27</span><span class="cm">*  ota升级过程状态回调</span>
+<span class="linenos">28</span><span class="cm">*/</span>
+<span class="linenos">29</span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">otaProgressWithOtaResult:</span><span class="p">(</span><span class="n">JL_OTAResult</span><span class="p">)</span><span class="nv">result</span><span class="w"> </span><span class="nf">withProgress:</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="nv">progress</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">30</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultUpgrading</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultPreparing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">31</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultPreparing</span><span class="p">)</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">updateLabel</span><span class="p">.</span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;校验文件中&quot;</span><span class="p">;</span>
+<span class="linenos">32</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultUpgrading</span><span class="p">)</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">updateLabel</span><span class="p">.</span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;正在升级&quot;</span><span class="p">;</span>
+<span class="linenos">33</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultPrepared</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">34</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; 检验文件【完成】&quot;</span><span class="p">);</span>
+<span class="linenos">35</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultReconnect</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">36</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; OTA正在回连设备... %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mPeripheral</span><span class="p">.</span><span class="n">name</span><span class="p">);</span>
+<span class="linenos">37</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultReconnectWithMacAddr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">38</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt; OTA正在通过Mac Addr方式回连设备... %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">].</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mPeripheral</span><span class="p">.</span><span class="n">name</span><span class="p">);</span>
+<span class="linenos">39</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">40</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt;升级成功.&quot;</span><span class="p">);</span>
+<span class="linenos">41</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OTAResultReboot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">42</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---&gt;设备重启.&quot;</span><span class="p">);</span>
+<span class="linenos">43</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">44</span><span class="w">        </span><span class="c1">// 其余错误码详细 Command+点击JL_OTAResult 查看说明</span>
+<span class="linenos">45</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;ota update result: %d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="linenos">46</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">47</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="function_desc.html" class="btn btn-neutral float-left" title="2.使用自定义的蓝牙连接API进行OTA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="API/api_docs.html" class="btn btn-neutral float-right" title="4. API 说明" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd。
+      <span class="lastupdated">最后更新于 10月 13, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.项目配置 &mdash; 杰理OTA升级开发文档(iOS) v2.4.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=873fbbe3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+      <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2.使用自定义的蓝牙连接API进行OTA" href="function_desc.html" />
+    <link rel="prev" title="SDK开发包介绍" href="../../resource/sdk_structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1.项目配置</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.1 支持环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.2 导入库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.3 必要权限</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xcode">1.3.1 Xcode 配置</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sdk">1.4 SDK具体使用的两种方式</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_desc.html">3.使用JL_BLEKit.xcframework蓝牙连接方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API/api_docs.html">4. API 说明</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/jl_ota_sdk_qa.html">1. 前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/jl_ota_sdk_qa.html#id2">2. 常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">1.项目配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>1.项目配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2>1.1 支持环境<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>环境</p></th>
+<th class="head"><p>兼容范围</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>软件系统</p></td>
+<td><p>推荐iOS 13.0以上</p></td>
+<td><p>支持BLE功能</p></td>
+</tr>
+<tr class="row-odd"><td><p>开发工具</p></td>
+<td><p>Xcode14.0</p></td>
+<td><p>建议使用最新版本</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>对应的 <strong>杰理 OTA 升级</strong> APP已上架到苹果商店，可预先下载体验。</p></li>
+<li><p>分离其他 SDK 的日志库为 <cite>JLLogHelper.xcframework</cite>，可在下载的APP中查看日志</p></li>
+<li><p><a class="reference external" href="https://github.com/Jieli-Tech/iOS-JL_OTA">查看JL_OTA源码</a></p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>1.2 导入库<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>实现OTA升级必须导入的库：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>JL_OTALib.xcframework——OTA升级业务库
+JLLogHelper.xcframework——日志打印业务库
+</pre></div>
+</div>
+<p>辅助性功能，如需要解析广播包/设备配对等需要导入的库：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>JL_AdvParse.xcframework——杰理蓝牙设备广播包解析业务库
+JL_HashPair.xcframework——设备认证业务库
+</pre></div>
+</div>
+<p>可选择导入的库：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>JL_BLEKit.xcframework——其他业务库
+</pre></div>
+</div>
+<p>备注：当开发者想要使用杰理集成的蓝牙库（连接、其他通讯业务）时，需要导入当前SDK使用</p>
+</section>
+<section id="id4">
+<h2>1.3 必要权限<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<div class="highlight-objectivec notranslate"><div class="highlight"><pre><span></span><span class="c1">//使用蓝牙权限</span>
+<span class="n">Privacy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Bluetooth</span><span class="w"> </span><span class="n">Peripheral</span><span class="w"> </span><span class="n">Usage</span><span class="w"> </span><span class="n">Description</span>
+<span class="n">Privacy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Bluetooth</span><span class="w"> </span><span class="n">Always</span><span class="w"> </span><span class="n">Usage</span><span class="w"> </span><span class="n">Description</span>
+</pre></div>
+</div>
+<section id="xcode">
+<h3>1.3.1 Xcode 配置<a class="headerlink" href="#xcode" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>由于库里包含了扩展类的属性，需要在使用时配置 <strong>Other linker Flags</strong></p>
+<p>需要在工程的 <strong>Build Settings</strong> 中的 <strong>Other Linker Flags</strong> 添加 <strong>-ObjC</strong>。</p>
+<p>当前使用 xcframework 均为动态库，而且采取的是嵌入方式，需要在导入时添加 <strong>Embed &amp; Sign</strong> 选项。</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/otherlinkerflags.jpg"><img alt="../../_images/otherlinkerflags.jpg" src="../../_images/otherlinkerflags.jpg" style="width: 100%;" />
+</a>
+</figure>
+</section>
+</section>
+<section id="sdk">
+<h2>1.4 SDK具体使用的两种方式<a class="headerlink" href="#sdk" title="Link to this heading"></a></h2>
+<ul>
+<li><p>自定义蓝牙连接方式（对应BleManager文件夹）；</p>
+<p>备注： <strong>自定义蓝牙连接中所有BLE的操作都自行实现， SDK 只负责对 OTA 数据包解析。</strong></p>
+</li>
+<li><p>使用 <cite>JL_BLEKit.xcframework</cite> 蓝牙连接方式（对应 <cite>SDKBleManager</cite> 文件夹）。</p></li>
+</ul>
+<p>工程中已通过 <strong>BleHandle</strong> 文件夹内的 <strong>JLBleHandler</strong> 类进行了区分，具体可以参考实际源码。开发普通OTA升级流程只需要参考 <strong>Views</strong> 文件夹中的 <strong>NormalUpdate</strong> 文件内容即可。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../../resource/sdk_structure.html" class="btn btn-neutral float-left" title="SDK开发包介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="function_desc.html" class="btn btn-neutral float-right" title="2.使用自定义的蓝牙连接API进行OTA" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd。
+      <span class="lastupdated">最后更新于 10月 13, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

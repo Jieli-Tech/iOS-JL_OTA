@@ -120,7 +120,8 @@
         self.normalView.updateProgressLab.text = kJL_TXT("verify_file_finish");
         self.autoView.updateProgressLab.text = kJL_TXT("verify_file_finish");
         
-    } else if (result == JL_OTAResultReconnect) {
+    } else if (result == JL_OTAResultReconnect
+               || result == JL_OTAResultReconnectUpdateSource) {
         [self.autoView reConnect];
         [self.normalView reConnect];
         

@@ -290,6 +290,9 @@
         case JL_OTAResultCancel:
             return kJL_TXT("result_cancel");
             break;
+        case JL_OTAResultReconnectUpdateSource:
+            return kJL_TXT("result_reconnect_update_source");
+            break;
     }
 }
 
