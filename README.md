@@ -1,6 +1,6 @@
-[toc]
-
-# iOS杰理蓝牙OTA开发说明
+<div style="background: linear-gradient(to bottom, #ca2de2ff, #e00025ff); padding: 20px; color: white; text-align: center;border-radius:10px">
+    <h1> iOS杰理蓝牙OTA开发说明 </h1>
+</div>
 
 - 数传：AC695X/AC608N/AC897/AD697N/AD698N/AC630N/AC632N
 
@@ -99,19 +99,19 @@ JLLogManager.logSomething("abcd")
 
 实现OTA升级必须导入的库：
 
-> *JL_OTALib.framework*——OTA升级业务库
+> *JL_OTALib.xcframework*——OTA升级业务库
 >
-> *JL_AdvParse.framework*——杰理蓝牙设备广播包解析业务库
+> *JL_AdvParse.xcframework*——杰理蓝牙设备广播包解析业务库
 >
-> *JL_HashPair.framework*——设备认证业务库
+> *JL_HashPair.xcframework*——设备认证业务库
 >
-> JLLogHelper.framework——日志打印收集库
+> JLLogHelper.xcframework——日志打印收集库
 
 
 
 可选择导入的库：
 
-> *JL_BLEKit.framework*
+> *JL_BLEKit.xcframework*
 
 备注：当开发者想要使用杰理集成的蓝牙库（连接、其他通讯业务）时，需要导入当前SDK使用
 
@@ -123,7 +123,7 @@ JLLogManager.logSomething("abcd")
 >
 > *Privacy - Bluetooth Always Usage Description*
 
-
+当前导入的 SDK 全部采取：Embed & Sign 方式, 在导入时需要勾选上 `Embed & Sign` 选项。
 
 # SDK使用的两种方式
 
@@ -131,7 +131,7 @@ JLLogManager.logSomething("abcd")
 
   备注：**自定义蓝牙连接中所有BLE的操作都自行实现，SDK只负责对OTA数据包解析。**
 
-- 使用JL_BLEKit.framework蓝牙连接方式（对应SDKBleManager文件夹）。
+- 使用JL_BLEKit.xcframework蓝牙连接方式（对应SDKBleManager文件夹）。
 
 
 
@@ -185,13 +185,13 @@ end
 
 用到的库：
 
-> *JL_OTALib.framework*——OTA升级业务库
+> *JL_OTALib.xcframework*——OTA升级业务库
 >
-> *JL_AdvParse.framework*——杰理蓝牙设备广播包解析业务库
+> *JL_AdvParse.xcframework*——杰理蓝牙设备广播包解析业务库
 >
-> *JL_HashPair.framework*——设备认证业务库
+> *JL_HashPair.xcframework*——设备认证业务库
 >
-> JLLogHelper.framework——日志打印收集库
+> JLLogHelper.xcframework——日志打印收集库
 
 相关类说明：
 
