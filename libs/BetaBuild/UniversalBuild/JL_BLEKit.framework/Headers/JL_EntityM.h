@@ -30,6 +30,14 @@ typedef NS_ENUM(NSInteger, JL_EntityM_Status) {
     JL_EntityM_StatusDisconnectOk   = 10,   //已断开成功
     JL_EntityM_StatusNull           = 11,   //Entity为空
 };
+
+/// 连接类型
+typedef NS_ENUM(NSUInteger, JLEntityConnectType) {
+    JLEntityConnectTypeBLE = 0,
+    JLEntityConnectTypeSPP = 1,
+    JLEntityConnectTypeATT = 2,
+};
+
 typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 
 @interface JL_EntityM : NSObject<NSCopying>
@@ -48,7 +56,9 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 ///过滤码
 @property(nonatomic,strong) NSData *__nullable mFilterKey;
 ///配对码
-@property(nonatomic,strong) NSData *__nullable mPairKey;
+@property(nonatomic,strong) NSData *__nullable mPairKey __attribute__((deprecated("Use mAuthKey instead")));
+/// 设备认证码
+@property(nonatomic,copy) NSData *__nullable mAuthKey;
 ///广播数据
 @property(strong,nonatomic) NSData          *mAdvData;
 
@@ -57,9 +67,13 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 ///是否【开启过滤】
 @property(nonatomic,assign) BOOL            mBLE_FILTER_ENABLE;
 ///是否【开启配对】
-@property(nonatomic,assign) BOOL            mBLE_PAIR_ENABLE;
+@property(nonatomic,assign) BOOL            mBLE_PAIR_ENABLE __attribute__((deprecated("Use mAuthEnable instead")));
+/// 是否开启设备认证
+@property(nonatomic,assign) BOOL            mAuthEnable;
 ///是否完成配对
-@property(nonatomic,assign) BOOL            mBLE_IS_PAIRED;
+@property(nonatomic,assign) BOOL            mBLE_IS_PAIRED __attribute__((deprecated("Use mIsAuth instead")));
+/// 是否已认证
+@property(nonatomic,assign) BOOL            mIsAuth;
 ///是否需要OTA
 @property(nonatomic,assign) BOOL            mBLE_NEED_OTA;
 @property(nonatomic,assign) BOOL            isFrom_HISTROY;
@@ -91,7 +105,8 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 @property(assign,nonatomic) uint8_t         mPower_L;
 @property(assign,nonatomic) uint8_t         mPower_R;
 @property(assign,nonatomic) uint8_t         mPower_C;
-@property(strong,nonatomic) NSString        *mVID;
+@property(strong,nonatomic) NSString        *mVID __attribute__((deprecated("Deprecated, use mUID instead")));
+@property(strong,nonatomic) NSString        *mUID;
 @property(strong,nonatomic) NSString        *mPID;
 @property(strong,nonatomic) NSString        *mEdr;
 @property(strong,nonatomic) NSString        *mBleAddr;            //OTA设备需要
@@ -140,8 +155,20 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 ///连接标识 (0:可以连接 1:不可连接)
 @property(assign,nonatomic) uint8_t         mWatchScene;
 
-///连接方式 0:ble 1:spp
-@property(assign,nonatomic) uint8_t         mWatchWay;
+///连接方式
+///0:ble
+///1:spp
+///2:att
+@property(assign,nonatomic) JLEntityConnectType      mConnectWay;
+
+/// 是否支持充电仓
+@property(assign,nonatomic) BOOL mIsSupportChargeBin;
+
+/// 是否支持蓝牙Le Audio音频
+@property(assign,nonatomic) BOOL mIsSupportLeAudio;
+
+/// Le Audio 的连接状态
+@property(assign,nonatomic) BOOL mLeAudioConnected;
 
 /// 设备特殊类型
 @property(assign,nonatomic) JLDevSpecialType  mSpecialType;
@@ -181,7 +208,7 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 #pragma mark - 连接超时管理
 -(void)startTimeout:(int)code;
 -(void)stopTimeout;
-
+-(void)cancelAuthPair;
 #pragma mark - EntityM 模型转换
 -(void)updateEntity:(NSDictionary*)dic;
 +(JL_EntityM*)changeToEntity:(NSDictionary*)dic;

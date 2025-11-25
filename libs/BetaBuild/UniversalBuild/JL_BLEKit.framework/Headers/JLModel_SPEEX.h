@@ -23,6 +23,7 @@ typedef NS_ENUM(UInt8, JL_SpeakDataType) {
     JL_SpeakDataTypeSPEEX           = 1,    //SPEEX数据
     JL_SpeakDataTypeOPUS            = 2,    //OPUS数据
     JL_SpeakDataTypeMSBC            = 3,    //MSBC数据
+    JL_SpeakDataTypeJLA_V2          = 4,    //JLA_V2
 };
 
 /// 结束原因

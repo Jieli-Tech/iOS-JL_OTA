@@ -114,9 +114,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,readonly,assign)BOOL dragWithMore;
 
 
-/**
- @param name 设置对耳设备的EDR名字
- */
+
+/// 设置设备名称
+/// - Parameter name: 设置对耳设备的EDR名字
 -(void)cmdHeadsetEdrName:(NSData*)name;
 
 #pragma mark ---> 按键设置(对耳)
@@ -152,9 +152,9 @@ typedef NS_ENUM(UInt8, JL_HeadsetButtonSettingFunction) {
             0x07    拒听
             0x08    拍照
  */
--(void)cmdHeadsetKeySettingKey:(JL_HeadsetButtonSettingKey)key
-                        Action:(JL_HeadsetButtonSettingAction)act
-                      Function:(JL_HeadsetButtonSettingFunction)fuc;
+-(void)cmdHeadsetKeySettingKey:(uint8_t)key
+                        Action:(uint8_t)act
+                      Function:(uint8_t)fuc;
 
 #pragma mark ---> LED设置(对耳)
 
@@ -192,8 +192,8 @@ typedef NS_ENUM(UInt8, JL_HeadsetLedEffect) {
                0x05    红蓝交替快闪
                0x06    红蓝交替慢闪
  */
--(void)cmdHeadsetLedSettingScene:(JL_HeadsetScene)scene
-                          Effect:(JL_HeadsetLedEffect)effect;
+-(void)cmdHeadsetLedSettingScene:(uint8_t)scene
+                          Effect:(uint8_t)effect;
 
 #pragma mark ---> MIC设置(耳机)
 typedef NS_ENUM(UInt8, JL_HeadsetMicSettingMode) {
@@ -216,7 +216,7 @@ typedef NS_ENUM(UInt8, JL_HeadsetWorkingMode) {
  @param mode 1： 普通模式
         2： 游戏模式
  */
--(void)cmdHeadsetWorkSettingMode:(JL_HeadsetWorkingMode)mode;
+-(void)cmdHeadsetWorkSettingMode:(uint8_t)mode;
 
 #pragma mark ---> 同步时间戳(耳机)
 /**
@@ -237,6 +237,7 @@ typedef NS_ENUM(uint32_t, JL_HeadsetAdviceFlag) {
     JL_HeadsetAdviceFlagConnectingTime              = 1 << 7,       //连接时间
     JL_HeadsetAdviceFlagEarDetection                = 1 << 8,       //入耳检测
     JL_HeadsetAdviceFlagLanguage                    = 1 << 9,       //语言类型
+    JL_HeadsetAdviceFlagAll                         = 0xFFFFFFFF    //全部
 };
 /**
  @param flag  BIT0    小机电量获取 格式为3个字节 参考广播包格式
@@ -264,7 +265,7 @@ typedef NS_ENUM(uint32_t, JL_HeadsetAdviceFlag) {
                 @"LED_EFFECT"
                 @"MIC_MODE"
                 @"WORK_MODE"
-                @"VID"
+                @"UID"
                 @"UID"
                 @"PID"
                 @"LINK_TIME"
@@ -278,7 +279,7 @@ typedef NS_ENUM(uint32_t, JL_HeadsetAdviceFlag) {
 #pragma mark ---> 设备广播通知(耳机)
 /**
     @{@"JLID": 杰理ID,
-    @"VID": ,
+    @"UID": ,
     @"PID":  ,
     @"EDR": ,
     @"SCENE": ,

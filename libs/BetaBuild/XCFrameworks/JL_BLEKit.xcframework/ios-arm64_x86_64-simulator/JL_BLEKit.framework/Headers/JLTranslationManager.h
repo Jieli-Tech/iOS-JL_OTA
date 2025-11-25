@@ -10,9 +10,10 @@
 #import "JLTranslateAudio.h"
 #import "JLModel_SPEEX.h"
 #import "JLTranslateSetMode.h"
-
+#import "JLTranslateSet.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
 @class JL_ManagerM;
 
 /// 翻译回调
@@ -37,7 +38,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param err 错误
 -(void)onError:(NSString *)uuid Error:(NSError *) err;
 
+@optional
+
+/// 通话状态
+/// @param isCalling 是否在通话
+/// @param uuid 设备UUID
+-(void)isOnCalling:(BOOL)isCalling UUID:(NSString *)uuid;
+
+
+/// 音频队列结束(或空闲/已结束/中间传输时短暂的播空了）
+/// @param uuid 设备UUID
+-(void)onSendAudioQueueOver:(NSString *)uuid;
+
 @end
+
+typedef void(^JLTranslationManagerGetBlock)(JLTranslateSetMode *_Nullable mode,NSError *_Nullable err);
+
+typedef void(^JLTranslationManagerSetBlock)(JLTranslateSetResultType status,NSError *_Nullable err);
 
 /// 翻译传输管理对象
 /// Translation transmission management object
@@ -46,9 +63,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 代理
 @property (nonatomic, weak) id<JLTranslationManagerDelegate> delegate;
 
-/// 最大MTU，默认是 200 最大不超过 MTU - 20 byte
-/// Max MTU, the default is 200, which is not greater than MTU - 20 byte
-@property (nonatomic, assign) NSInteger maxMtu;
+/// 命令最大超时时间
+/// 默认是 10s
+/// Command maximum timeout time
+/// Default is 10s
+@property (nonatomic, assign) NSTimeInterval cmdMaxTimeOut;
+
+
 
 /// 设备蓝牙 UUID
 /// Device Bluetooth UUID
@@ -62,6 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Recording policy, the default is to record on the phone
 @property (nonatomic, assign) JLTranslateRecordType recordtype;
 
+/// 是否在通话中
+/// Whether in a call
+@property (nonatomic, assign) BOOL isCalling;
+
 /// 设备对象
 /// Device object
 @property (nonatomic, strong, readonly) JL_ManagerM *manager;
@@ -71,11 +96,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// - Parameters:
 ///   - delegate: 代理 JLTranslationManagerDelegate
 ///   - manager: 设备对象 DeviceManager
-- (instancetype)initWithDelegate:(id<JLTranslationManagerDelegate>)delegate Manager:(JL_ManagerM *)manager;
+///   - result: 回调
+- (instancetype)initWithDelegate:(id<JLTranslationManagerDelegate>)delegate Manager:(JL_ManagerM *)manager Result:(void(^)(BOOL success, NSError *_Nullable err))result;
 
 /// 是否支持翻译功能
 /// Does it support translation function
 - (BOOL)trIsSupportTranslate;
+
+/// 是否通过 a2dp 播放
+/// Is it played through a2dp
+- (BOOL)trIsPlayWithA2dp;
+
 
 /// 是否正在工作
 /// Is it working
@@ -85,16 +116,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// Get the current translation mode
 /// 回复的内容通过 JLTranslationManagerDelegate 代理回调
 /// Reply content through JLTranslationManagerDelegate delegate
-- (void)trGetCurrentTranslationMode;
+/// - Parameter block: 回调
+- (void)trGetCurrentTranslationMode:(JLTranslationManagerGetBlock _Nullable)block;
 
 /// 开始翻译模式
 /// Start translation mode
 /// - Parameter mode: 翻译模式 translation mode
-- (void)trStartTranslateMode:(JLTranslateSetMode *)mode;
+/// - Parameter block: 回调
+- (void)trStartTranslateMode:(JLTranslateSetMode *)mode Block:(JLTranslationManagerSetBlock _Nullable)block;
 
 /// 退出翻译模式
 /// Exit translation mode
-- (void)trExitMode;
+/// - Parameter block: 回调
+- (void)trExitMode:(JLTranslationManagerSetBlock _Nullable)block;
 
 /// 写入翻译音频,翻译完/操作完后的音频需要携带原音频的音频类型 JLTranslateAudio 进行回复
 /// Write in translation audio, translation complete/operation complete audio need to carry the original audio JLTranslateAudio reply
@@ -102,6 +136,18 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - audio: JLTranslateAudio 原返回音频类型
 ///   - audioData: 处理完的音频数据
 - (void)trWriteAudio:(JLTranslateAudio *)audio TranslateData:(NSData *)audioData;
+
+
+/// 写入翻译音频，翻译完/操作完后的音频需要携带原音频的音频类型 JLTranslateAudio 进行回复
+/// 此方案是采取无交互式的下发方法，根据数据对应可能需要的播放时长来进行直接下发，可能存在风险
+/// 当前默认的时长是 20ms 44 byte 的 jlv2 压缩数据，不支持修改
+/// - Parameters:
+///   - audio: JLTranslateAudio 原返回音频类型
+///   - audioData: 处理完的音频数据
+-(void)trWriteAudioV2:(JLTranslateAudio *)audio TranslateData:(NSData *)audioData;
+
+/// 已准备好发送队列
+-(void)trSendIsRelay;
 
 /// 销毁
 /// Destroy

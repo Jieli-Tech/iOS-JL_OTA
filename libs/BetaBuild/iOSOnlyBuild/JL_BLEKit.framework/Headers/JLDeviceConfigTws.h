@@ -21,6 +21,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// Voice translation
 @property(nonatomic,assign,readonly)BOOL isSupportTranslate;
 
+/// 是否使用A2DP播放
+/// 翻译耳机功能扩展
+/// is use A2DP to play
+@property(nonatomic,assign,readonly)BOOL isUseA2DP;
+
+/// 是否支持耳机健康功能
+/// is support ear health
+@property(nonatomic,assign,readonly)BOOL isSupportHealthData;
+
+/// 是否支持Auracast
+@property (nonatomic, assign) BOOL isSupportAuracast;
+
+/// 是否支持接收Auracast
+@property (nonatomic, assign) BOOL isSupportReceiveAuracast;
+
+/// 是否支持发射端 Auracast
+@property (nonatomic, assign) BOOL isSupportLancerAuracast;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

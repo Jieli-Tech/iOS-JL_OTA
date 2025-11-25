@@ -19,7 +19,15 @@ typedef NS_ENUM(NSUInteger, JLTranslateSetResultType) {
     /// 模式相同
     JLTranslateSetResultTypeSameMode = 0x01,
     /// 参数错误
-    JLTranslateSetResultTypeParamErr = 0x02
+    JLTranslateSetResultTypeParamErr = 0x02,
+    /// 通话中
+    JLTranslateSetResultTypeCall = 0x03,
+    /// 音频播放中
+    JLTranslateSetResultTypeAudioPlaying = 0x04,
+    /// 系统繁忙
+    JLTranslateSetResultTypeBusy = 0x05,
+    /// 操作失败
+    JLTranslateSetResultTypeFail = 0x06
 };
 
 @protocol JLTranslateSetDelegate <NSObject>
@@ -50,6 +58,8 @@ typedef void(^JLTranslateGetCacheInfoBlock)(JL_CMDStatus status,JLTranslateAudio
 
 /// 翻译交互 API
 @interface JLTranslateSet : ECOneToMorePtl
+
+@property(nonatomic, assign)NSTimeInterval cmdMaxTime;
 
 /// 获取翻译模式
 /// - Parameters:

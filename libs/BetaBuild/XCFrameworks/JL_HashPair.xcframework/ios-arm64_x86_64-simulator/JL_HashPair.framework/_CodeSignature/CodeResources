@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/JLHashHandler.h</key>
 		<data>
-		st19KviJvOIX4FpbVu73dnwll5k=
+		ArAEdyp9k5H5o4gFjW9zdx+0ISY=
 		</data>
 		<key>Headers/JL_HashPair.h</key>
 		<data>
@@ -22,11 +22,11 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		A/tY8vobSBOlv6BmsO/zVQ9i8MQ=
+		dcQb169yGuqLQVNkLGqUj0A98OA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		rf12UueYtYtr75IMpFZNxAd+SYU=
+		6wQFoRjNQqLop5Z3m/K5slHiG2k=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -46,11 +46,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			st19KviJvOIX4FpbVu73dnwll5k=
+			ArAEdyp9k5H5o4gFjW9zdx+0ISY=
 			</data>
 			<key>hash2</key>
 			<data>
-			F1J/ejBqa062Y9oAHb7f77pFPpSsvTJfngbv0YbaWv4=
+			7iuW7k7IBL4tf/bE1O3SudVyeFxG8YHoo7DqZGFdSBI=
 			</data>
 		</dict>
 		<key>Headers/JL_HashPair.h</key>
@@ -79,11 +79,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			rf12UueYtYtr75IMpFZNxAd+SYU=
+			6wQFoRjNQqLop5Z3m/K5slHiG2k=
 			</data>
 			<key>hash2</key>
 			<data>
-			uU0fACSJLh0ZCQJzGzYRi7KfmBVVEKX0yicttCSD+8U=
+			N+WiNcfG40LwaFvJZeLG5iNA48ZbrW0Oph/B9U+7i9U=
 			</data>
 		</dict>
 	</dict>

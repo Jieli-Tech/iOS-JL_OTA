@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define PUBLIC_FUNC_4G                  0x0005 //4G功能升级功能
 #define PUBLIC_TIPS_VOICE               0x0006 //替换提示音
 #define PUBLIC_SDK_INFO                 0x0008 //SDK信息
+#define PUBLIC_TWS_HEALTH_INFO          0x0009 //TWS健康信息
 
 @class JLPublicBindDeviceModel;
 @class JLPublicSourceInfoModel;
@@ -170,6 +171,9 @@ typedef void(^JLPSSDKInfoCbk)(JL_CMDStatus status,JLPublicSDKInfoModel *_Nullabl
 /// 0x0001 AC701N
 /// 0x0002 AC707N
 @property(nonatomic,assign)uint16_t chipId;
+
+/// 是否支持 gif
+@property(nonatomic,assign)BOOL isSupportGif;
 
 /// 初始化
 /// - Parameter data: 数据
