@@ -75,6 +75,8 @@ class OTAActionManager: NSObject {
             .subscribe(onNext: { [weak self] peripheral in
                 guard let self = self else { return }
                 //TODO: 处理断开连接
+                otaManager.noteEntityDisconnected()
+                self.isAuthed = false
             })
             .disposed(by: disposeBag)
         
@@ -83,6 +85,7 @@ class OTAActionManager: NSObject {
                 guard let self = self else { return }
                 otaManager.mBLE_UUID = peripheral.identifier.uuidString
                 otaManager.mBLE_NAME = peripheral.name ?? ""
+                otaManager.noteEntityConnected()
                 //TODO: 处理订阅通知成功
                 if !isAuthed, enableAuth {
                     //重置设备端的认证
@@ -114,7 +117,9 @@ extension OTAActionManager: JL_OTAManagerDelegate {
             }
         }
         if result == .reconnectWithMacAddr {
-            BleManager.shared.reConnectWithMac(mac: self.otaManager.bleAddr)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                BleManager.shared.reConnectWithMac(mac: self.otaManager.bleAddr)
+            }
         }
         // TODO: 更新状态
         updateStateSubject.onNext(result.description(progress))

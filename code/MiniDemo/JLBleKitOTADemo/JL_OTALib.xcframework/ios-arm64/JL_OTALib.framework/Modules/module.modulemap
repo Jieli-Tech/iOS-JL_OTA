@@ -1,0 +1,6 @@
+framework module JL_OTALib {
+  umbrella header "JL_OTALib.h"
+  export *
+
+  module * { export * }
+}

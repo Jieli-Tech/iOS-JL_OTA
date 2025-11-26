@@ -60,6 +60,61 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
 }
 ```
 
+### 5.3 订阅完成后自动认证+查询特性（最小示例）
+
+```swift
+import RxSwift
+import JL_OTALib
+import JL_HashPair
+import CoreBluetooth
+
+/// 订阅完成后自动执行设备认证并查询特性的最小示例
+final class OTAAutoAuthMini: JLHashHandlerDelegate {
+    private let otaManager = JL_OTAManager.getOTAManager()
+    private let auth = JLHashHandler()
+    private let disposeBag = DisposeBag()
+    private var isAuthed = false
+
+    init() {
+        auth.delegate = self
+
+        // 订阅完成：设置设备标识并触发认证与特性查询
+        BleManager.shared.subNotifyInitSubject
+            .subscribe(onNext: { [weak self] peripheral in
+                guard let self = self else { return }
+                self.otaManager.mBLE_UUID = peripheral.identifier.uuidString
+                self.otaManager.mBLE_NAME = peripheral.name ?? ""
+                self.otaManager.noteEntityConnected()
+                self.auth.hashResetPair()
+                self.auth.bluetoothPairingKey(nil) { status in
+                    if status {
+                        self.isAuthed = true
+                        self.otaManager.cmdTargetFeature()
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+
+        // 数据通道：认证数据与 OTA 数据分流
+        BleManager.shared.subNotifySubject
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                if !self.isAuthed {
+                    self.auth.inputPairData(data)
+                    return
+                }
+                self.otaManager.cmdOtaDataReceive(data)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    // 认证输出：写入设备
+    func hash(onPairOutputData data: Data) {
+        BleManager.shared.write(data: data)
+    }
+}
+```
+
 ### Objective‑C 示例
 
 ```objective-c
@@ -255,9 +310,9 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
 
   ```swift
   func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-      JLLogManager.logLevel(.DEBUG, content: "发现服务")
       guard let services = peripheral.services else { return }
       for service in services {
+          JLLogManager.logLevel(.DEBUG, content: "发现服务:\(service.uuid.uuidString)")
           if service.uuid.uuidString == SERVICE_UUID {
               peripheral.discoverCharacteristics(nil, for: service)
           }
@@ -265,9 +320,9 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
   }
 
   func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-      JLLogManager.logLevel(.DEBUG, content: "发现特征")
       guard let characteristics = service.characteristics else { return }
       for characteristic in characteristics {
+          JLLogManager.logLevel(.DEBUG, content: "发现特征:\(characteristic.uuid.uuidString)")
           if characteristic.uuid.uuidString == CHARACTERISTIC_WRITE {
               characteristicWrite = characteristic
           } else if characteristic.uuid.uuidString == CHARACTERISTIC_NOTIFY {
@@ -275,6 +330,12 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
               peripheral.setNotifyValue(true, for: characteristic)
           }
       }
+  }
+  
+  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+      JLLogManager.logLevel(.DEBUG, content: "收到数据")
+      guard let data = characteristic.value else { return }
+      subNotifySubject.onNext(data)
   }
   ```
 
@@ -285,10 +346,12 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
       JLLogManager.logLevel(.DEBUG, content: "通知状态改变")
       if characteristicWrite == nil {
           DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+              JLLogManager.logLevel(.DEBUG, content: "进入初始化 wait 1")
               self.subNotifyInitSubject.onNext(peripheral)
           }
       } else {
           subNotifyInitSubject.onNext(peripheral)
+          JLLogManager.logLevel(.DEBUG, content: "进入初始化")
       }
   }
   ```
@@ -296,11 +359,25 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
 - 设置设备标识、认证与特性查询（源码摘录）：
 
   ```swift
+  BleManager.shared.subNotifySubject
+      .subscribe(onNext: { [weak self] data in
+          guard let self = self else { return }
+          if !isAuthed, enableAuth {
+              authManager.inputPairData(data)
+              return
+          }
+          otaManager.cmdOtaDataReceive(data)
+      })
+      .disposed(by: disposeBag)
+  ```
+
+  ```swift
   BleManager.shared.subNotifyInitSubject
       .subscribe(onNext: { [weak self] peripheral in
           guard let self = self else { return }
           otaManager.mBLE_UUID = peripheral.identifier.uuidString
           otaManager.mBLE_NAME = peripheral.name ?? ""
+          otaManager.noteEntityConnected()
           if !isAuthed, enableAuth {
               authManager.hashResetPair()
               self.authManager.bluetoothPairingKey(nil) { status in
@@ -342,7 +419,9 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
           }
       }
       if result == .reconnectWithMacAddr {
-          BleManager.shared.reConnectWithMac(mac: self.otaManager.bleAddr)
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+              BleManager.shared.reConnectWithMac(mac: self.otaManager.bleAddr)
+          }
       }
       updateStateSubject.onNext(result.description(progress))
   }
@@ -379,7 +458,8 @@ final class OTAExampleViewController: UIViewController, JL_OTAManagerDelegate {
   BleManager.shared.disconnectSubject
       .subscribe(onNext: { [weak self] peripheral in
           guard let self = self else { return }
-          // TODO: 处理断开连接（根据业务重置 UI/状态等）
+          otaManager.noteEntityDisconnected()
+          self.isAuthed = false
       })
       .disposed(by: disposeBag)
   ```

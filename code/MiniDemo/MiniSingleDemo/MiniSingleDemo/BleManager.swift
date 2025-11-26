@@ -49,6 +49,9 @@ class BleManager: NSObject {
     
     func startScan() {
         centralManager.scanForPeripherals(withServices: nil, options: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: DispatchWorkItem(block: {
+            self.stopScan()
+        }))
     }
     
     func stopScan() {
@@ -183,9 +186,9 @@ extension BleManager: CBCentralManagerDelegate {
 extension BleManager: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        JLLogManager.logLevel(.DEBUG, content: "发现服务")
         guard let services = peripheral.services else { return }
         for service in services {
+            JLLogManager.logLevel(.DEBUG, content: "发现服务:\(service.uuid.uuidString)")
             if service.uuid.uuidString == SERVICE_UUID {
                 peripheral.discoverCharacteristics(nil, for: service)
             }
@@ -193,9 +196,9 @@ extension BleManager: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        JLLogManager.logLevel(.DEBUG, content: "发现特征")
         guard let characteristics = service.characteristics else { return }
         for characteristic in characteristics {
+            JLLogManager.logLevel(.DEBUG, content: "发现特征:\(characteristic.uuid.uuidString)")
             if characteristic.uuid.uuidString == CHARACTERISTIC_WRITE {
                 characteristicWrite = characteristic
             } else if characteristic.uuid.uuidString == CHARACTERISTIC_NOTIFY {
@@ -215,10 +218,12 @@ extension BleManager: CBPeripheralDelegate {
         JLLogManager.logLevel(.DEBUG, content: "通知状态改变")
         if characteristicWrite == nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                JLLogManager.logLevel(.DEBUG, content: "进入初始化 wait 1")
                 self.subNotifyInitSubject.onNext(peripheral)
             }
         }else{
             subNotifyInitSubject.onNext(peripheral)
+            JLLogManager.logLevel(.DEBUG, content: "进入初始化")
         }
     }
 }

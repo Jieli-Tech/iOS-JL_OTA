@@ -125,6 +125,7 @@ class ViewController: UIViewController {
         
         OTAActionManager.shared.prepareUpdateSubject.subscribe(onNext: { _ in
             JLLogManager.logLevel(.DEBUG, content: "prepare update")
+            self.subTableView.reloadData()
         })
         .disposed(by: disposeBag)
         
