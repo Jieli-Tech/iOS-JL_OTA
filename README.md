@@ -124,6 +124,32 @@ JLLogManager.logSomething("abcd")
 > *Privacy - Bluetooth Always Usage Description*
 
 当前导入的 SDK 全部采取：Embed & Sign 方式, 在导入时需要勾选上 `Embed & Sign` 选项。
+## 连接方式与示例总览
+
+- 原生蓝牙（CoreBluetooth）自定义连接
+  - Demo 路径：`code/MiniDemo/MiniSingleDemo/`
+  - 示例文档：`code/MiniDemo/MiniSingleDemo/OTA 升级开发示例.md`
+
+- SDK 蓝牙连接（JL_BLEKit）
+  - Demo 路径：`code/MiniDemo/JLBleKitOTADemo/`
+  - 示例文档：`code/MiniDemo/JLBleKitOTADemo/OTA升级开发示例(SDK蓝牙连接).md`
+
+- JL_Assist 自定义蓝牙连接（外部蓝牙管控，Assist 提供握手与数据通道辅助）
+  - Demo 路径：`code/MiniDemo/JLAssistOTADemo/`
+  - 示例文档：`code/MiniDemo/JLAssistOTADemo/OTA 升级开发示例(JL_Assist 自定义蓝牙连接).md`
+
+## 选择指南
+
+- 完全掌控 BLE 扫描、连接、服务与分包发送 → 选择原生自定义连接
+- 快速集成、减少蓝牙细节处理 → 选择 SDK 蓝牙连接（JL_BLEKit）
+- 已有外部蓝牙管控或需桥接到既有蓝牙层 → 选择 JL_Assist 自定义连接
+
+## 快速开始（三种方式共通）
+
+- 集成 `JL_OTALib.xcframework`、`JL_AdvParse.xcframework`、`JL_HashPair.xcframework`、`JLLogHelper.xcframework` 并设置 `Embed & Sign`
+- 配置权限：`Privacy - Bluetooth Peripheral/Always Usage Description`
+- 核心调用流程：设备连接+订阅 → `noteEntityConnected` → `cmdTargetFeature` → `cmdOTAData(data)` → 委托回调 `otaUpgradeResult`、`otaDataSend` → 断开时 `noteEntityDisconnected`
+- 详细实现与最佳实践请参考上述三份示例文档
 
 # SDK使用的两种方式
 
@@ -227,12 +253,12 @@ end
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _otaManager = [[JL_OTAManager alloc] init];
+        _otaManager = [JL_OTAManager getOTAManager];
         _otaManager.delegate = self;        
         self.pairHash = [[JLHashHandler alloc] init];
         self.pairHash.delegate = self;
       
-      	[JL_OTAManager logSDKVersion];
+       	[JL_OTAManager logSDKVersion];
         [JLHashHandler sdkVersion];
     }
     return self;
@@ -404,6 +430,7 @@ BLE连接且配对后必须执行一次
     
     [_otaManager cmdOTACancelResult:^(uint8_t status, uint8_t sn, NSData * _Nullable data) {
         result(status);
+        [_otaManager noteEntityDisconnected];
     }];
 }
 
@@ -936,4 +963,3 @@ extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
 
 
 ```
-
