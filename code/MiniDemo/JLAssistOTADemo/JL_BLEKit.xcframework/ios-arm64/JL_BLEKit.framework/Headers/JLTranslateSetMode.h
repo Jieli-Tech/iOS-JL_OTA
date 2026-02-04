@@ -24,7 +24,9 @@ typedef NS_ENUM(NSUInteger, JLTranslateSetModeType) {
     /// 音频翻译
     JLTranslateSetModeTypeAudioTranslate = 0x04,
     /// 面对面翻译
-    JLTranslateSetModeTypeFaceToFaceTranslate = 0x05
+    JLTranslateSetModeTypeFaceToFaceTranslate = 0x05,
+    /// 通话翻译立体声模式
+    JLTranslateSetModeTypeCallTranslateStereo = 0x06
 };
 
 /// 录音策略

@@ -53,7 +53,8 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
 
 -(BOOL)isConnected{
     if([ToolsHelper isConnectBySDK]){
-        return [[JL_RunSDK sharedInstance] mBleEntityM].mBLE_IS_PAIRED;
+        JL_EntityM *entity = [JL_RunSDK sharedInstance].mBleEntityM;
+        return entity.mIsAuth;
     }else{
         return [[JLBleManager sharedInstance] isConnected];
     }

@@ -3,7 +3,6 @@
     Copyright Â© www.zh-jieli.com. All rights reserved.
 */
 
-
 "connect" = "Connect";
 "update" = "Update";
 "setting" = "Setting";
@@ -65,7 +64,7 @@
 "checked_reconnecting" = "Verification file complete, connecting to device...";
 "the" = "The";
 "th" = "th";
-"update_finish" = "update finished";
+"update_finish" = "Update finish";
 "reconnecting_back" = "connecting back to device...";
 "number_of_test_tasks" = "Test tasks:";
 "number_of_successful_tests" = "Successful tests:";
@@ -94,6 +93,7 @@
 "file_select" = "Select file";
 "device_not_connected" = "Device not connected";
 
+"scan_download" = "Scan the QR code to download";
 "scan_qrcode" = "Scan QRCode";
 "qr_code_into_the_box" = "QR code into the box";
 "scan_to_download" = "Scan to download";
@@ -148,4 +148,12 @@
 "result_fail_same_sn" = "Same SN";
 "result_cancel" = "User canceled";
 "current_update_task" = "There are currently automated update tasks in progress. Do you want to cancel other unexecuted tasks?";
-
+"gatt_over_edr" = "GATT Over EDR";
+"gatt_over_edr_tips" = "To identify devices that use GATT over EDR, you need to first establish a Bluetooth connection in the background.";
+"gatt_uuid_title" = "GATT Service UUID";
+"gatt_uuid_placeholder" = "Enter one or more UUIDs, separated by commas or new lines";
+"gatt_uuid_tips" = "Example: 180A, 0000180D-0000-1000-8000-00805F9B34FB";
+"gatt_uuid_error_title" = "Input Error";
+"gatt_uuid_error_empty" = "Please enter at least one UUID";
+"gatt_uuid_error_invalid_fmt" = "The following UUIDs are invalid:\n%@";
+"ok_button" = "OK";

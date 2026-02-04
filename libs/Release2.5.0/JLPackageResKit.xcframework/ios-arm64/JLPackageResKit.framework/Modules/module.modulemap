@@ -1,0 +1,6 @@
+framework module JLPackageResKit {
+  umbrella header "JLPackageResKit.h"
+  export *
+
+  module * { export * }
+}

@@ -55,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// 设备录音管理对象
+DEPRECATED_MSG_ATTRIBUTE("Use JLDevAudioManager instead.")
 @interface JL_SpeexManager : NSObject
 
 //MARK: - Sync Android Interface

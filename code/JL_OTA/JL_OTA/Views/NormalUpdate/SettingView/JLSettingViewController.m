@@ -42,8 +42,9 @@
     NSArray *pairArray = @[kJL_TXT("device_pair")];
     [_itemsArray addObject:pairArray];
     
-    NSArray *useSDKArray = @[kJL_TXT("use_sdk_connect")];
+    NSArray *useSDKArray = @[kJL_TXT("use_sdk_connect"), kJL_TXT("gatt_over_edr")];
     [_itemsArray addObject:useSDKArray];
+    
     
     NSArray *logArray = @[kJL_TXT("log_file")];
     [_itemsArray addObject:logArray];
@@ -176,9 +177,17 @@
             cell.saveKey = @"SupportPair";
         }break;
         case 1:{
-            cell.switchBtn.hidden = NO;
-            [cell.switchBtn setOn:[ToolsHelper isConnectBySDK]];
-            cell.saveKey = @"ConnectBySDK";
+            if (indexPath.row == 0){
+                cell.switchBtn.hidden = NO;
+                [cell.switchBtn setOn:[ToolsHelper isConnectBySDK]];
+                cell.saveKey = @"ConnectBySDK";
+            }
+            if (indexPath.row == 1){
+                cell.switchBtn.hidden = NO;
+                [cell.switchBtn setOn:[ToolsHelper isGattOverEdr]];
+                cell.saveKey = @"GattOverEdr";
+                cell.weakVc = self;
+            }
         }break;
         case 2:{
             if(indexPath.row == 0){

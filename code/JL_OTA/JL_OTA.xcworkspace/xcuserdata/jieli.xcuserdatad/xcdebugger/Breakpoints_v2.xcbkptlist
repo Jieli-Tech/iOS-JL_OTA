@@ -7,48 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B1535DA0-01C7-4115-A1DA-77186826ACD5"
+            uuid = "3326F2C1-DC14-4A6E-9B4C-BFB9A3FE5DB5"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../../JL_BLEKit_Project/trunk/JL_BLEKit/JL_BLEKit/JL_Handle.m"
+            filePath = "JL_OTA/Views/NormalUpdate/DeviceView/JLDeviceViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "+logPackage:WithName:IsSend:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A782D012-C508-4E1A-8FD5-C2455B74A260"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../JL_BLEKit_Project/trunk/JL_BLEKit/JL_BLEKit/JL_Handle.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
-            landmarkName = "+logPackage:WithName:IsSend:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CCAA62B5-6632-460E-9FA7-BFE562CDA5A9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JL_OTA/Views/AlertView/FinishViews/AutoFinishView.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "-confirmBtnAction"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
+            landmarkName = "-allNoteListen:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

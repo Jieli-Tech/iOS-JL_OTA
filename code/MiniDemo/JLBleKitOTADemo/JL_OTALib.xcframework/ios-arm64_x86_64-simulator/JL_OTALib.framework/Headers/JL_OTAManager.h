@@ -183,6 +183,9 @@ typedef void (^JL_OTA_RESULT)(uint8_t status, uint8_t sn, NSData *__nullable dat
 /// 是否支持复用空间进行 OTA
 @property(assign, nonatomic) BOOL isSupportReuseSpaceOTA;
 
+/// 是否支持 OTA 拓展功能
+@property (assign, nonatomic) BOOL isSupportExpand;
+
 /// 资源升级模式类型
 @property(assign, nonatomic) JLOtaSourcesExtendMode otaSourceMode;
 

@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. GATT Over Edr 连接 &mdash; 杰理OTA升级开发文档(iOS) v2.4.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=873fbbe3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+      <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="测试调试" href="../../Other/debug.html" />
+    <link rel="prev" title="4. API 说明" href="API/api_docs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../resource/sdk_structure.html">SDK开发包介绍</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="import.html">1.项目配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_desc.html">3.使用JL_BLEKit.xcframework蓝牙连接方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API/api_docs.html">4. API 说明</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. GATT Over Edr 连接</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">5.1 使用规则与示例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sdk">5.1.1 SDK 蓝牙连接接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5.1.2 搜索与发现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">5.1.3 SDK 蓝牙接口使用注意事项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5.1.4 自定义蓝牙连接管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">5.1.5 注册连接事件监听器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">5.1.6 监听连接事件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">5.1.7 自定义蓝牙注意事项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/jl_ota_sdk_qa.html">1. 前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/jl_ota_sdk_qa.html#id2">2. 常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">5. GATT Over Edr 连接</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gatt-over-edr">
+<h1>5. GATT Over Edr 连接<a class="headerlink" href="#gatt-over-edr" title="Link to this heading"></a></h1>
+<p>在苹果生态中，“iOS GATT over EDR” 特指不需要 MFi 配件和 ExternalAccessory 框架来使用 EDR 通讯的一种模式。</p>
+<p>它的主要特点和目的是：</p>
+<ul class="simple">
+<li><p><strong>为了兼容性</strong>：让支持经典蓝牙需要高带宽的设备，也能使用为 BLE 设计的现代 GATT 数据模型。</p></li>
+<li><p><strong>性能与功耗的折中</strong>：</p>
+<ul>
+<li><p><strong>速度比 BLE 快</strong>：利用 EDR 的带宽，传输大文件（如音频、固件更新）更快。</p></li>
+<li><p><strong>功耗比纯经典蓝牙低</strong>：连接建立后，可以进入较省电的模式，不像持续流传输的 A2DP 那样耗电。</p></li>
+</ul>
+</li>
+<li><p><strong>统一开发模型</strong>：开发者理论上可以用类似 BLE（CoreBluetooth 框架）的思维模型（服务、特征值）来开发配件，即使底层是经典蓝牙。</p></li>
+</ul>
+<p><strong>典型应用场景</strong></p>
+<ul class="simple">
+<li><p><strong>高端音频配件</strong>：需要传输高质量音频流（用 EDR 带宽），同时又需要传输控制命令（如播放/暂停、音量、电量查询）。控制信道就可以用 GATT over EDR 来实现，比传统的 AVRCP 更灵活。</p></li>
+<li><p><strong>专业外设</strong>：如医疗设备、POS 机、工业扫描枪。这些设备可能早已使用经典蓝牙，但现在希望采用更标准化、可扩展的 GATT 数据格式。</p></li>
+<li><p><strong>需要高速数据传输的配件</strong>：例如，需要快速同步大量数据的专业设备。</p></li>
+</ul>
+<section id="id1">
+<h2>5.1 使用规则与示例<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="sdk">
+<h3>5.1.1 SDK 蓝牙连接接口<a class="headerlink" href="#sdk" title="Link to this heading"></a></h3>
+<ul>
+<li><p>若使用 JL_BLEKit.framework 所提供的蓝牙连接接口，则需要先进行特定的服务 ID 赋值，一般而言在公版的程序中我们使用的服务号是：</p>
+<p><strong>AE00</strong> 这个作为设备服务，既可用于 BLE 广播发现服务，也可用于 GATT over EDR 的发现服务。</p>
+<p>若需要修改成其他的服务号，需要在调用连接接口之前，先调用如下接口进行赋值：</p>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="n">JL_BLEMultiple</span><span class="w"> </span><span class="o">*</span><span class="n">bleMultiple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_BLEMultiple</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">bleMultiple</span><span class="p">.</span><span class="n">BLE_FILTER_ENABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span>
+<span class="n">bleMultiple</span><span class="p">.</span><span class="n">JL_BLE_SERVICE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;XXXX&quot;</span><span class="p">;</span><span class="c1">// 这个XXXX就是你需要修改的服务号，它既作为GATT over EDR的服务号，也作为BLE广播发现服务的服务号（如果存在）。</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h3>5.1.2 搜索与发现<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">bleMultiple</span><span class="w"> </span><span class="n">scanStart</span><span class="p">];</span>
+<span class="c1">//@property (strong, nonatomic) NSArray&lt;CBPeripheral *&gt; *bleAttDevices;      //GATT over EDR发现的设备</span>
+<span class="c1">// 这里需要对这个属性进行 KVO 监听，当发现新设备时，会触发回调。</span>
+<span class="p">[</span><span class="n">bleMultiple</span><span class="w"> </span><span class="n">addObserver</span><span class="o">:</span><span class="nb">self</span><span class="w"> </span><span class="n">forKeyPath</span><span class="o">:</span><span class="s">@&quot;bleAttDevices&quot;</span><span class="w"> </span><span class="n">options</span><span class="o">:</span><span class="n">NSKeyValueObservingOptionNew</span><span class="w"> </span><span class="n">context</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+<span class="c1">// 当发现新设备时，会触发回调。</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">observeValueForKeyPath:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">keyPath</span><span class="w"> </span><span class="nf">ofObject:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">object</span><span class="w"> </span><span class="nf">change:</span><span class="p">(</span><span class="bp">NSDictionary</span><span class="o">&lt;</span><span class="n">NSKeyValueChangeKey</span><span class="p">,</span><span class="kt">id</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">change</span><span class="w"> </span><span class="nf">context:</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">context</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">keyPath</span><span class="w"> </span><span class="n">isEqualToString</span><span class="o">:</span><span class="s">@&quot;bleAttDevices&quot;</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="bp">NSArray</span><span class="o">&lt;</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">newDevices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">change</span><span class="p">[</span><span class="n">NSKeyValueChangeNewKey</span><span class="p">];</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="n">peripheral</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">newDevices</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 处理新发现的设备GATT OVER EDR</span>
+
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3>5.1.3 SDK 蓝牙接口使用注意事项<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<ol class="arabic simple">
+<li><p>GATT over EDR 发现的设备，与 BLE 发现的设备是分开的，互不干扰。</p></li>
+<li><p>若需要同时使用 BLE 和 GATT over EDR 发现设备，需要分别调用 <cite>scanStart</cite> 方法。</p></li>
+<li><p>GATT over EDR 的设备需要先 <strong>让用户对其进行配对，才能进行发现和连接。</strong></p></li>
+</ol>
+</div>
+</section>
+<section id="id4">
+<h3>5.1.4 自定义蓝牙连接管理<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p><strong>准备工作</strong></p>
+<p>在开始之前，请确保你的项目已经导入了 <cite>CoreBluetooth</cite> 框架，并且你已经在 Info.plist 文件中添加了必要的权限声明：</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;key&gt;</span>NSBluetoothAlwaysUsageDescription<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>我们需要您的许可来使用蓝牙功能。<span class="nt">&lt;/string&gt;</span>
+</pre></div>
+</div>
+<p>这一步是必须的，因为从 iOS 13 开始，访问蓝牙需要用户的明确同意。</p>
+</section>
+<section id="id5">
+<h3>5.1.5 注册连接事件监听器<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>首先，你需要创建一个 <cite>CBCentralManager</cite> 实例，并设置其代理。然后调用 <cite>registerForConnectionEvents(options:)</cite> 方法注册对连接事件的兴趣。以下是如何实现这一点的示例代码片段：</p>
+<div class="highlight-swift notranslate"><div class="highlight"><pre><span></span><span class="n">cbManager</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="bp">CBCentralManager</span><span class="p">(</span><span class="n">delegate</span><span class="p">:</span><span class="w"> </span><span class="kc">self</span><span class="p">,</span><span class="w"> </span><span class="n">queue</span><span class="p">:</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+<span class="c1">// 在 centralManagerDidUpdateState(_:) 回调中检查中央管理器的状态是否为 poweredOn</span>
+<span class="k">if</span><span class="w"> </span><span class="n">cbManager</span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="p">.</span><span class="n">poweredOn</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nv">matchingOptions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">CBConnectionEventMatchingOption</span><span class="p">.</span><span class="n">serviceUUIDs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="n">BTConstants</span><span class="p">.</span><span class="n">sampleServiceUUID</span><span class="p">]]</span>
+<span class="w">    </span><span class="n">cbManager</span><span class="p">.</span><span class="n">registerForConnectionEvents</span><span class="p">(</span><span class="n">options</span><span class="p">:</span><span class="w"> </span><span class="n">matchingOptions</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这里我们指定了一个服务 UUID 列表作为匹配选项，这意味着只有那些提供特定服务的外围设备的连接事件会被监听到。</p>
+</section>
+<section id="id6">
+<h3>5.1.6 监听连接事件<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>一旦注册完成，每当有蓝牙设备连接或断开时，系统会调用 <cite>centralManager(_:connectionEventDidOccur:for:)</cite> 方法。下面是一个简单的实现例子：</p>
+<div class="highlight-swift notranslate"><div class="highlight"><pre><span></span><span class="kd">func</span><span class="w"> </span><span class="nf">centralManager</span><span class="p">(</span><span class="kc">_</span><span class="w"> </span><span class="n">central</span><span class="p">:</span><span class="w"> </span><span class="bp">CBCentralManager</span><span class="p">,</span><span class="w"> </span><span class="n">connectionEventDidOccur</span><span class="w"> </span><span class="n">event</span><span class="p">:</span><span class="w"> </span><span class="n">CBConnectionEvent</span><span class="p">,</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">peripheral</span><span class="p">:</span><span class="w"> </span><span class="bp">CBPeripheral</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">.</span><span class="n">peerConnected</span><span class="p">:</span>
+<span class="w">        </span><span class="c1">// 处理设备连接事件</span>
+<span class="w">        </span><span class="n">os_log</span><span class="p">(</span><span class="s">&quot;Device %@ connected&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peripheral</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cbPeripherals</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">peripheral</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">.</span><span class="n">peerDisconnected</span><span class="p">:</span>
+<span class="w">        </span><span class="c1">// 处理设备断开连接事件</span>
+<span class="w">        </span><span class="n">os_log</span><span class="p">(</span><span class="s">&quot;Device %@ disconnected!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peripheral</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">idx</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">cbPeripherals</span><span class="p">.</span><span class="n">firstIndex</span><span class="p">(</span><span class="k">where</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">$0</span><span class="w"> </span><span class="p">===</span><span class="w"> </span><span class="n">peripheral</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">cbPeripherals</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">at</span><span class="p">:</span><span class="w"> </span><span class="n">idx</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">@</span><span class="n">unknown</span><span class="w"> </span><span class="k">default</span><span class="p">:</span>
+<span class="w">        </span><span class="bp">fatalError</span><span class="p">(</span><span class="s">&quot;Unhandled event type&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">tableView</span><span class="p">.</span><span class="n">reloadData</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>在这个回调函数中，你可以根据不同的连接事件类型执行相应的逻辑，比如更新用户界面、重新尝试连接等。</p>
+</section>
+<section id="id7">
+<h3>5.1.7 自定义蓝牙注意事项<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>性能影响</strong>：频繁地接收连接事件可能会影响应用性能，因此应该谨慎选择监听哪些设备的连接事件。</p></li>
+<li><p><strong>后台模式</strong>：如果你的应用程序需要在后台处理蓝牙连接事件，记得在项目的 Info.plist 文件中配置适当的后台模式权限。</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>苹果对于后台运行的程序有着严格的限制，就算用户打开了后台运行模式， <strong>系统也会对传输速率进行限制（不超过 30kb/s）</strong>，建议在后台运行时，只进行必要的操作，避免对用户体验造成影响。</p>
+</div>
+<p>杰理提供的蓝牙连接示例：<a class="reference external" href="https://gitee.com/Jieli-Tech/ios-bt-demo/tree/main/UsingCoreBluetoothClassic">demo</a></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note: This sample code project is associated with WWDC 2019 session <a class="reference external" href="https://developer.apple.com/videos/play/wwdc19/901/">901: What's New in Core Bluetooth</a>.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="API/api_docs.html" class="btn btn-neutral float-left" title="4. API 说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../Other/debug.html" class="btn btn-neutral float-right" title="测试调试" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd。
+      <span class="lastupdated">最后更新于 2月 03, 2026.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

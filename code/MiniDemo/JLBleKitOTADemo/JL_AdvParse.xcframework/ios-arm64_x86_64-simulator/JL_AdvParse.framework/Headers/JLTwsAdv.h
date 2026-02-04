@@ -58,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 连接方式
 /// 0x00 BLE 通迅
 /// 0x01 SPP 通迅
+/// 0x02 GATT Over BR/EDR (V5/V6)
 @property(nonatomic, assign) uint8_t connectWay;
 
 /// 是否支持智能充电仓
@@ -65,6 +66,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 //MARK: - Version 3
 /// 左耳电量为挂脖耳机电量!!!，其他耳机电量使用
+
+//MARK: - Version 4/5/6 扩展
+/// LeAudio连接状态值
+@property(nonatomic, assign) uint8_t leAudioStatus;
+/// 是否支持LeAudio 
+@property(nonatomic, assign) BOOL supportLeAudio;
+/// LeAudio是否已连接 
+@property(nonatomic, assign) BOOL leAudioConnectedStatus;
+/// RCSP是否使用LeAudio地址 
+@property(nonatomic, assign) BOOL rcspUseLeAudioAddress;
+/// 是否需要认证 
+@property(nonatomic, assign) BOOL needAuth;
+/// 协议版本号
+@property(nonatomic, assign) uint8_t protocolVersion;
+
+/// 设备数量 (V6)
+@property(nonatomic, assign) uint8_t deviceQuantity;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -371,12 +371,25 @@
             NSArray *itemsArray = [note object];
             [self.btEnityList removeAllObjects];
             [self.btEnityList setArray:[SDKBleHelper fitterHandle:itemsArray]];
+            NSArray *cbperipherals =  [[JL_RunSDK sharedInstance].mBleMultiple bleAttDevices];
+            if ([ToolsHelper isGattOverEdr]) {
+                for (CBPeripheral *peripheral in cbperipherals) {
+                    if ([self isExitInList:peripheral]) {
+                        continue;
+                    }
+                    JL_EntityM *newEntity = [[JL_EntityM alloc] init];
+                    [newEntity setBlePeripheral:peripheral];
+                    newEntity.mEdr = @"GATT over EDR";
+                    [self.btEnityList insertObject:newEntity atIndex:0];
+                }
+            }
             JL_EntityM *entity = [[JL_RunSDK sharedInstance] mBleEntityM];
-            if ( entity.mBLE_IS_PAIRED && ![self.btEnityList containsObject:entity]) {
+            if ( entity.mIsAuth && ![self.btEnityList containsObject:entity]) {
                 [self.btEnityList insertObject:entity atIndex:0];
             }
             [_subTableView reloadData];
         }
+        
         
         if ([name isEqual:kJL_BLE_M_ENTITY_CONNECTED]) {
             CBPeripheral *cpb = note.object;
@@ -404,6 +417,15 @@
         }
         
     }
+}
+
+-(BOOL)isExitInList:(CBPeripheral *)peripheral{
+    for (JL_EntityM *item in self.btEnityList) {
+        if ([item.mPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 

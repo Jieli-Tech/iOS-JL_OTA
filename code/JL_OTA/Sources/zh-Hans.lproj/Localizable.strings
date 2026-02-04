@@ -92,8 +92,8 @@
 "please_enter_the_new_location_for_this_item:" = "请输入此项目的新位置：";
 "file_select" = "选择文件";
 "device_not_connected" = "设备未连接";
-"scan_download" = "扫码下载";
 
+"scan_download" = "扫码下载";
 "scan_qrcode" = "扫一扫";
 "qr_code_into_the_box" = "将二维码/条码放入框内";
 "scan_to_download" = "扫码下载";
@@ -109,7 +109,7 @@
 "network_abnormality" = "网络异常";
 "check_network" = "请检查您的网络连接并稍后再试";
 "declaration" = "用户协议和隐私政策";
-"statement_first" = "\ 欢迎使用杰理OTA升级!\n\ 我们非常重视您的隐私保护和个人信息保护，在您使用\"杰理OTA升级\"服务之前，请务必认真阅读《用户协议》及《隐私政策》，并充分理解协议条款内容。\n\ 如您同意并接受本提示及相关协议内容，请点击同意，开始接受我们的服务。";
+"statement_first" = "欢迎使用杰理OTA升级!\n我们非常重视您的隐私保护和个人信息保护，在您使用\"杰理OTA升级\"服务之前，请务必认真阅读《用户协议》及《隐私政策》，并充分理解协议条款内容。\n如您同意并接受本提示及相关协议内容，请点击同意，开始接受我们的服务。";
 "statement_second" = "《用户协议》";
 "statement_third" = "《隐私政策》";
 "ok" = "同意";
@@ -148,3 +148,12 @@
 "result_fail_same_sn" = "相同的SN";
 "result_cancel" = "用户取消";
 "current_update_task" = "当前尚有正在进行自动化的升级任务，是否取消其他未执行的任务？";
+"gatt_over_edr" = "GATT Over EDR";
+"gatt_over_edr_tips" = "若需要识别到 gatt over edr 的设备需要先到后台进行蓝牙连接";
+"gatt_uuid_title" = "GATT 服务 UUID";
+"gatt_uuid_placeholder" = "请输入一个或多个 UUID，使用逗号或换行分隔";
+"gatt_uuid_tips" = "示例：180A, 0000180D-0000-1000-8000-00805F9B34FB";
+"gatt_uuid_error_title" = "输入错误";
+"gatt_uuid_error_empty" = "请输入至少一个 UUID";
+"gatt_uuid_error_invalid_fmt" = "以下 UUID 格式不正确：\n%@";
+"ok_button" = "好的";

@@ -43,6 +43,8 @@ typedef NS_ENUM(UInt8, JL_SDKType) {
     JL_SDKTypeManifestSoundbox      = 0x0B,   //ManifestSoundbox
     JL_SDKTypeChargingCase          = 0x0C,   //ChargingCase 彩屏充电仓
     JL_SDKType707nWATCH             = 0x0D,   //707N Watch
+    JL_SDKTypeDongle                = 0x0E,   //Dongle
+    JL_SDKTypeCommon                = 0x0F,   //通用
     JL_SDKTypeUnknown,
 };
 typedef NS_ENUM(UInt8, JL_FunctionCode) {

@@ -22,7 +22,7 @@
 		</data>
 		<key>Headers/JL_OTAManager.h</key>
 		<data>
-		yT1PzvOX987TF3LqGsQKV/SGB5Q=
+		PMESdvB6Bcu7gn1YJqH1tOi0eEw=
 		</data>
 		<key>Headers/jl_ufw.h</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		MtgQ3aWbF/hFvdBz8LxOQK9fuqI=
+		L1sSyhac1P15lar1/muRvYYRCUI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -87,11 +87,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			yT1PzvOX987TF3LqGsQKV/SGB5Q=
+			PMESdvB6Bcu7gn1YJqH1tOi0eEw=
 			</data>
 			<key>hash2</key>
 			<data>
-			e/LKtgsbRqQQoy+7QQ9QQul9uvUKnjv8mjNLf2dC0V8=
+			uHRHY8s9UMaaynCPFZOCTid9vmTW5l5PVNI5pAyQK/I=
 			</data>
 		</dict>
 		<key>Headers/jl_ufw.h</key>

@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/JLAdvParse.h</key>
 		<data>
-		h1KLtzaU2lKFddG4s6OpGn4lwtY=
+		64SI1XBWnV1VmXIYu8XpmwMpE04=
 		</data>
 		<key>Headers/JLChargingBoxAdv.h</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Headers/JLTwsAdv.h</key>
 		<data>
-		Q2pITD+Hu7JPTJ2tvArCDCaS+U4=
+		whLObetTxteRXS580FiZ1/A3Yzo=
 		</data>
 		<key>Headers/JLWatchAdv.h</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		9+SNgHpUZgWfz+ll7ai2DWAuWj0=
+		Yw+NwkpNMafTbGDLvF8mhT3Alh8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -59,11 +59,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			h1KLtzaU2lKFddG4s6OpGn4lwtY=
+			64SI1XBWnV1VmXIYu8XpmwMpE04=
 			</data>
 			<key>hash2</key>
 			<data>
-			gY5FpSGa96wVp81AzbIPzYkHnHK0+mi5DMA2ytu6YN0=
+			ZG6RQ7l2Ko9IXNo517Aimfq7d03KANKIIPV09hZSFrg=
 			</data>
 		</dict>
 		<key>Headers/JLChargingBoxAdv.h</key>
@@ -136,11 +136,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Q2pITD+Hu7JPTJ2tvArCDCaS+U4=
+			whLObetTxteRXS580FiZ1/A3Yzo=
 			</data>
 			<key>hash2</key>
 			<data>
-			vDoI6Wd8aitnCNMeQN8h2X2HAEn7LWki/8PAyGx+BZM=
+			w6Ia/stHXZvCfmmPgTEpBj7A6haG6O+E0MeXH/fNKmA=
 			</data>
 		</dict>
 		<key>Headers/JLWatchAdv.h</key>

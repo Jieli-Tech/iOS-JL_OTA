@@ -8,6 +8,7 @@
 #import "JLBleManager.h"
 #import "FittingView.h"
 #import "SingleDataSender.h"
+#import "ToolsHelper.h"
 
 #define SENDBYSINGLE  0 //1：通过信号检测发送 0：通过直接塞数据发送
 
@@ -98,17 +99,45 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     _blePeripheralArr = [NSMutableArray new];
     if (_bleManager) {
         if (_bleManager.state == CBManagerStatePoweredOn) {
+            [self scanGattOverEdr];
             [_bleManager scanForPeripheralsWithServices:nil options:nil];
         } else {
             __weak typeof(self) weakSelf = self;
             dispatch_after(0.5, dispatch_get_main_queue(), ^{
                 if (weakSelf.bleManager.state == CBManagerStatePoweredOn) {
+                    [self scanGattOverEdr];
                     [weakSelf.bleManager scanForPeripheralsWithServices:nil options:nil];
                 }
             });
         }
     }
 }
+
+-(void)scanGattOverEdr {
+    if ([ToolsHelper isGattOverEdr]) {
+        NSArray *uuidStrs = [ToolsHelper getGattServuceUUIDs];
+        if (uuidStrs.count > 0) {
+            NSMutableArray *cbuuidArray = [NSMutableArray array];
+            for (NSString *uuidStr in uuidStrs) {
+                [cbuuidArray addObject:[CBUUID UUIDWithString:uuidStr]];
+            }
+            if (@available(iOS 13.0, *)) {
+                NSDictionary *matchingOptions = @{CBConnectionEventMatchingOptionServiceUUIDs: cbuuidArray};
+                [_bleManager registerForConnectionEventsWithOptions:matchingOptions];
+            } else {
+                kJLLog(JLLOG_WARN, @"BLE ---> registerForConnectionEventsWithOptions is not available before iOS 13.");
+            }
+        }
+    }else{
+        if (@available(iOS 13.0, *)) {
+            [_bleManager registerForConnectionEventsWithOptions:nil];
+        } else {
+            kJLLog(JLLOG_WARN, @"BLE ---> registerForConnectionEventsWithOptions is not available before iOS 13.");
+        }
+    }
+}
+
+
 
 #pragma mark 停止扫描
 - (void)stopScanBLE {
@@ -203,6 +232,26 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 }
 
 #pragma mark 发现设备
+
+-(void)centralManager:(CBCentralManager *)central connectionEventDidOccur:(CBConnectionEvent)event forPeripheral:(CBPeripheral *)peripheral {
+    if (event == CBConnectionEventPeerConnected) {
+        kJLLog(JLLOG_DEBUG, @"BLE ---> connectionEventDidOccur.");
+        if ([ToolsHelper isGattOverEdr]) {
+            JLBleEntity *bleEntity = [JLBleEntity new];
+            bleEntity.mName = peripheral.name?:@"Unknow";
+            bleEntity.edrMacAddress = @"GATT over EDR Device";
+            bleEntity.mPeripheral = peripheral;
+            [_blePeripheralArr addObject:bleEntity];
+            if ([peripheral.identifier.UUIDString isEqualToString:_connectByUUID]) {
+                [self connectBLE:peripheral];
+                _connectByUUID = nil;
+            }
+        }
+    }else if (event == CBConnectionEventPeerDisconnected) {
+        kJLLog(JLLOG_DEBUG, @"BLE ---> connectionEventDidOccur disconnect:%@", peripheral);
+    }
+}
+
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral
      advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
     
@@ -535,7 +584,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         /*--- 获取公共信息 ---*/
         [self->_otaManager cmdSystemFunction];
         if (self->_getCallback) {
-            self->_getCallback(true);
+            self->_getCallback(false);
             self->_getCallback = nil;
         }
     });

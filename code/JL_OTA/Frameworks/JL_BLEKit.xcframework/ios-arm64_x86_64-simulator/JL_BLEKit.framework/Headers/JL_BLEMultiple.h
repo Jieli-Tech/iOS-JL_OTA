@@ -31,10 +31,14 @@ extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
 
 @interface JL_BLEMultiple : NSObject
 @property (strong, nonatomic) NSData   *__nullable filterKey;         //过滤码
-@property (strong, nonatomic) NSData   *__nullable pairKey;           //配对码
+@property (strong, nonatomic) NSData   *__nullable pairKey __attribute__((deprecated("use authKey instead")));           //配对码
+@property (copy, nonatomic) NSData   *__nullable authKey;           //配对码
 @property (assign, nonatomic) BOOL                 BLE_IS_CONNECTING; //是否有设备正在连接
 @property (assign, nonatomic) BOOL                 BLE_FILTER_ENABLE; //是否【开启过滤】
-@property (assign, nonatomic) BOOL                 BLE_PAIR_ENABLE;   //是否【开启配对】
+///是否【开启配对】
+@property (assign, nonatomic) BOOL                 BLE_PAIR_ENABLE __attribute__((deprecated("Use authEnable instead")));
+///是否【开启认证】
+@property (assign, nonatomic) BOOL                 authEnable;
 @property (assign, nonatomic) int                  BLE_TIMEOUT;       //连接超时时间
 
 @property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr;   //发现的设备

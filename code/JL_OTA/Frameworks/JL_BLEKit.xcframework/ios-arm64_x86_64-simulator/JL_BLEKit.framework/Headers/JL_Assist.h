@@ -26,10 +26,16 @@ typedef void(^JL_Assist_BK)(BOOL isPaired);
 @property(strong,nonatomic)NSString           *mService;      //服务号
 @property(strong,nonatomic)NSString           *mRcsp_W;       //特征：RCSP写
 @property(strong,nonatomic)NSString           *mRcsp_R;       //特征：RCSP读
-@property(strong,nonatomic)NSData *__nullable mPairKey;       //握手(配对)秘钥
-@property(assign,nonatomic)BOOL               mNeedPaired;    //是否需要配对
+///握手(配对)秘钥
+@property(strong,nonatomic)NSData *__nullable mPairKey __attribute__((deprecated("Use mAuthKey instead")));
+@property(assign,nonatomic)BOOL               mNeedPaired __attribute__((deprecated("Use mAuthEnable instead")));    //是否需要配对
+/// 设备认证密钥
+@property(strong,nonatomic)NSData *__nullable mAuthKey;
+/// 是否需要设备认证
+@property(assign,nonatomic)BOOL               mAuthEnable;
 @property(assign,nonatomic)BOOL               mLogData;       //是否打印裸数据
 @property(assign,nonatomic)NSInteger          mLimitMtu;      //(默认40)在最大的MTU基础上减少数据量
+@property(assign,nonatomic)NSInteger          mMaxMtu;        //最大MTU(初始化不一定准确，可以再实际使用时再次获取一下）[peripheral maximumWriteValueLengthForType:CBCharacteristicWriteWithoutResponse];
 @property(strong,nonatomic)CBPeripheral       *__nullable mRcspPeripheral;
 @property(strong,nonatomic)CBCharacteristic   *__nullable mRcspWrite;
 @property(strong,nonatomic)CBCharacteristic   *__nullable mRcspRead;

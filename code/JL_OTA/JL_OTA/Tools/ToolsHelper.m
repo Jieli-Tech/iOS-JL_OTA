@@ -133,6 +133,37 @@
 }
 
 
++(BOOL)isGattOverEdr{
+    if([DFTools getUserByKey:@"GattOverEdr"]){
+        return [[DFTools getUserByKey:@"GattOverEdr"] boolValue];
+    }else{
+        [self setGattOverEdr:NO];
+        return NO;
+    }
+}
+
++(void)setGattOverEdr:(BOOL)status{
+    [DFTools setUser:[NSNumber numberWithBool:status] forKey:@"GattOverEdr"];
+}
+
+
+/// 设置GATT服务UUIDs
+/// - Parameter uuids: UUIDs
++(void)setGattServuceUUIDs:(NSArray *)uuids {
+    [DFTools setUser:uuids forKey:@"GattServuceUUIDs"];
+}
+
+
+/// 获取GATT服务UUIDs
++(NSArray *_Nullable)getGattServuceUUIDs {
+    if([DFTools getUserByKey:@"GattServuceUUIDs"]){
+        return [[DFTools getUserByKey:@"GattServuceUUIDs"] mutableCopy];
+    }else{
+        return nil;
+    }
+}
+
+
 +(BOOL)isAutoTestOta{
     if([DFTools getUserByKey:@"AutoTestOta"]){
         return [[DFTools getUserByKey:@"AutoTestOta"] boolValue];

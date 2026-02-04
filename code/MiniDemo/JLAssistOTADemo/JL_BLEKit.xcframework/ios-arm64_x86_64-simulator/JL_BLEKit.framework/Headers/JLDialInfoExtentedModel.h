@@ -42,6 +42,29 @@ NS_ASSUME_NONNULL_BEGIN
 /// device screen sice
 @property(nonatomic, assign) CGSize size;
 
+/// 是否支持多媒体(视频/GIF）
+/// is support medias
+@property(nonatomic, assign) BOOL isSupportMedias;
+
+/// 最大帧率(当支持多媒体时才有意义）
+/// max fps
+@property(nonatomic, assign) NSInteger maxFPS;
+
+/// 最大时长
+/// max duration
+@property(nonatomic, assign) NSInteger maxDuration;
+
+/// 是否支持动画 ani 格式
+/// is support animation
+@property(nonatomic, assign) BOOL isSupportAni;
+
+/// 是否支持视频 avi 格式
+@property(nonatomic, assign) BOOL isSupportAvi;
+
+/// 是否支持 Gif 格式
+/// is support gif
+@property(nonatomic, assign) BOOL isSupportGif;
+
 
 /// 初始化
 /// initialize

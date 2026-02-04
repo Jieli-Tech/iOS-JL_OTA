@@ -208,6 +208,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 产品标志类型
 /// 0 - 手表
 /// 1 - TWS耳机
+/// 2 - SoundBox
+/// 3 - Dongle 设备配置信息
 @property(nonatomic,assign)int deviceType;
 /// 版本
 @property(nonatomic,assign)int version;

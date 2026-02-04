@@ -37,7 +37,7 @@
 
 -(void)initData{
     self.itemsArray = [NSMutableArray new];
-    NSArray *pairArray = @[kJL_TXT("device_pair"),kJL_TXT("hid_device")];
+    NSArray *pairArray = @[kJL_TXT("device_pair"),kJL_TXT("hid_device"), kJL_TXT("gatt_over_edr")];
     [_itemsArray addObject:pairArray];
     
     NSArray *autoArray = @[kJL_TXT("auto_test_ota"),kJL_TXT("test_number"),kJL_TXT("fault_tolerant"),kJL_TXT("fault_tolerant_times")];
@@ -167,6 +167,12 @@
                 cell.switchBtn.hidden = NO;
                 [cell.switchBtn setOn:[ToolsHelper isSupportHID]];
                 cell.saveKey = @"SupportHID";
+            }
+            if (indexPath.row == 2){
+                cell.switchBtn.hidden = NO;
+                [cell.switchBtn setOn:[ToolsHelper isGattOverEdr]];
+                cell.saveKey = @"GattOverEdr";
+                cell.weakVc = self;
             }
         }break;
             

@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger,JL_DeviceType) {
     JL_DeviceTypeHeadset            = 3,     //普通耳机类型
     JL_DeviceTypeSoundCard          = 4,     //声卡类型
     JL_DeviceTypeWatch              = 5,     //手表类型
+    JL_DeviceTypeDongle             = 6,     //Dongle
     JL_DeviceTypeTradition          = -1,    //传统设备类型
 };
 

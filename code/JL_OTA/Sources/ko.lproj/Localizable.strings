@@ -93,6 +93,7 @@
 "file_select" = "파일 선택";
 "device_not_connected" = "장치가 연결되지 않았습니다";
 
+"scan_download" = "QR 코드를 스캔하여 다운로드하세요";
 "scan_qrcode" = "QR 코드 스캔";
 "qr_code_into_the_box" = "프레임 안에 이미지를 넣어";
 "scan_to_download" = "스캔하여 다운로드";
@@ -108,12 +109,11 @@
 "network_abnormality" = "네트워크 예외";
 "check_network" = "네트워크 연결을 확인하고 나중에 다시 시도하십시오.";
 "declaration" = "사용자 프로토콜 및 개인 정보 보호 정책";
-"statement_first" = "제리 OTA 업그레이드를 환영합니다!\n저희는 귀하의 프라이버시 보호와 개인 정보 보호를 매우 중시합니다. \"제리 OTA 업그레이드 \"서비스를 사용하기 전에 반드시 열심히 읽으시겠습니까 사용자 프로토콜 및 개인 정보 보호 정책
-계약 조항의 내용을 충분히 이해한다.\n 귀하가 본 프롬프트와 관련 계약 내용에 동의하고 동의할 경우 동의를 클릭하여 서비스를 시작하십시오.";
-"statement_second" = "사용자 프로토콜";
-"statement_third" = "개인 정보 보호 정책";
-"ok" = "동의";
-"rejected" = "동의하지 않음 및 탈퇴";
+"statement_first" = "제리 OTA 업그레이드에 오신 것을 환영합니다! 저희는 고객님의 개인정보 보호를 매우 중요하게 생각합니다. \"제리 OTA 업그레이드\" 서비스를 이용하시기 전에 \"이용 약관\"과 \"개인정보처리방침\"을 주의 깊게 읽고 내용을 완전히 이해해 주시기 바랍니다. 본 고지 및 관련 약관에 동의하시면 \"동의\"를 클릭하여 서비스를 이용해 주시기 바랍니다.";
+"statement_second" = "이용 약관";
+"statement_third" = "주의 깊게 읽고";
+"ok" = "동의하다";
+"rejected" = "동의하지 않고 종료";
 "copy_right" = "Copyright © 2021-present JieLi.All Rights Reserved.";
 "company" = "ZhuHai JieLi Technology Co.,Ltd";
 "result_success" = "업그레이드 성공";
@@ -148,3 +148,12 @@
 "result_fail_same_sn" = "동일한 SN";
 "result_cancel" = "사용자가 취소했습니다";
 "current_update_task" = "현재 자동 업그레이드 작업이 진행 중입니다. 실행되지 않은 다른 작업을 취소하시겠습니까?";
+"gatt_over_edr" = "GATT Over EDR";
+"gatt_over_edr_tips" = "GATT over EDR을 사용하는 장치를 식별하려면 먼저 백그라운드에서 Bluetooth 연결을 설정해야 합니다.";
+"gatt_uuid_title" = "GATT 서비스 UUID";
+"gatt_uuid_placeholder" = "하나 이상의 UUID를 입력하세요. 쉼표 또는 줄바꿈으로 구분";
+"gatt_uuid_tips" = "예: 180A, 0000180D-0000-1000-8000-00805F9B34FB";
+"gatt_uuid_error_title" = "입력 오류";
+"gatt_uuid_error_empty" = "최소 하나의 UUID를 입력하세요";
+"gatt_uuid_error_invalid_fmt" = "다음 UUID 형식이 올바르지 않습니다:\n%@";
+"ok_button" = "확인";
