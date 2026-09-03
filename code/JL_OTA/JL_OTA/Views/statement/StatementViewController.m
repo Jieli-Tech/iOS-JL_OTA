@@ -107,7 +107,7 @@
 -(UIView *)bgView{
     if(!bgView){
         bgView = [[UIView alloc] init];
-        bgView.backgroundColor = kDF_RGBA(0, 0, 0, 0.3);
+        bgView.backgroundColor = JL_RGBA(0, 0, 0, 0.3);
     }
     return bgView;
 }
@@ -115,7 +115,7 @@
 -(UIView *)contentView{
     if(!contentView){
         contentView = [[UIView alloc] init];
-        contentView.layer.backgroundColor = kDF_RGBA(255, 255, 255, 1.0).CGColor;
+        contentView.layer.backgroundColor = JL_RGBA(255, 255, 255, 1.0).CGColor;
         contentView.layer.cornerRadius = 16;
     }
     return contentView;
@@ -126,7 +126,7 @@
         titleLabel = [[UILabel alloc] init];
         titleLabel.numberOfLines = 1;
         titleLabel.text = kJL_TXT("declaration");
-        titleLabel.textColor = kDF_RGBA(36, 36, 36, 1);
+        titleLabel.textColor = JL_RGBA(36, 36, 36, 1);
         titleLabel.font = FontMedium(17);
         titleLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -137,8 +137,8 @@
     if(!contentLabel){
         contentLabel = [[UILabel alloc] init];
         contentLabel.numberOfLines = 0;
-        UIColor *colorFirst = kDF_RGBA(0, 0, 0, 0.8);
-        UIColor *colorSecond = kDF_RGBA(0, 121, 255, 1.0);
+        UIColor *colorFirst = JL_RGBA(0, 0, 0, 0.8);
+        UIColor *colorSecond = JL_RGBA(0, 121, 255, 1.0);
         
         NSString *showText = [NSString stringWithFormat:@"%@",  kJL_TXT("statement_first")];
         NSArray  *array = @[kJL_TXT("statement_second"), kJL_TXT("statement_third")];
@@ -162,7 +162,7 @@
         [confirmBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
         confirmBtn.titleLabel.font = FontMedium(15);
         [confirmBtn addTarget:self action:@selector(confirmBtnFunc) forControlEvents:UIControlEventTouchUpInside];
-        [confirmBtn setBackgroundColor:kDF_RGBA(57, 139, 255, 1)];
+        [confirmBtn setBackgroundColor:JL_RGBA(57, 139, 255, 1)];
         [confirmBtn setTitle:kJL_TXT("ok") forState:UIControlStateNormal];
     }
     return confirmBtn;
@@ -173,11 +173,11 @@
         cancelBtn = [[UIButton alloc] init];
         cancelBtn.layer.cornerRadius = 8;
         cancelBtn.layer.masksToBounds = YES;
-        [cancelBtn setTitleColor:kDF_RGBA(0, 0, 0, 0.50) forState:UIControlStateNormal];
+        [cancelBtn setTitleColor:JL_RGBA(0, 0, 0, 0.50) forState:UIControlStateNormal];
         [cancelBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
         cancelBtn.titleLabel.font = FontMedium(15);
         [cancelBtn addTarget:self action:@selector(cancelBtnFunc) forControlEvents:UIControlEventTouchUpInside];
-        [cancelBtn setBackgroundColor:kDF_RGBA(255, 255, 255, 1)];
+        [cancelBtn setBackgroundColor:JL_RGBA(255, 255, 255, 1)];
         [cancelBtn setTitle:kJL_TXT("rejected") forState:UIControlStateNormal];
     }
     return cancelBtn;

@@ -82,7 +82,9 @@
 #define kJL_AI_CONTROL              0x0032   //AI控制命令
 #define kJL_PUBLIC_SET              0x0033   //公共设置命令
 #define kJL_TRAMSLATE               0x0034   //翻译命令
-#define kJL_AURACASTE               0x0035   //Auracast命令   
+#define kJL_AURACASTE               0x0035   //Auracast命令
+#define kJL_STREAM_TRANSFER         0x0037   //流媒体传输
+#define kJL_AV_CONTROL              0x0038   //音视频控制
 
 
 #define kJL_WEAR_REQ_OPCODE         0x00A0   //获取运动信息

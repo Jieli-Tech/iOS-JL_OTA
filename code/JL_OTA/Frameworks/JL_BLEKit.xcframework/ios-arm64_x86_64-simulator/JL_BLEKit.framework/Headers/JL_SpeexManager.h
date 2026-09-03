@@ -62,10 +62,13 @@ DEPRECATED_MSG_ATTRIBUTE("Use JLDevAudioManager instead.")
 
 @property(nonatomic,weak)id<JL_SpeexManagerDelegate> delegate;
 
--(instancetype)init __attribute__((unavailable("Use +shareSpeexManager:WithManager: instead.")));
+/// 指定初始化器（多实例模式）
+/// Designated initializer (multi-instance mode)
+/// - Parameter manager: 关联设备管理器，用于通知过滤
+- (instancetype)initWithManager:(JL_ManagerM *_Nullable)manager NS_DESIGNATED_INITIALIZER;
 
-
-/// 获取单例
+/// 获取单例（向后兼容）
+/// Get singleton (backward compatible)
 /// - Parameters:
 ///   - delegate: 代理
 ///   - manager: 操作设备

@@ -18,9 +18,9 @@
 #import "WebViewController.h"
 
 /*--- 多语言 ---*/
-#define kJL_GET         [DFUITools systemLanguage]                              //获取系统语言
-#define kJL_SET(lan)    [DFUITools languageSet:@(lan)]                          //设置系统语言
-#define kJL_TXT(key)    [DFUITools languageText:@(key) Table:@"Localizable"]    //多语言转换,"Localizable"根据项目的多语言包填写。
+#define kJL_GET         [JLLanguageManager systemLanguage]                              //获取系统语言
+#define kJL_SET(lan)    [JLLanguageManager setAppLanguage:@lan]                          //设置系统语言
+#define kJL_TXT(key)    [JLLanguageManager textForKey:@key table:@"Localizable"]    //多语言转换,"Localizable"根据项目的多语言包填写。
 
 #define POSITION_FIRST   0
 #define POSITION_SECOND  1

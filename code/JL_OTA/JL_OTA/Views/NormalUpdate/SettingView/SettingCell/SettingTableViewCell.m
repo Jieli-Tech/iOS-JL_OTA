@@ -10,6 +10,7 @@
 #import "JLBleHandler.h"
 #import "ServiceUUIDInputVC.h"
 #import "ToolsHelper.h"
+#import "NavViewController.h"
 
 @implementation SettingTableViewCell
 
@@ -38,16 +39,17 @@
                     [ToolsHelper setGattOverEdr:NO];
                 }
             };
-            vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self.weakVc presentViewController:vc animated:YES completion:nil];
-            
+            NavViewController *nav = [[NavViewController alloc] initWithRootViewController:vc];
+            nav.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self.weakVc presentViewController:nav animated:YES completion:nil];
+
         }else{
             [ToolsHelper setGattOverEdr:bol];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"CHANGE_SWITCH_CELL" object:self.saveKey];
         return;
     }
-    [DFTools setUser:[NSNumber numberWithBool:bol] forKey:self.saveKey];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:bol] forKey:self.saveKey];
     if([self.saveKey isEqualToString:@"ConnectBySDK"]){
         [[JLBleHandler share] handleDisconnect];
         [[NSNotificationCenter defaultCenter] postNotificationName:JL_BLE_CONNECTWAY_CHANGE object:nil];

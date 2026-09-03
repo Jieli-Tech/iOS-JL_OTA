@@ -19,11 +19,11 @@ typedef NS_ENUM(UInt8, JL_SpeakType) {
     JL_SpeakTypeDoneFail            = 0x0f, //结束失败
 };
 typedef NS_ENUM(UInt8, JL_SpeakDataType) {
-    JL_SpeakDataTypePCM             = 0,    //PCM数据
-    JL_SpeakDataTypeSPEEX           = 1,    //SPEEX数据
-    JL_SpeakDataTypeOPUS            = 2,    //OPUS数据
-    JL_SpeakDataTypeMSBC            = 3,    //MSBC数据
-    JL_SpeakDataTypeJLA_V2          = 4,    //JLA_V2
+    JL_SpeakDataTypePCM             = 0x00,    //PCM数据
+    JL_SpeakDataTypeSPEEX           = 0x01,    //SPEEX数据
+    JL_SpeakDataTypeOPUS            = 0x02,    //OPUS数据
+    JL_SpeakDataTypeMSBC            = 0x03,    //MSBC数据
+    JL_SpeakDataTypeJLA_V2          = 0x04,    //JLA_V2
 };
 
 /// 结束原因

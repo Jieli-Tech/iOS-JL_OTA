@@ -209,7 +209,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         }
     }
 
-    [DFNotice post:kFLT_BLE_FOUND Object:_blePeripheralArr];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_FOUND object:_blePeripheralArr];
     
     // ota升级过程，回连使用
     if ([JL_BLEAction otaBleMacAddress:self.lastBleMacAddress isEqualToCBAdvDataManufacturerData:ble_AD]) {
@@ -255,7 +255,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         }
     }
     self.isConnected = YES;
-    [DFNotice post:kFLT_BLE_CONNECTED Object:peripheral];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_CONNECTED object:peripheral];
     // 连接成功后，查找服务
     [peripheral discoverServices:nil];
 }

@@ -43,12 +43,17 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// 设备录音管理对象（新）
-/// 对外接口与旧类一致，仅更换类名，内部转发至 JL_SpeexManager
+/// 支持单例模式（+shareDevAudioManager:）和多实例模式（init / initWithManager:）
 @interface JLDevAudioManager : NSObject
 
 @property (nonatomic, weak) id<JLDevAudioManagerDelegate> delegate;
 
- /// 获取单例
+/// 指定初始化器（多实例模式）
+/// 每个实例拥有独立的 JL_SpeexManager，支持同时管理多个设备录音
+/// - Parameter manager: 关联的设备管理器，用于通知过滤
+- (instancetype)initWithManager:(JL_ManagerM *_Nullable)manager NS_DESIGNATED_INITIALIZER;
+
+ /// 获取单例（向后兼容）
  /// - Parameters:
  ///   - delegate: 代理
  ///   - manager: 操作设备

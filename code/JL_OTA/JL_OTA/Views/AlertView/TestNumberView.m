@@ -162,7 +162,7 @@
 -(void)confirmBtnAction{
     int value = [textfixed.text intValue];
     if(value<1 || value > 999){
-        [DFUITools showText:@"Between 1~999" onView:self.superview delay:2];
+        [JLHUD showText:@"Between 1~999" onView:self.superview delay:2];
         if(value<1){
             value = 1;
         }

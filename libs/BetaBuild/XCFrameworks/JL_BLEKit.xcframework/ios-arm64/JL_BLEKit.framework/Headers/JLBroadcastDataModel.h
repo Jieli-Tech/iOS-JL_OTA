@@ -52,10 +52,10 @@ typedef NS_ENUM(uint8_t, JLBroadcastErrorCode) {
 /// 错误码
 @property(nonatomic, assign) JLBroadcastErrorCode errorCode;
 
+@property(nonatomic, copy) NSData *ltvData;
 
 - (instancetype)initParseData:(NSData *)data;
 
-- (void)updateParseData:(NSData *)data;
 
 /// 将当前模型内容按 LTV 规则编码为数据
 - (NSData *)toLTVData;

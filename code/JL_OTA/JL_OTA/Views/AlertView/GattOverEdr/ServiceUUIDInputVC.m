@@ -7,14 +7,13 @@
 //
 
 #import "ServiceUUIDInputVC.h"
+#import "Masonry.h"
 
 @interface ServiceUUIDInputVC () <UITextViewDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UILabel *placeholderLabel;
 @property (nonatomic, strong) UILabel *tipsLabel;
-@property (nonatomic, strong) UIButton *confirmButton;
-
 @property (nonatomic, strong) NSArray<NSString *> *initialUUIDs;
 
 @end
@@ -25,6 +24,9 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _initialUUIDs = [initialUUIDs copy];
+        if (_initialUUIDs.count == 0) {
+            _initialUUIDs = @[@"AE00"];
+        }
     }
     return self;
 }
@@ -70,7 +72,6 @@
     }
     self.textView.layer.cornerRadius = 8.0;
     self.textView.textContainerInset = UIEdgeInsetsMake(12, 8, 12, 8);
-    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.returnKeyType = UIReturnKeyDone;
 
     self.placeholderLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -82,7 +83,6 @@
         self.placeholderLabel.textColor = [UIColor lightGrayColor];
     }
     self.placeholderLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    self.placeholderLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.tipsLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.tipsLabel.text = kJL_TXT("gatt_uuid_tips");
@@ -93,40 +93,36 @@
         self.tipsLabel.textColor = [UIColor lightGrayColor];
     }
     self.tipsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    self.tipsLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    self.confirmButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.confirmButton setTitle:kJL_TXT("confirm") forState:UIControlStateNormal];
-    self.confirmButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.confirmButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.confirmButton addTarget:self action:@selector(saveTapped) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.textView];
     [self.view addSubview:self.placeholderLabel];
     [self.view addSubview:self.tipsLabel];
-    [self.view addSubview:self.confirmButton];
 
-    UILayoutGuide *guide = self.view.safeAreaLayoutGuide;
-    [NSLayoutConstraint activateConstraints:@[
-        [self.textView.topAnchor constraintEqualToAnchor:guide.topAnchor constant:20.0],
-        [self.textView.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor constant:16.0],
-        [self.textView.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor constant:-16.0],
-        [self.textView.heightAnchor constraintEqualToConstant:180.0],
+    [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (@available(iOS 11.0, *)) {
+            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(20.0);
+            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(16.0);
+            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-16.0);
+        } else {
+            make.top.equalTo(self.view.mas_top).offset(20.0);
+            make.left.equalTo(self.view.mas_left).offset(16.0);
+            make.right.equalTo(self.view.mas_right).offset(-16.0);
+        }
+        make.height.mas_equalTo(180.0);
+    }];
 
-        [self.placeholderLabel.leadingAnchor constraintEqualToAnchor:self.textView.leadingAnchor constant:12.0],
-        [self.placeholderLabel.topAnchor constraintEqualToAnchor:self.textView.topAnchor constant:12.0],
+    [self.placeholderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.textView.mas_left).offset(12.0);
+        make.top.equalTo(self.textView.mas_top).offset(12.0);
+    }];
 
-        [self.tipsLabel.topAnchor constraintEqualToAnchor:self.textView.bottomAnchor constant:12.0],
-        [self.tipsLabel.leadingAnchor constraintEqualToAnchor:self.textView.leadingAnchor],
-        [self.tipsLabel.trailingAnchor constraintEqualToAnchor:self.textView.trailingAnchor],
 
-        [self.confirmButton.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor constant:16.0],
-        [self.confirmButton.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor constant:-16.0],
-        [self.confirmButton.bottomAnchor constraintEqualToAnchor:guide.bottomAnchor constant:-16.0],
-        [self.confirmButton.heightAnchor constraintEqualToConstant:44.0],
-
-        [self.tipsLabel.bottomAnchor constraintEqualToAnchor:self.confirmButton.topAnchor constant:-16.0],
-    ]];
+    [self.tipsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.textView.mas_bottom).offset(12.0);
+        make.left.equalTo(self.textView.mas_left);
+        make.right.equalTo(self.textView.mas_right);
+    }];
 }
 
 - (void)prefillInitialData {

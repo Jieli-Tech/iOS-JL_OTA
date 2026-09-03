@@ -7,6 +7,16 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ JLTaskChain 任务链
+ 用于按顺序执行一组异步任务，每个任务接收上一个任务的输出并通过 completion 回传结果或错误。
+ 特性：
+ - 串行执行：内部使用 `NSOperationQueue` 串行队列保证顺序执行
+ - 错误中断：任意任务返回错误后链路立即中断并回调最终 completion
+ - 取消能力：支持全局与实例级取消
+ - 运行保护：运行中禁止追加任务，避免并发修改导致的不确定行为
+ */
+
 NS_ASSUME_NONNULL_BEGIN
 /*
  // 创建 TaskChain 实例
@@ -99,7 +109,7 @@ for (NSString *taskName in taskList) {
 // 任务块数组，每个任务块的签名：^(id input, void(^completion)(id output, NSError *error))
 @property (nonatomic, strong) NSMutableArray *taskBlocks;
 + (void)cancelAllTasks;
-- (void)addTask:(void (^)(id input, void (^completion)(id _Nullable output, NSError *_Nullable error)))task;
+- (void)addTask:(void (^)(id _Nullable input, void (^completion)(id _Nullable output, NSError *_Nullable error)))task;
 - (void)runWithInitialInput:(id _Nullable)input completion:(void (^ _Nullable)(id _Nullable result, NSError *_Nullable error))completion;
 - (void)cancel;
 @end

@@ -15,6 +15,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class JL_TwsManager;
+
+//MARK: - JL_TwsManagerDelegate
+/// TWS 管理者代理协议
+@protocol JL_TwsManagerDelegate <NSObject>
+@optional
+/// ANC 模式更新回调（设备主动推送或 APP 设置后）
+/// @param manager TWS 管理者实例
+/// @param ancMode 当前 ANC 模式对象
+- (void)twsManager:(JL_TwsManager *)manager didUpdateAncMode:(JLModel_ANC *)ancMode;
+@end
+
+/// ANC 模式更新通知（设备主动推送或查询响应）
+extern NSString *kJL_MANAGER_ANC_MODE_UPDATE;
+
 //MARK: - 耳机电量
 /// 耳机电量
 /// TWS earphones Electricity
@@ -102,6 +117,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///ANC的模式数组
 @property (nonatomic,strong)NSArray *ancModels;
+
+/// 当前ANC模式（设备主动推送或APP设置后更新，支持KVO监听）
+@property (copy, nonatomic, nullable) JLModel_ANC *mAncModeCurrent;
+
+/// 代理
+@property (weak, nonatomic) id<JL_TwsManagerDelegate> delegate;
 
 /// HeadSetInfoDict
 /// 耳机信息字典

@@ -69,6 +69,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// - Parameter type: 类型
 -(void)ecBDTManagerSendFinish:(JL_ManagerM *)manager  Type:(uint8_t) type;
 
+/// 传输被取消
+/// - Parameters:
+///   - manager: 设备
+///   - type: 数据类型
+///   - byDevice: 是否由设备端发起取消
+///   - reason: 取消原因
+-(void)ecBDTManager:(JL_ManagerM *)manager Type:(uint8_t)type CancelByDevice:(BOOL)byDevice Reason:(uint8_t)reason;
+
+/// 收到设备描述信息 (type=9)
+/// - Parameters:
+///   - manager: 设备
+///   - type: 数据类型
+///   - desc: 设备描述信息
+-(void)ecBDTManager:(JL_ManagerM *)manager Type:(uint8_t)type DeviceDesc:(JL_BigDataDeviceDesc *)desc;
+
 @end
 
 @interface ECBDTManager : ECOneToMorePtl
@@ -88,6 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// * 6：esim 卡信息
 /// * 7:4G 模块升级数据
 /// * 8:提示音文件数据
+/// * 9:设备描述信息
 -(void)readData:(JL_ManagerM *)manager Type:(uint8_t)type;
 
 /// APP 写入设备数据
@@ -103,8 +119,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// * 6：esim 卡信息
 /// * 7:4G 模块升级数据
 /// * 8:提示音文件数据
+/// * 9:设备描述信息
 ///   - data: 大数据内容
 -(void)writeData:(JL_ManagerM *)manager Type:(uint8_t) type Data:(NSData*)data;
+
+/// 取消当前大数据传输
+/// - Parameters:
+///   - manager: 设备
+///   - reason: 取消原因 (0=主动取消, 其他待定)
+-(void)cancelTransfer:(JL_ManagerM *)manager Reason:(uint8_t)reason;
 
 /// 回应设备主动读取内容
 /// 此方法需要配合使用

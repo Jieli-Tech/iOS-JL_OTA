@@ -23,6 +23,29 @@ typedef void(^JLHashBlock)(BOOL ret);
 
 
 /// 设备认证
+///
+/// 使用示例 (Objective-C):
+/// ```objective-c
+/// JLHashHandler *handler = [[JLHashHandler alloc] init];
+/// handler.delegate = self; // 必须实现 hashOnPairOutputData: 代理方法
+///
+/// // 发起认证
+/// [handler bluetoothPairingKey:nil Result:^(BOOL ret) {
+///     if (ret) { NSLog(@"认证成功"); }
+/// }];
+///
+/// // 代理回调：将 SDK 生成的验证数据发往设备
+/// - (void)hashOnPairOutputData:(NSData *)data {
+///     [peripheral writeValue:data forCharacteristic:authChar type:CBCharacteristicWriteWithoutResponse];
+/// }
+///
+/// // 收到设备回复：将设备数据回传给 SDK
+/// - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+///     if ([characteristic.UUID isEqual:authChar.UUID]) {
+///         [handler inputPairData:characteristic.value];
+///     }
+/// }
+/// ```
 @interface JLHashHandler : NSObject
 
 @property(nonatomic,weak)id<JLHashHandlerDelegate> delegate;

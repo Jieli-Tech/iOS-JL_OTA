@@ -290,12 +290,12 @@
 -(void)startUpdateAction{
     
     if (![[JLBleHandler share] isConnected] ) {
-        [DFUITools showText:kJL_TXT("connect_first") onView:self.view delay:1.0];
+        [JLHUD showText:kJL_TXT("connect_first") onView:self.view delay:1.0];
         return;
     }
     if(self.selectedPath){
         //开始升级
-        NSString *path = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:self.selectedPath];
+        NSString *path = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:self.selectedPath];
         [[JLBleHandler share] handleOtaFuncWithFilePath:path];
         _progressView.hidden = NO;
     }
@@ -333,8 +333,8 @@
 //MARK: - tools
 - (void)reflashFileArray {
     // 获取沙盒升级文件
-    NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
-    _itemArray = [DFFile subPaths:docPath];
+    NSString *docPath = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
+    _itemArray = [JLFileTool subPaths:docPath];
     if(_itemArray.count>0){
         self.noneUfwImgv.hidden = YES;
     }else{
@@ -410,19 +410,19 @@
        
     } else if (result == JL_OTAResultReboot) {
         kJLLog(JLLOG_DEBUG, @"--->设备重启.");
-//        [DFUITools showText:kJL_TXT("device_will_restart") onView:self.view delay:2];
+//        [JLHUD showText:kJL_TXT("device_will_restart") onView:self.view delay:2];
         self.selectedPath = nil;
         [self otaTimeClose];//关闭超时检测
         [self checkDeviceConnected];
         self.progressView.hidden = YES;
     } else if (result == JL_OTAResultFail) {
         [self otaTimeClose];
-        [DFUITools showText:kJL_TXT("update_failed") onView:self.view delay:1.0];
+        [JLHUD showText:kJL_TXT("update_failed") onView:self.view delay:1.0];
         self.progressView.hidden = YES;
         [self.finishView failed:result];
     }else if (result == JL_OTAResultFailCmdTimeout){
         [self otaTimeClose];
-        [DFUITools showText:kJL_TXT("update_timeout") onView:self.view delay:1.0];
+        [JLHUD showText:kJL_TXT("update_timeout") onView:self.view delay:1.0];
         self.progressView.hidden = YES;
         [self.finishView failed:result];
     }else {
@@ -455,7 +455,7 @@ static int      otaTimeout= 0;
     if (otaTimeout == 10) {
         [self otaTimeClose];
         kJLLog(JLLOG_DEBUG, @"OTA ---> 超时了！！！");
-        [DFUITools showText:kJL_TXT("update_timeout") onView:self.view delay:1.0];
+        [JLHUD showText:kJL_TXT("update_timeout") onView:self.view delay:1.0];
         [self.progressView timeOutShow];
         [self.finishView failed:JL_OTAResultFailCmdTimeout];
     }
@@ -504,8 +504,8 @@ static int      otaTimeout= 0;
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     //在这里实现删除操作
-    NSString *path = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:self.itemArray[indexPath.row]];
-    [DFFile removePath:path];
+    NSString *path = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:self.itemArray[indexPath.row]];
+    [JLFileTool removePath:path];
     [self reflashFileArray];
     self.selectedPath = nil;
     [self checkDeviceConnected];

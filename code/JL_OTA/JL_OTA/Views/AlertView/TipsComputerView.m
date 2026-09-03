@@ -212,7 +212,7 @@
 -(void)copyBtnAction{
     UIPasteboard *appPasteBoard =  [UIPasteboard generalPasteboard];
     [appPasteBoard setString:_addressLab.text];
-    [DFUITools showText:kJL_TXT("copy_text_finish") onView:self delay:1];
+    [JLHUD showText:kJL_TXT("copy_text_finish") onView:self delay:1];
 }
 
 

@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/JLHashHandler.h</key>
 		<data>
-		ArAEdyp9k5H5o4gFjW9zdx+0ISY=
+		DF/Xrm9rR/AHeJ/K2ssZY2HTKt4=
 		</data>
 		<key>Headers/JL_HashPair.h</key>
 		<data>
@@ -22,11 +22,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		vaP94eof9P4dJHy/VxAhSfezsXw=
+		WfzWYqSigcqxqW6Q17F1Diyl10w=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
 		6wQFoRjNQqLop5Z3m/K5slHiG2k=
+		</data>
+		<key>PrivacyInfo.xcprivacy</key>
+		<data>
+		ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -46,11 +50,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ArAEdyp9k5H5o4gFjW9zdx+0ISY=
+			DF/Xrm9rR/AHeJ/K2ssZY2HTKt4=
 			</data>
 			<key>hash2</key>
 			<data>
-			7iuW7k7IBL4tf/bE1O3SudVyeFxG8YHoo7DqZGFdSBI=
+			Ii5RAjiVfWvLBUOI0ItBrnevfC+oeLINTz6K+8otEio=
 			</data>
 		</dict>
 		<key>Headers/JL_HashPair.h</key>
@@ -84,6 +88,17 @@
 			<key>hash2</key>
 			<data>
 			N+WiNcfG40LwaFvJZeLG5iNA48ZbrW0Oph/B9U+7i9U=
+			</data>
+		</dict>
+		<key>PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
+			</data>
+			<key>hash2</key>
+			<data>
+			FiyglQKXEwJ9zfy9GDSopTTlVUHn85pk7JAKKd2aNj0=
 			</data>
 		</dict>
 	</dict>

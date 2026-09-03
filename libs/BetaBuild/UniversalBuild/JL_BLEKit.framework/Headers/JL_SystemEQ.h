@@ -17,7 +17,26 @@ NS_ASSUME_NONNULL_BEGIN
 @class JL_SystemEQ;
 typedef void(^JLSystemEQResult)(JL_CMDStatus status,JL_SystemEQ * _Nullable model);
 
+@protocol JL_SystemEQDelegate <NSObject>
+@optional
+/// EQ 模式发生变更
+-(void)jlSystemEQ:(JL_SystemEQ *)systemEQ didChangeMode:(JL_EQMode)mode;
+/// EQ 参数值发生变更
+-(void)jlSystemEQ:(JL_SystemEQ *)systemEQ didChangeArray:(NSArray *)eqArray;
+/// EQ 段数类型发生变更
+-(void)jlSystemEQ:(JL_SystemEQ *)systemEQ didChangeType:(JL_EQType)type;
+/// EQ 频率数组发生变更
+-(void)jlSystemEQ:(JL_SystemEQ *)systemEQ didChangeFrequencyArray:(NSArray *)freqArray;
+/// EQ 预设值数组发生变更
+-(void)jlSystemEQ:(JL_SystemEQ *)systemEQ didChangeDefaultArray:(NSArray<JLModel_EQ *> *)defaultArray;
+/// 综合更新回调（任何以上变更都会额外触发此方法，便于简单场景一次性处理）
+-(void)jlSystemEQDidUpdate:(JL_SystemEQ *)systemEQ;
+@end
+
 @interface JL_SystemEQ : JL_FunctionBaseManager
+
+/// 代理
+@property (weak, nonatomic) id<JL_SystemEQDelegate> delegate;
 
 ///  当前EQ模式
 @property (assign,nonatomic) JL_EQMode eqMode;

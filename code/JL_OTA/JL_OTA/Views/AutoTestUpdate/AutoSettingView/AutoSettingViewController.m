@@ -83,7 +83,6 @@
     _subTable.rowHeight = 48;
     _subTable.backgroundColor = [UIColor clearColor];
     _subTable.tableFooterView = [UIView new];
-    _subTable.scrollEnabled = NO;
     if (@available(iOS 15.0, *)) {
         _subTable.sectionHeaderTopPadding = 0;
     }

@@ -59,10 +59,14 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JL_LightManager.h>
 #import <JL_BLEKit/JL_TwsManager.h>
 #import <JL_BLEKit/JLTwsSupportFuncs.h>
+
 #import <JL_BLEKit/JLTranslateSet.h>
 #import <JL_BLEKit/JLTranslateAudio.h>
 #import <JL_BLEKit/JLTranslateSetMode.h>
+#import <JL_BLEKit/JLTranslateDeviceInfo.h>
 #import <JL_BLEKit/JLTranslationManager.h>
+
+
 #import <JL_BLEKit/JL_SoundCardManager.h>
 #import <JL_BLEKit/JL_LrcManager.h>
 #import <JL_BLEKit/JL_SpeexManager.h>
@@ -83,8 +87,10 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JLAutoConfigAnc.h>
 #import <JL_BLEKit/JLDeviceConfig.h>
 #import <JL_BLEKit/JL_BigDataManager.h>
+#import <JL_BLEKit/JLAVControlManager.h>
 #import <JL_BLEKit/JLAiManager.h>
 #import <JL_BLEKit/JLAIDialManager.h>
+#import <JL_BLEKit/JLAIChatManager.h>
 
 
 #import <JL_BLEKit/JLWearable.h>
@@ -111,6 +117,7 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JLHttpHelper.h>
 #import <JL_BLEKit/ECBDTObjc.h>
 #import <JL_BLEKit/ECBDTManager.h>
+#import <JL_BLEKit/JLBDTAIPayload.h>
 #import <JL_BLEKit/JLModelDevFunc.h>
 #import <JL_BLEKit/JLModelCardInfo.h>
 #import <JL_BLEKit/JLPublicSetting.h>
@@ -130,9 +137,20 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 
 #import <JL_BLEKit/JLDeviceConfigDongle.h>
 #import <JL_BLEKit/JLDeviceConfigSoundBox.h>
+#import <JL_BLEKit/JLDeviceConfigAIGlasses.h>
 #import <JL_BLEKit/JLBroadcastDataModel.h>
 #import <JL_BLEKit/JLAuracastDevStateModel.h>
 #import <JL_BLEKit/JLAuracastLancerSettingMode.h>
 #import <JL_BLEKit/JLAuracastManager.h>
 #import <JL_BLEKit/JLAuracastLancerManager.h>
+
+#import <JL_BLEKit/JLConnectWaySwitcher.h>
+#import <JL_BLEKit/JLStreamDataModel.h>
+#import <JL_BLEKit/JLStreamTransfer.h>
+#import <JL_BLEKit/JLStreamDataPusher.h>
+
+#import <JL_BLEKit/JLAVRecordStatus.h>
+#import <JL_BLEKit/JLAVControlManager.h>
+#import <JL_BLEKit/JLAVCaptureModel.h>
+#import <JL_BLEKit/JLAVRecordConfig.h>
 

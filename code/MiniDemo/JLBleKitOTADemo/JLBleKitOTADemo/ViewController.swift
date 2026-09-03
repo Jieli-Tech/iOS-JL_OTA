@@ -109,7 +109,7 @@ class ViewController: UIViewController {
     func setupBind(){
         BleManager.shared.discoverPeripheralsSubject.bind(to: subTableView.rx.items(cellIdentifier: "cell")) { _, entity, cell in
             cell.textLabel?.text = entity.mItem
-            if entity.mPeripheral.identifier.uuidString == BleManager.shared.currentUUID {
+            if entity.mPeripheral?.identifier.uuidString == BleManager.shared.currentUUID {
                 cell.accessoryType = .checkmark
             }else{
                 cell.accessoryType = .none
@@ -151,7 +151,7 @@ class ViewController: UIViewController {
         
         subTableView.rx.modelSelected(JL_EntityM.self).subscribe(onNext: { entity in
             JLLogManager.logLevel(.DEBUG, content: "select peripheral")
-            if entity.mPeripheral.identifier.uuidString == BleManager.shared.currentUUID {
+            if entity.mPeripheral?.identifier.uuidString == BleManager.shared.currentUUID {
                 BleManager.shared.disconnect(entity: entity)
                 return
             }

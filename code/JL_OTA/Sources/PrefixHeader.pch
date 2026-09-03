@@ -10,17 +10,21 @@
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
-#import <DFUnits/DFUnits.h>
+#import "JLLanguageManager.h"
+#import "JLHUD.h"
+#import "JLFileTool.h"
+
+#define JL_RGBA(r,g,b,a)   [UIColor colorWithRed:((r)/255.0) green:((g)/255.0) blue:((b)/255.0) alpha:(a)]
 #import "JL_OtA-swift.h"
 #import "Masonry.h"
 #import "Colours.h"
 #import "AFNetworking.h"
 #import <JLLogHelper/JLLogHelper.h>
 
-#define kJL_GET         [DFUITools systemLanguage]          //获取系统语言
-#define kJL_SET(lan)    [DFUITools languageSet:@(lan)]      //设置系统语言
+#define kJL_GET         [JLLanguageManager systemLanguage]          //获取系统语言
+#define kJL_SET(lan)    [JLLanguageManager setAppLanguage:@lan]      //设置系统语言
 //多语言转换,"Localizable"根据项目的多语言包填写。
-#define kJL_TXT(key)    [DFUITools languageText:@(key) Table:@"Localizable"]
+#define kJL_TXT(key)    [JLLanguageManager textForKey:@key table:@"Localizable"]
 
 #define FontMedium(s) [UIFont fontWithName:@"PingFangSC-Medium" size:(s)]
 #define QR_SCAN_RESULT  @"QR_Scan_Down"

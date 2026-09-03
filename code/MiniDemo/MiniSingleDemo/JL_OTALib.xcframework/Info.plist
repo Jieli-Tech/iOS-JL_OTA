@@ -23,6 +23,21 @@
 		</dict>
 		<dict>
 			<key>BinaryPath</key>
+			<string>JL_OTALib.framework/Versions/A/JL_OTALib</string>
+			<key>LibraryIdentifier</key>
+			<string>macos-arm64_x86_64</string>
+			<key>LibraryPath</key>
+			<string>JL_OTALib.framework</string>
+			<key>SupportedArchitectures</key>
+			<array>
+				<string>arm64</string>
+				<string>x86_64</string>
+			</array>
+			<key>SupportedPlatform</key>
+			<string>macos</string>
+		</dict>
+		<dict>
+			<key>BinaryPath</key>
 			<string>JL_OTALib.framework/JL_OTALib</string>
 			<key>LibraryIdentifier</key>
 			<string>ios-arm64</string>

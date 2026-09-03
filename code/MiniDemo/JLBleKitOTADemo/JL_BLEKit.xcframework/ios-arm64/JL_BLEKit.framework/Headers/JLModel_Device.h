@@ -44,7 +44,9 @@ typedef NS_ENUM(UInt8, JL_SDKType) {
     JL_SDKTypeChargingCase          = 0x0C,   //ChargingCase 彩屏充电仓
     JL_SDKType707nWATCH             = 0x0D,   //707N Watch
     JL_SDKTypeDongle                = 0x0E,   //Dongle
-    JL_SDKTypeCommon                = 0x0F,   //通用
+    JL_SDKTypePowerBank             = 0x0F,   //带屏充电宝
+    JL_SDKType380nWatch             = 0x10,   //AC380N watch BR33 手表 SDK
+    JL_SDKTypeCommon                = 0xFE,   //通用
     JL_SDKTypeUnknown,
 };
 typedef NS_ENUM(UInt8, JL_FunctionCode) {
@@ -264,8 +266,10 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 ///SDK类型
 @property (assign,nonatomic) JL_SDKType         sdkType;
 
-///电量0~9
+///电量（系统电量）
 @property (assign,nonatomic) NSUInteger         battery;
+/// 是否在充电
+@property (assign,nonatomic) BOOL               isBatteryCharging;
 
 /// 是否支持音量同步
 @property (assign,nonatomic) BOOL               isSyncVoice;
@@ -273,14 +277,26 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 /// 最低允许升级资源/OTA电量
 @property (assign,nonatomic) NSInteger          lowBattery;
 
-///当前音量
+///当前音量(系统音量）
 @property (assign,nonatomic) NSUInteger         currentVol;
+
+/// 媒体音量
+@property (assign,nonatomic) NSUInteger         mediaVol;
+
+/// 通话音量
+@property (assign,nonatomic) NSUInteger         callVol;
 
 ///最大音量
 @property (assign,nonatomic) NSUInteger         maxVol;
 
 ///经典蓝牙地址
 @property (copy,  nonatomic) NSString           *btAddr;
+
+/// 是否支持GATT Over BR/EDR
+@property (assign, nonatomic)BOOL               isSupportGOE;
+
+/// 是否优先使用GATT OVER BR/EDR
+@property (assign, nonatomic)BOOL               isUseGOE;
 
 ///平台序列号
 @property (copy,  nonatomic) NSString           *license;
@@ -302,6 +318,12 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 
 /// 设备功能模式支持
 @property (strong,nonatomic) JLModelDevFunc     *deviceFuncs;
+
+/// USB VID（当设备支持PC从机模式时，拓展区中包含此字段）
+@property (assign,nonatomic) uint16_t           usbVid;
+
+/// USB PID（当设备支持PC从机模式时，拓展区中包含此字段）
+@property (assign,nonatomic) uint16_t           usbPid;
 
 ///uboot版本
 @property (copy,  nonatomic) NSString           *versionUBoot;
@@ -404,6 +426,9 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 
 /// 是否支持自适应ANC
 @property (assign,nonatomic) BOOL               isSupportAutoANC;
+
+/// 是否支持多通道音量（媒体音量+通话音量）
+@property (assign,nonatomic) BOOL               isSupportMultiChannelVolume;
 
 ///低音
 @property (assign,nonatomic) int                pitchLow;

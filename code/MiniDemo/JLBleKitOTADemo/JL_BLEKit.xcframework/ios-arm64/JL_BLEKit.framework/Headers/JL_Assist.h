@@ -14,6 +14,10 @@
 
 -(void)assistDidWriteData:(NSData *_Nonnull)data;
 
+@optional
+
+-(void)assistDidWriteStreamData:(NSData *_Nonnull)data;
+
 @end
 
 NS_ASSUME_NONNULL_BEGIN
@@ -26,6 +30,8 @@ typedef void(^JL_Assist_BK)(BOOL isPaired);
 @property(strong,nonatomic)NSString           *mService;      //服务号
 @property(strong,nonatomic)NSString           *mRcsp_W;       //特征：RCSP写
 @property(strong,nonatomic)NSString           *mRcsp_R;       //特征：RCSP读
+@property(strong,nonatomic)NSString           *mStreamWrite;   //特征：RCSP流写
+@property(strong,nonatomic)NSString           *mStreamNotify;   //特征：RCSP通知
 ///握手(配对)秘钥
 @property(strong,nonatomic)NSData *__nullable mPairKey __attribute__((deprecated("Use mAuthKey instead")));
 @property(assign,nonatomic)BOOL               mNeedPaired __attribute__((deprecated("Use mAuthEnable instead")));    //是否需要配对
@@ -39,6 +45,8 @@ typedef void(^JL_Assist_BK)(BOOL isPaired);
 @property(strong,nonatomic)CBPeripheral       *__nullable mRcspPeripheral;
 @property(strong,nonatomic)CBCharacteristic   *__nullable mRcspWrite;
 @property(strong,nonatomic)CBCharacteristic   *__nullable mRcspRead;
+@property(strong,nonatomic)CBCharacteristic   *__nullable mRcspStreamWrite;
+@property(strong,nonatomic)CBCharacteristic   *__nullable mRcspStreamNotify;
 @property(strong,nonatomic)NSString           *mBleName;      //设备名字
 
 ///代理,如果实现了此代理则发出的数据都需要走回调发送，内部不处理

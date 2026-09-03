@@ -83,6 +83,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 支持表盘信息拓展
 @property(nonatomic,assign)BOOL spDialInfoExtend;
 
+///是否支持流媒体传输
+@property(nonatomic,assign)BOOL spStreamTransfer;
+
+/// 是否支持通话状态下操作复杂功能
+@property(nonatomic,assign)BOOL spCallStatus;
+
 -(instancetype)init:(NSData *)data;
 
 @end
@@ -208,7 +214,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 产品标志类型
 /// 0 - 手表
 /// 1 - TWS耳机
-/// 2 - Dongle 设备配置信息
+/// 2 - SoundBox
+/// 3 - Dongle 设备配置信息
 @property(nonatomic,assign)int deviceType;
 /// 版本
 @property(nonatomic,assign)int version;

@@ -65,15 +65,18 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
 @protocol JL_ManagerMDelegate <NSObject>
 @optional
 -(void)onManagerSendPackage:(JL_PKG*)pkg;
+-(void)onManagerSendStreamData:(NSData*)data;
 @end
 
 @class JL_EntityM;
 @interface JL_ManagerM : NSObject
 @property(nonatomic,weak)id<JL_ManagerMDelegate>delegate;
 @property(nonatomic,readonly,copy)NSString  *mBLE_UUID;
+@property(nonatomic,readonly,copy)NSString  *safeUUID;
 @property(nonatomic,readonly,copy)NSString  *mBLE_NAME;
 @property(nonatomic,readonly,assign)uint8_t mCmdSN;
 @property(nonatomic,weak)JL_EntityM         *mEntity;
+@property(nonatomic,assign)NSTimeInterval   defaultTimeout;
 
 @property(nonatomic,strong)JL_SmallFileManager      *mSmallFileManager;
 @property(nonatomic,strong)JL_FileManager           *mFileManager;
@@ -133,6 +136,11 @@ extern NSString *kJL_MANAGER_KEY_OBJECT;    //KEY --> 对象
                 Status:(JL_CMDStatus)st
                   Data:(NSData* __nullable)data;
 
+
+/// 发送【流数据包】
+/// @param data 流数据
+-(void)streamSendData:(NSData*)data;
+
 /**
  发送【通知命令】
  @param name    通知名字
@@ -163,6 +171,14 @@ extern NSString *kJL_MANAGER_TARGET_INFO;
 
 #pragma mark ---> 重置配对流程标志（使适配连接ANCS设备）
 -(void)cmdResetPairingResult:(JL_CMD_RESPOND __nullable)result;
+
+#pragma mark ---> 设备电源控制
+/// 强制设备重启
+-(void)cmdDeviceRebootResult:(JL_CMD_RESPOND __nullable)result;
+/// 强制设备关机
+-(void)cmdDeviceShutdownResult:(JL_CMD_RESPOND __nullable)result;
+/// 恢复出厂设置
+-(void)cmdDeviceFactoryResetResult:(JL_CMD_RESPOND __nullable)result;
 
 #pragma mark ---> 获取系统信息（全获取）
 /**

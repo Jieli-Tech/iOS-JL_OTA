@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <UIKit/UIKit.h>
-#import <DFUnits/DFUnits.h>
 #import "JLBleEntity.h"
 #import "HandleBroadcastPtl.h"
 

@@ -65,7 +65,7 @@
     int count = 0;
     while(count < number){
         for (NSString *path in filePaths) {
-            NSString *filePath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:path];
+            NSString *filePath = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:path];
             [updatePath addObject:filePath];
             count++;
             if (count == number){

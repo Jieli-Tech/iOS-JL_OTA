@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <DFUnits/DFUnits.h>
+#import "JLHUD.h"
 #import "MJRefresh.h"
 #import "Masonry.h"
 #import "Colours.h"
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JLBaseViewController : UIViewController
 
-@property (strong, nonatomic) DFTips *loadingTip;
+@property (strong, nonatomic) JLHUD *loadingTip;
 
 - (void)startLoadingView:(NSString*)text Delay:(NSTimeInterval)delay;
 - (void)hideLoadingView;

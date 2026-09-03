@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// * 5：平台接口认证信息
 /// * 6：esim 卡信息
 /// * 7:4G 模块升级数据
+/// * 8:提示音文件数据
+/// * 9:设备描述信息
 @property (nonatomic, assign) uint8_t type;
 
 /// 版本
@@ -125,6 +127,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// * 5：平台接口认证信息
 /// * 6：esim 卡信息
 /// * 7:4G 模块升级数据
+/// * 8:提示音文件数据
+/// * 9:设备描述信息
 @property (nonatomic, assign) uint8_t type;
 
 
@@ -160,6 +164,18 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - dt: 文件数据
 +(NSArray<ECBDTCmdData *>*)makeWithMtu:(uint16_t)mtu Type:(uint8_t) type Data:(NSData *)dt;
 
+@end
+
+
+/// 取消传输数据
+@interface ECBDTCancelData : NSObject
+/// 操作类型 (固定为 2)
+@property (nonatomic, assign) uint8_t op;
+/// 取消原因 (0=主动取消, 其他待定)
+@property (nonatomic, assign) uint8_t reason;
+
+-(instancetype)initData:(NSData *)data;
+-(NSData *)beData;
 @end
 
 

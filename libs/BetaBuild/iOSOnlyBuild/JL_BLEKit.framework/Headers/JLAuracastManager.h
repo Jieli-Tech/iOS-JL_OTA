@@ -14,6 +14,28 @@ NS_ASSUME_NONNULL_BEGIN
 @class JLAuracastDevStateModel;
 @class JLAuracastManager;
 
+/// 搜索状态
+typedef NS_ENUM(NSUInteger, JLAuracastScanState) {
+    ///操作成功/不在搜索状态
+    JLAuracastScanStateSuccess = 0,
+    ///正在搜索，请勿重复操作
+    JLAuracastScanStateScanning = 1,
+    ///收听广播过程不允许扫描
+    JLAuracastScanStateForbidden = 2,
+    ///设备繁忙
+    JLAuracastScanStateBusy = 3,
+};
+
+/// 扫描类型
+typedef NS_ENUM(NSUInteger, JLAuracastScanType) {
+    /// 停止
+    JLAuracastScanTypeStop = 0,
+    /// 开始
+    JLAuracastScanTypeStart = 1,
+    /// 查询
+    JLAuracastScanTypeQuery = 2,
+};
+
 @protocol JLAuracastManagerDelegate <NSObject>
 @optional
 
@@ -21,7 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// - Parameters:
 ///   - mgr: 管理器
 ///   - state: 搜索状态
--(void)auracastManager:(JLAuracastManager *)mgr didUpdateSearchState:(BOOL)state;
+///   - error: 错误
+-(void)auracastManager:(JLAuracastManager *)mgr didUpdateSearchState:(BOOL)state Error:(NSError * _Nullable)error;
 
 
 /// 广播列表更新
@@ -43,7 +66,12 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)auracastManager:(JLAuracastManager *)mgr didUpdateCurrentSource:(JLBroadcastDataModel * _Nullable)source;
 @end
 
+typedef void(^JLAuracastManagerResultBlock)(JL_CMDStatus status, NSError * _Nullable error);
+
 @interface JLAuracastManager : NSObject
+
+/// 扫描状态
+@property(nonatomic, assign)BOOL isScanning;
 
 /// 若干个搜索到的对象
 @property(nonatomic,strong)NSMutableArray <JLBroadcastDataModel *>* broadcastDataModels;
@@ -62,18 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// 扫描Auracast广播
-/// - Parameter state: 是否开启
--(void)auracastScanBroadcast:(BOOL)state;
-
-
-/// 获取Auracast设备状态
-/// - Parameter state:
-/// 0x01 == 电量
-/// 0x02 == 音量
-/// 0x03 == 通话
-/// 0x04 == 工作模式
-/// 0x06 == 登录状态
--(void)auracastGetDevState:(uint8_t)state;
+/// - Parameter type: 扫描类型
+-(void)auracastScanBroadcast:(JLAuracastScanType)type;
 
 /// 获取Auracast设备状态
 -(void)auracastGetDevState;
@@ -81,10 +99,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 设置Auracast当前播放源
 /// - Parameter model: 播放源
--(void)addSourceToDev:(JLBroadcastDataModel *)model;
+/// - Parameter block: 回调
+/// 这里的回调仅仅是命令收发的一个回复，设备回复成功不代表添加成功
+/// 只说明了此命令交互成功，开发者仍需监听
+/// -(void)auracastManager:(JLAuracastManager *)mgr didUpdateCurrentSource:(JLBroadcastDataModel * _Nullable)source 作为判断是否成功收听的重要指标
+-(void)addSourceToDev:(JLBroadcastDataModel *)model result:(JLAuracastManagerResultBlock _Nullable)block;
 
 /// 移除Auracast当前播放源
--(void)removeDevCurrentSource;
+/// - Parameter block: 回调
+-(void)removeDevCurrentSource:(JLAuracastManagerResultBlock _Nullable)block;
 
 /// 获取Auracast当前播放源
 /// - Parameter block: 回调

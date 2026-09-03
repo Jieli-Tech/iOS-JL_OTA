@@ -24,7 +24,9 @@ typedef NS_ENUM(NSUInteger, JLTranslateAudioSourceType) {
     /// eSCO下行
     JLTranslateAudioTypeESCODown = 4,
     /// A2DP
-    JLTranslateAudioTypeA2DP = 5
+    JLTranslateAudioTypeA2DP = 5,
+    /// eSCO_Max 上下行
+    JLTranslateAudioTypeESCOMax = 6
 };
 
 /// 翻译音频

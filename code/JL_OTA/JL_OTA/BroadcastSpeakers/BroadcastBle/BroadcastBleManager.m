@@ -166,7 +166,8 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
     
     CBPeripheral* peripheral = phArr[0];
     
-    if (phArr.firstObject && [phArr.firstObject state] != CBPeripheralStateConnected && [phArr.firstObject state] != CBPeripheralStateConnecting) {
+    CBPeripheral *firstPeripheral = phArr.firstObject;
+    if (firstPeripheral && firstPeripheral.state != CBPeripheralStateConnected && firstPeripheral.state != CBPeripheralStateConnecting) {
         
         NSString *ble_name = peripheral.name;
         NSString *ble_uuid = peripheral.identifier.UUIDString;
@@ -226,7 +227,7 @@ NSString *BLE_RCSP_R  = @"AE02"; //命令“读”通道
      */
 //    [self addPeripheral:peripheral RSSI:RSSI Name:ble_name Info:info];
 
-    [DFNotice post:kBDM_BLE_FOUND Object:_blePeripheralArr];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBDM_BLE_FOUND object:_blePeripheralArr];
     
     // ota升级过程，回连使用
     for (NSString *itemAddr in self.lastBleMacAddressList) {

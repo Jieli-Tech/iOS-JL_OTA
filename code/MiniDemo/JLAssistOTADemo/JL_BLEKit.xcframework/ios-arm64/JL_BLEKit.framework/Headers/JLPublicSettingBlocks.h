@@ -19,11 +19,13 @@ NS_ASSUME_NONNULL_BEGIN
 #define PUBLIC_TIPS_VOICE               0x0006 //替换提示音
 #define PUBLIC_SDK_INFO                 0x0008 //SDK信息
 #define PUBLIC_TWS_HEALTH_INFO          0x0009 //TWS健康信息
+#define PUBLIC_STORAGE_INFO             0x000A //存储空间信息
 
 @class JLPublicBindDeviceModel;
 @class JLPublicSourceInfoModel;
 @class JLPublic4GModel;
 @class JLPublicSDKInfoModel;
+@class JLPublicStorageInfoModel;
 
 /// 屏幕亮度回调
 typedef void(^JLPSScreenLightCbk)(JL_CMDStatus status,uint8_t value);
@@ -44,6 +46,12 @@ typedef void(^JLPSTipsVoiceRpCbk)(JL_CMDStatus status,uint8_t op);
 
 /// 设备 SDK 信息回调
 typedef void(^JLPSSDKInfoCbk)(JL_CMDStatus status,JLPublicSDKInfoModel *_Nullable model);
+
+/// 存储空间信息回调
+typedef void(^JLPSStorageInfoCbk)(JL_CMDStatus status, JLPublicStorageInfoModel *_Nullable model);
+
+/// 存储空间格式化回调
+typedef void(^JLPSStorageFormatCbk)(JL_CMDStatus status);
 
 //MARK: - 绑定设备状态(彩屏舱）
 /// 绑定设备状态
@@ -178,6 +186,26 @@ typedef void(^JLPSSDKInfoCbk)(JL_CMDStatus status,JLPublicSDKInfoModel *_Nullabl
 /// 初始化
 /// - Parameter data: 数据
 + (JLPublicSDKInfoModel *)initData:(NSData *)data;
+
+@end
+
+// MARK: - 存储空间信息
+
+/// 存储空间信息
+@interface JLPublicStorageInfoModel : NSObject
+
+/// 存储器句柄（4 字节）
+@property(nonatomic,copy)NSData *handle;
+
+/// 总空间大小（Bytes）
+@property(nonatomic,assign)uint64_t total;
+
+/// 已用空间大小（Bytes）
+@property(nonatomic,assign)uint64_t used;
+
+/// 初始化
+/// - Parameter data: 存储空间信息数据
++ (JLPublicStorageInfoModel *)initData:(NSData *)data;
 
 @end
 NS_ASSUME_NONNULL_END

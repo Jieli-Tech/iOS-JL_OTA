@@ -159,7 +159,7 @@
 }
 
 -(void)updateStatusDidShowErrorMsg:(NSString *)msg{
-    [DFUITools showText:msg onView:self delay:3];
+    [JLHUD showText:msg onView:self delay:3];
 }
 
 

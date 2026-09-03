@@ -181,8 +181,8 @@
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     //在这里实现删除操作
-    NSString *path = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:self.itemArray[indexPath.row]];
-    [DFFile removePath:path];
+    NSString *path = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:self.itemArray[indexPath.row]];
+    [JLFileTool removePath:path];
     [self reflashFileArray];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -191,8 +191,8 @@
 
 - (void)reflashFileArray {
     // 获取沙盒升级文件
-    NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
-    _itemArray = [DFFile subPaths:docPath];
+    NSString *docPath = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
+    _itemArray = [JLFileTool subPaths:docPath];
     if(_itemArray.count>0){
         self.noFileView.hidden = YES;
     }else{

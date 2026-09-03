@@ -68,6 +68,12 @@ typedef NS_ENUM(NSInteger, JLLOG_LEVEL) {
 /// @param something 任意字符串内容
 +(void)logSomething:(NSString *)something;
 
+/// 打印对象
+/// @param object 任意对象
++(void)logObject:(id)object;
+
+
+
 /// 打印
 /// @param level    LOG等级
 /// @param content   内容

@@ -131,25 +131,25 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
     self->_secondLab.text = [url lastPathComponent];
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
-        [DFAction mainTask:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             self->_progressView.progress = downloadProgress.fractionCompleted;
             self->_titleLab.text = [NSString stringWithFormat:@"%@ %.2f%%",kJL_TXT("downloading_file"),downloadProgress.fractionCompleted*100];
-        }];
+        });
         
     }  destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-        [DFAction mainTask:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             self->_secondLab.text = [response suggestedFilename];
-        }];
+        });
         return [ToolsHelper targetSavePath:[response suggestedFilename]];
     } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
         kJLLog(JLLOG_DEBUG, @"File downloaded to: %@", filePath);
-        [DFAction mainTask:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             self.hidden = true;
             self->_titleLab.text = @"";
             self->_progressView.progress = 0.0;
             self->_secondLab.text = @"";
             [[NSNotificationCenter defaultCenter] postNotificationName:@"REFRESH_FILE" object:nil];
-        }];
+        });
         
     }];
     [downloadTask resume];

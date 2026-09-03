@@ -46,7 +46,7 @@
         self.title = self.icpTitleName;
     }
     
-    self.view.backgroundColor = kDF_RGBA(255, 255, 255, 1);
+    self.view.backgroundColor = JL_RGBA(255, 255, 255, 1);
     
     UIImage *img = [[UIImage imageNamed:@"icon_return_nol"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStyleDone target:self action:@selector(backBtnAction)];
@@ -209,7 +209,7 @@
 -(UILabel *)noneLabFirst{
     if(!noneLabFirst){
         noneLabFirst = [[UILabel alloc] init];
-        noneLabFirst.textColor = kDF_RGBA(36,36,36,1);
+        noneLabFirst.textColor = JL_RGBA(36,36,36,1);
         noneLabFirst.textAlignment = NSTextAlignmentCenter;
         noneLabFirst.font = FontMedium(15);
         noneLabFirst.text = kJL_TXT("network_abnormality");
@@ -220,7 +220,7 @@
 -(UILabel *)noneLabSecond{
     if(!noneLabSecond){
         noneLabSecond = [[UILabel alloc] init];
-        noneLabSecond.textColor = kDF_RGBA(0, 0, 0, 0.3);
+        noneLabSecond.textColor = JL_RGBA(0, 0, 0, 0.3);
         noneLabSecond.textAlignment = NSTextAlignmentCenter;
         noneLabSecond.font =  FontMedium(14);
         noneLabSecond.text = kJL_TXT("check_network");

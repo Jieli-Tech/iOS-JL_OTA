@@ -44,7 +44,7 @@ static UILabel      *centerLabel = nil;
 }
 
 +(void)startOpenAnimation{
-    UIWindow *win = [DFUITools getWindow];
+    UIWindow *win = [UIApplication sharedApplication].windows.firstObject;
     
     openView = [[OpenShowView alloc] initWithFrame:win.bounds];
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:openView.bounds];
@@ -83,7 +83,7 @@ static UILabel      *centerLabel = nil;
         centerLabel = [[UILabel alloc] init];
         centerLabel.text = kJL_TXT("ota_update");
         centerLabel.font = FontMedium(20);
-        centerLabel.textColor =kDF_RGBA(255, 255, 255, 1);
+        centerLabel.textColor =JL_RGBA(255, 255, 255, 1);
         centerLabel.transform = CGAffineTransformMakeScale(0, 0);
         centerLabel.alpha = 0.0;
     }

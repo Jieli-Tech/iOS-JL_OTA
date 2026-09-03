@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/JLAdvParse.h</key>
 		<data>
-		h1KLtzaU2lKFddG4s6OpGn4lwtY=
+		bKTe8LfIg5g8CFxUg0AoaNzBm2A=
 		</data>
 		<key>Headers/JLChargingBoxAdv.h</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Headers/JLTwsAdv.h</key>
 		<data>
-		Q2pITD+Hu7JPTJ2tvArCDCaS+U4=
+		whLObetTxteRXS580FiZ1/A3Yzo=
 		</data>
 		<key>Headers/JLWatchAdv.h</key>
 		<data>
@@ -46,11 +46,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		wGAWW9XvRMhNSYxxbiPZoXD0Ct0=
+		PwXUjjf/3ubIVzScmcIrf7scACo=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
 		hBvb1e7FRkpwYoECUsVQBBscN38=
+		</data>
+		<key>PrivacyInfo.xcprivacy</key>
+		<data>
+		ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -59,11 +63,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			h1KLtzaU2lKFddG4s6OpGn4lwtY=
+			bKTe8LfIg5g8CFxUg0AoaNzBm2A=
 			</data>
 			<key>hash2</key>
 			<data>
-			gY5FpSGa96wVp81AzbIPzYkHnHK0+mi5DMA2ytu6YN0=
+			3Gepqlnr75om+6tkHZirFzrSkP4tojDswtAXqWLpPsQ=
 			</data>
 		</dict>
 		<key>Headers/JLChargingBoxAdv.h</key>
@@ -136,11 +140,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Q2pITD+Hu7JPTJ2tvArCDCaS+U4=
+			whLObetTxteRXS580FiZ1/A3Yzo=
 			</data>
 			<key>hash2</key>
 			<data>
-			vDoI6Wd8aitnCNMeQN8h2X2HAEn7LWki/8PAyGx+BZM=
+			w6Ia/stHXZvCfmmPgTEpBj7A6haG6O+E0MeXH/fNKmA=
 			</data>
 		</dict>
 		<key>Headers/JLWatchAdv.h</key>
@@ -174,6 +178,17 @@
 			<key>hash2</key>
 			<data>
 			F65y3OGliGsHZpxzdTdQxUwgmJdHiihk1gvX6sJzhxA=
+			</data>
+		</dict>
+		<key>PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
+			</data>
+			<key>hash2</key>
+			<data>
+			FiyglQKXEwJ9zfy9GDSopTTlVUHn85pk7JAKKd2aNj0=
 			</data>
 		</dict>
 	</dict>

@@ -395,7 +395,7 @@ typedef void(^JL_Timer_BK)(void);
 /// @param data 数据
 +(NSData *)beLtv:(uint8_t)type Data:(NSData*)data;
 
-
++(NSString *)encoderTypeStr:(NSStringEncoding)encodeType;
 
 @end
 

@@ -277,7 +277,7 @@
         item.selected = !item.selected;
     }else{
         if([item.updatePath isEqualToString:@""]){
-            [DFUITools showText:kJL_TXT("need_select_file") onView:self.view delay:2];
+            [JLHUD showText:kJL_TXT("need_select_file") onView:self.view delay:2];
         }else{
             item.selected = !item.selected;
         }

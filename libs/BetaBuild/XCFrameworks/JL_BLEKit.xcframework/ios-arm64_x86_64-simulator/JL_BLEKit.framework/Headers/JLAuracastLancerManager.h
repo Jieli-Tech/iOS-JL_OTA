@@ -75,16 +75,6 @@ typedef void(^JLLancerChangePwdBlock)(JLAuracastLancerChangePwdResult status);
 ///   - result: 结果
 -(void)changePassword:(NSString *)oldPwd newPassword:(NSString *)newPwd Result:(JLLancerChangePwdBlock)result;
 
-
-/// 获取Auracast设备状态
-/// - Parameter state:
-/// 0x01 == 电量
-/// 0x02 == 音量
-/// 0x03 == 通话
-/// 0x04 == 工作模式
-/// 0x06 == 登录状态
--(void)auracastGetDevState:(uint8_t)state;
-
 /// 获取Auracast设备状态
 -(void)auracastGetDevState;
 

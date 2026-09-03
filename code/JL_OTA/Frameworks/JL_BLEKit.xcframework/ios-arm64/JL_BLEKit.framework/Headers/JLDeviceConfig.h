@@ -14,6 +14,7 @@
 @class JLDeviceConfigTws;
 @class JLDeviceConfigDongle;
 @class JLDeviceConfigSoundBox;
+@class JLDeviceConfigAIGlasses;
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^JLConfigRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceConfigModel* __nullable config);
@@ -23,6 +24,8 @@ typedef void(^JLConfigTwsRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceConfigTws
 typedef void(^JLConfigAuracastRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceConfigDongle* __nullable config);
 
 typedef void (^JLConfigSoundBoxRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceConfigSoundBox* __nullable config);
+
+typedef void (^JLConfigAIGlassesRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceConfigAIGlasses* __nullable config);
 
 
 /// 固件设置配置回调协议
@@ -45,6 +48,10 @@ typedef void (^JLConfigSoundBoxRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceCon
 /// Dongle 监听回调协议
 /// - Parameter configModel: 固件设置配置回调
 -(void)deviceAuracastConfigWith:(JLDeviceConfigDongle *)configModel;
+
+/// 智能眼镜监听回调协议
+/// - Parameter configModel: 固件设置配置回调
+-(void)deviceAIGlassesConfigWith:(JLDeviceConfigAIGlasses *)configModel;
 
 @end
 
@@ -87,6 +94,12 @@ typedef void (^JLConfigSoundBoxRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceCon
 ///   - result: 回调功能配置内容
 -(void)deviceSoundBoxGetConfig:(JL_ManagerM *)manager result:(JLConfigSoundBoxRsp)result;
 
+/// 智能眼镜查询设备当前固件配置内容
+/// - Parameters:
+///   - manager: manager
+///   - result: 回调功能配置内容
+-(void)deviceAIGlassesGetConfig:(JL_ManagerM *)manager result:(JLConfigAIGlassesRsp)result;
+
 
 /// Tws多设备管理时，可通过对应的设备UUID 获取相关的设备配置
 /// - Parameter entity: 设备uuidStr
@@ -101,6 +114,10 @@ typedef void (^JLConfigSoundBoxRsp)(JL_CMDStatus status, uint8_t sn, JLDeviceCon
 /// SoundBox 多设备管理时，可通过对应的设备 UUID 获取相关的设备配置信息
 /// - Parameter uuidStr: 设备 uuid
 -(JLDeviceConfigSoundBox *)deviceGetSoundBoxConfigWithUUID:(NSString *)uuidStr;
+
+/// 智能眼镜多设备管理时，可通过对应的设备 UUID 获取相关的设备配置信息
+/// - Parameter uuidStr: 设备 uuid
+-(JLDeviceConfigAIGlasses *_Nullable)deviceGetAIGlassesConfigWithUUID:(NSString *)uuidStr;
 
 
 /// 私有测试接口请勿使用

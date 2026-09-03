@@ -89,11 +89,12 @@ typedef void(^JL_BIGFILE_RT)(JL_BigFileResult result, float progress);
 ///短文件名：GBK  CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)
 ///长文件名：Unicode16L （NSUTF16LittleEndianStringEncoding）
 ///Other: true
-///需要设置encodeType属性的值，默认为Unicode16L
+///❕❕❕ 需要设置encodeType属性的值，默认为Unicode16L （NSUTF16LittleEndianStringEncoding）❕❕❕
 @property(nonatomic,assign)BOOL isOtherEncode;
 
 /// 大文件名使用的编码
 /// default :NSUTF16LittleEndianStringEncoding
+///❕❕❕ 需要设置isOtherEncode属性的值为true，否则encodeType属性的值无效 ❕❕❕❕
 @property(nonatomic,assign)NSStringEncoding encodeType;
 
 /// 停止超时计算

@@ -46,13 +46,21 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 @property(nonatomic,strong) JL_ManagerM   *mCmdManager;
 
 /// BLE外设备
-@property(nonatomic,readonly,copy) CBPeripheral  *mPeripheral;
+@property(nonatomic,readonly,copy) CBPeripheral  *_Nullable mPeripheral;
 ///服务号AE00
 @property(nonatomic,strong) NSString        *mSERVICE;
 ///命令【写】通道AE01
 @property(nonatomic,strong) NSString        *mRCSP_W;
 ///命令【读】通道AE02
 @property(nonatomic,strong) NSString        *mRCSP_R;
+
+///写流数据通道
+///default AE03
+@property(nonatomic,strong) NSString        *mRcspStreamWrite;
+///收流数据通道
+///defalut AE04
+@property(nonatomic,strong) NSString        *mRcspStreamNotify;
+
 ///过滤码
 @property(nonatomic,strong) NSData *__nullable mFilterKey;
 ///配对码
@@ -169,6 +177,9 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 
 /// Le Audio 的连接状态
 @property(assign,nonatomic) BOOL mLeAudioConnected;
+
+/// RCSP 是否复用 LEAudio 的地址
+@property(assign,nonatomic) BOOL mLeAudioIsReUseRCSPAddr;
 
 /// 设备特殊类型
 @property(assign,nonatomic) JLDevSpecialType  mSpecialType;

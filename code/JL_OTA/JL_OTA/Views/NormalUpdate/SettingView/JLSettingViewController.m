@@ -274,7 +274,7 @@
         [[JLBleHandler share] handleDisconnect];
         AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         if(type == 0){
-            [DFUITools showText:@"Add auto test model" onView:self.view delay:2];
+            [JLHUD showText:@"Add auto test model" onView:self.view delay:2];
             [ToolsHelper setAutoTestOta:YES];
             [ToolsHelper setConnectBySDK:false];
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Tips" message:@"Add auto test model" preferredStyle:UIAlertControllerStyleAlert];

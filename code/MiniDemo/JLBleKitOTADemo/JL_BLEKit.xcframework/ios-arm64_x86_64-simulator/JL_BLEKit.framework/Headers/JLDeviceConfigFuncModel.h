@@ -83,6 +83,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 支持表盘信息拓展
 @property(nonatomic,assign)BOOL spDialInfoExtend;
 
+///是否支持流媒体传输
+@property(nonatomic,assign)BOOL spStreamTransfer;
+
+/// 是否支持通话状态下操作复杂功能
+@property(nonatomic,assign)BOOL spCallStatus;
+
 -(instancetype)init:(NSData *)data;
 
 @end

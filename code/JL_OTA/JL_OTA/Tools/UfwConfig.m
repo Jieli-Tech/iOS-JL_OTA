@@ -12,8 +12,8 @@
 @implementation UfwConfig
 
 -(NSArray<NSString *>*)checkWithPid:(uint16)pid Uid:(uint16)uid{
-    NSString *docPath = [DFFile listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
-    NSArray *itemArray = [DFFile subPaths:docPath];
+    NSString *docPath = [JLFileTool listPath:NSDocumentDirectory MiddlePath:@"upgrade" File:nil];
+    NSArray *itemArray = [JLFileTool subPaths:docPath];
     NSMutableArray *machArray = [NSMutableArray new];
     for (NSString *filePath in itemArray) {
         NSString *targetPath = [docPath stringByAppendingPathComponent:filePath];

@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// 语音 AI/tts 传输处理（旧）
+DEPRECATED_MSG_ATTRIBUTE("Use JL_SpeechAIttsHandler instead.")
 @interface JL_SpeechAIttsHandler : NSObject
 
 @property(nonatomic,weak)id<JL_SpeechAIttsHandlerDelegate> delegate;

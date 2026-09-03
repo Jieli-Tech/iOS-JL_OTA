@@ -33,7 +33,7 @@
        
        self.mFuncName = [[UILabel alloc] init];
        self.mFuncName.numberOfLines = 1;
-       self.mFuncName.textColor = kDF_RGBA(36, 36, 36, 1);
+       self.mFuncName.textColor = JL_RGBA(36, 36, 36, 1);
        self.mFuncName.font = FontMedium(15);
        
        UIButton *nextBtn = [UIButton new];

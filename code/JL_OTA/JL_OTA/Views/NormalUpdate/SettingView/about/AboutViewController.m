@@ -40,7 +40,7 @@
     leftBtn.tintColor = [UIColor grayColor];
     [self.navigationItem setLeftBarButtonItem:leftBtn];
     
-    self.view.backgroundColor = kDF_RGBA(244, 247, 251, 1);
+    self.view.backgroundColor = JL_RGBA(244, 247, 251, 1);
     dataArray = @[kJL_TXT("user_agreement"),kJL_TXT("privacy_policy")];
     
     [self.view addSubview:[self topImageView]];
@@ -73,7 +73,7 @@
     UILabel *bottomLab = [[UILabel alloc] init];
     bottomLab.font = FontMedium(11);
     bottomLab.text = kJL_TXT("copy_right");
-    bottomLab.textColor = kDF_RGBA(0, 0, 0, 0.3);
+    bottomLab.textColor = JL_RGBA(0, 0, 0, 0.3);
     bottomLab.textAlignment = NSTextAlignmentCenter;
     bottomLab.numberOfLines = 0;
     bottomLab.adjustsFontSizeToFitWidth = true;
@@ -87,7 +87,7 @@
     NSString *bottomLabBtnName = [NSString stringWithFormat:@"%@:%@",kJL_TXT("icp_filing_information"),ICP_FILING_INFORMATION];
     [bottomLabBtn setTitle:bottomLabBtnName forState:UIControlStateNormal];
     bottomLabBtn.titleLabel.font = FontMedium(11);
-    [bottomLabBtn setTitleColor:kDF_RGBA(0, 0, 0, 0.3) forState:UIControlStateNormal];
+    [bottomLabBtn setTitleColor:JL_RGBA(0, 0, 0, 0.3) forState:UIControlStateNormal];
     [bottomLabBtn addTarget:self action:@selector(icpInfoClickEvent) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:bottomLabBtn];
     [bottomLabBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -131,7 +131,7 @@
     }else{
         UIView *separatorView = [[UIView alloc] init];
         separatorView.frame = CGRectMake(20,49,aboutTableView.frame.size.width-20,1);
-        separatorView.backgroundColor = kDF_RGBA(0, 0, 0, 0.06);
+        separatorView.backgroundColor = JL_RGBA(0, 0, 0, 0.06);
         [cell addSubview:separatorView];
     }
     return cell;
@@ -180,7 +180,7 @@
         appNameLabel = [[UILabel alloc] init];
         appNameLabel.numberOfLines = 1;
         appNameLabel.text = kJL_TXT("ota_update");
-        appNameLabel.textColor = kDF_RGBA(0, 0, 0, 0.9);
+        appNameLabel.textColor = JL_RGBA(0, 0, 0, 0.9);
         appNameLabel.font = FontMedium(16);
         appNameLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -194,7 +194,7 @@
         NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
         NSString *appVersion = [infoDic objectForKey:@"CFBundleShortVersionString"];
         versionLabel.text = [NSString stringWithFormat:@"%@%@%@",kJL_TXT("current_version"),@" V",appVersion];
-        versionLabel.textColor = kDF_RGBA(0, 0, 0, 0.6);
+        versionLabel.textColor = JL_RGBA(0, 0, 0, 0.6);
         versionLabel.font = FontMedium(13);
         versionLabel.textAlignment = NSTextAlignmentCenter;
     }

@@ -204,7 +204,8 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     
     CBPeripheral* peripheral = phArr[0];
     
-    if (phArr.firstObject && [phArr.firstObject state] != CBPeripheralStateConnected && [phArr.firstObject state] != CBPeripheralStateConnecting) {
+    CBPeripheral *firstPeripheral = phArr.firstObject;
+    if (firstPeripheral && firstPeripheral.state != CBPeripheralStateConnected && firstPeripheral.state != CBPeripheralStateConnecting) {
         
         NSString *ble_name = peripheral.name;
         NSString *ble_uuid = peripheral.identifier.UUIDString;
@@ -324,7 +325,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
     _otaManager.mBLE_NAME = peripheral.name;
     _otaManager.mBLE_UUID = peripheral.identifier.UUIDString;
     
-    [DFNotice post:kFLT_BLE_CONNECTED Object:peripheral];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_CONNECTED object:peripheral];
     // 连接成功后，查找服务
     [peripheral discoverServices:nil];
 }
@@ -442,6 +443,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         [_pairHash inputPairData:characteristic.value];
     }else{
         //收到的设备数据，正常通讯数据
+        kJLLog(JLLOG_COMPLETE, @"==> did ReceiveData:%@",[JL_Tools dataChangeToString:characteristic.value]);
         [_otaManager cmdOtaDataReceive:characteristic.value];
     }
 
@@ -603,7 +605,7 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 /// 需要分包发送
 /// - Parameter data: 数据
 -(void)writeDataByCbp:(NSData *)data{
-    //    kJLLog(JLLOG_DEBUG, @"%s:data:%@",__func__,data);
+        kJLLog(JLLOG_DEBUG, @"==> send data:%@",[JL_Tools dataChangeToString: data]);
         if (_mBlePeripheral && self.mRcspWrite) {
             if (data.length > 0 ) {
                 NSInteger len = data.length;

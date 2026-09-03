@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JLPublicSettingBlocks.h"
+#import <JL_BLEKit/JLPublicSettingBlocks.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -54,6 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - manager: 设备
 ///   - mode: 设备 SDK 信息
 -(void)publicSettingDeviceSDKMessage:(JL_ManagerM *)manager Mode:(JLPublicSDKInfoModel *_Nullable)mode;
+
+/// 存储空间信息通知（存储器被格式化时推送，如格式化或恢复出厂设置）
+/// - Parameters:
+///   - manager: 设备
+///   - model: 格式化后的存储空间信息
+-(void)publicSettingStorageFormatted:(JL_ManagerM *)manager Model:(JLPublicStorageInfoModel *)model;
 
 @end
 
@@ -129,6 +135,20 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - manager: 设备
 ///   - block: 回调
 -(void)cmdDeviceGetDeviceSDKInfo:(JL_ManagerM *)manager result:(JLPSSDKInfoCbk)block;
+
+/// 读取存储空间信息
+/// - Parameters:
+///   - manager: 设备
+///   - handle: 在线存储器句柄（4 字节，从 JLModelCardInfo 获取）
+///   - block: 回调
+-(void)cmdStorageInfoGet:(JL_ManagerM *)manager Handle:(NSData *)handle result:(JLPSStorageInfoCbk)block;
+
+/// 格式化存储器（
+/// @discussion 格式化完成后设备会推送 publicSettingStorageFormatted:Model: 通知
+/// - Parameters:
+///   - manager: 设备
+///   - block: 回调
+-(void)cmdStorageFormat:(JL_ManagerM *)manager result:(JLPSStorageFormatCbk)block;
 
 @end
 

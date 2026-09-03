@@ -24,3 +24,18 @@ pod 'Bugly'
 
 end
 
+post_install do |installer|
+  # 修复 AFNetworking 引用私有头文件 netinet6/in6.h 的问题
+  # 在现代 SDK 中 netinet/in.h 已包含所有 IPv6 定义
+  af_files = Dir.glob(File.join(installer.sandbox.root, 'AFNetworking', 'AFNetworking', '*.m'))
+  af_files.each do |file_path|
+    content = File.read(file_path)
+    if content.include?('netinet6/in6.h')
+      new_content = content.gsub(%r{#import <netinet6/in6\.h>\n}, '')
+      File.chmod(0644, file_path)
+      File.write(file_path, new_content)
+      puts "✓ 已修复: #{File.basename(file_path)}"
+    end
+  end
+end
+

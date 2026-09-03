@@ -26,20 +26,40 @@ NS_ASSUME_NONNULL_BEGIN
 /// is use A2DP to play
 @property(nonatomic,assign,readonly)BOOL isUseA2DP;
 
+/// 是否支持Opus立体声
+@property(nonatomic,assign,readonly)BOOL isSupportOpusStereo;
+
+/// 音视频翻译是否下发报文音频
+@property(nonatomic,assign,readonly)BOOL isSendAudioForTranslate;
+
+/// 是否支持同声翻译功能
+@property(nonatomic,assign,readonly)BOOL isSupportSimultaneous;
+
+
 /// 是否支持耳机健康功能
 /// is support ear health
-@property(nonatomic,assign,readonly)BOOL isSupportHealthData;
+@property(nonatomic,assign, readonly)BOOL isSupportHealthData;
 
 /// 是否支持Auracast
-@property (nonatomic, assign) BOOL isSupportAuracast;
+@property (nonatomic, assign, readonly) BOOL isSupportAuracast;
 
 /// 是否支持接收Auracast
-@property (nonatomic, assign) BOOL isSupportReceiveAuracast;
+@property (nonatomic, assign, readonly) BOOL isSupportReceiveAuracast;
 
 /// 是否支持发射端 Auracast
-@property (nonatomic, assign) BOOL isSupportLancerAuracast;
+@property (nonatomic, assign, readonly) BOOL isSupportLancerAuracast;
 
+/// 是否支持心跳机制
+@property (nonatomic, assign, readonly) BOOL isSupportHeartBeat;
 
+/// 是否支持TWS
+/// 说明设备支持TWS设备功能。
+/// 包含设备名称，弹窗快连，按键设置，灯效设置、工作模式等功能；
+@property (nonatomic, assign, readonly)BOOL isSupportTwsFunc;
+
+/// 是否支持重命名
+/// 设备是否支持修改设备名
+@property (nonatomic, assign, readonly)BOOL isSupportRename;
 
 @end
 

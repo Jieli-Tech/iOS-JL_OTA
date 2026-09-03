@@ -7,14 +7,45 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JLTranslateAudio.h"
-#import "JLModel_SPEEX.h"
-#import "JLTranslateSetMode.h"
-#import "JLTranslateSet.h"
+#import <JL_BLEKit/JLTranslateAudio.h>
+#import <JL_BLEKit/JLModel_SPEEX.h>
+#import <JL_BLEKit/JLTranslateSetMode.h>
+#import <JL_BLEKit/JLTranslateSet.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class JL_ManagerM;
+@class JLTranslationManager;
+@class JLTranslateDeviceInfo;
+@class JLTranslateTimeoutPolicy;
+
+/// 同声翻译回调
+@protocol JLTranslationManagerSimultaneousDelegate <NSObject>
+
+@optional
+/// 同声翻译状态变更
+- (void)translationManager:(JLTranslationManager *)manager simultaneousStateChanged:(NSInteger)state;
+
+/// 从机设备已就绪
+- (void)translationManager:(JLTranslationManager *)manager slaveDidReady:(JLTranslateDeviceInfo *)slave;
+
+/// 从机设备断开
+- (void)translationManager:(JLTranslationManager *)manager slaveDidDisconnect:(JLTranslateDeviceInfo *)slave error:(nullable NSError *)error;
+
+/// 同声翻译发生错误
+- (void)translationManager:(JLTranslationManager *)manager simultaneousDidFail:(NSError *)error;
+
+/// 收到从机音频数据（同声翻译模式下）
+/// @param manager 翻译管理器
+/// @param audio 从机音频数据
+- (void)translationManager:(JLTranslationManager *)manager didReceiveSlaveAudio:(JLTranslateAudio *)audio;
+
+/// 从机录音状态变更（同声翻译模式）
+/// @param manager 翻译管理器
+/// @param status 录音状态（JL_SpeakTypeDo 开始 / JL_SpeakTypeDone 结束 / JL_SpeakTypeDoing 进行中）
+- (void)translationManager:(JLTranslationManager *)manager didReceiveSlaveRecordStatus:(JL_SpeakType)status;
+
+@end
 
 /// 翻译回调
 @protocol JLTranslationManagerDelegate <NSObject>
@@ -50,6 +81,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param uuid 设备UUID
 -(void)onSendAudioQueueOver:(NSString *)uuid;
 
+/// 录音状态变更（主机 / 普通设备录音）
+/// @param uuid 设备UUID
+/// @param status 录音状态（JL_SpeakTypeDo 开始 / JL_SpeakTypeDone 结束 / JL_SpeakTypeDoing 进行中）
+-(void)onReceiveRecordStatus:(NSString *)uuid Status:(JL_SpeakType)status;
+
 @end
 
 typedef void(^JLTranslationManagerGetBlock)(JLTranslateSetMode *_Nullable mode,NSError *_Nullable err);
@@ -62,6 +98,9 @@ typedef void(^JLTranslationManagerSetBlock)(JLTranslateSetResultType status,NSEr
 
 /// 代理
 @property (nonatomic, weak) id<JLTranslationManagerDelegate> delegate;
+
+/// 同声翻译代理
+@property (nonatomic, weak) id<JLTranslationManagerSimultaneousDelegate> simultaneousDelegate;
 
 /// 命令最大超时时间
 /// 默认是 10s
@@ -86,6 +125,24 @@ typedef void(^JLTranslationManagerSetBlock)(JLTranslateSetResultType status,NSEr
 /// 是否在通话中
 /// Whether in a call
 @property (nonatomic, assign) BOOL isCalling;
+
+/// 最大MTU，默认是 200 最大不超过 MTU - 20 byte
+/// Max MTU, the default is 200, which is not greater than MTU - 20 byte
+@property (nonatomic, assign) NSInteger maxMtu;
+
+/// 同声翻译从机连接配对密钥（16字节，对应 JL_Assist.mAuthKey）
+/// 若设备认证已关闭，可置为 nil
+@property (nonatomic, copy, nullable) NSData *simultaneousPairKey;
+
+/// 同声翻译超时策略，默认 defaultPolicy
+/// 进入模式前设置生效
+@property (nonatomic, strong) JLTranslateTimeoutPolicy *simultaneousTimeoutPolicy;
+
+/// 同声翻译主机设备信息（TWS 配对中角色为 Master 的设备，可用于判断左右耳位置）
+@property (nonatomic, strong, readonly, nullable) JLTranslateDeviceInfo *masterDevice;
+
+/// 同声翻译从机设备信息（TWS 配对中角色为 Slave 的设备，可用于判断左右耳位置）
+@property (nonatomic, strong, readonly, nullable) JLTranslateDeviceInfo *slaveDevice;
 
 /// 设备对象
 /// Device object
@@ -135,12 +192,19 @@ typedef void(^JLTranslationManagerSetBlock)(JLTranslateSetResultType status,NSEr
 /// - Parameters:
 ///   - audio: JLTranslateAudio 原返回音频类型
 ///   - audioData: 处理完的音频数据
+/// - Note: 同声翻译模式下，此方法默认将音频下发给主机；如需下发给从机，请使用 `trWriteAudioToSlave:TranslateData:`
 - (void)trWriteAudio:(JLTranslateAudio *)audio TranslateData:(NSData *)audioData;
+
+/// 同声翻译模式下，将翻译后的音频下发给从机
+/// - Parameters:
+///   - audio: 音频类型信息（audioType 等字段有效）
+///   - audioData: 处理完的音频数据
+- (void)trWriteAudioToSlave:(JLTranslateAudio *)audio TranslateData:(NSData *)audioData;
 
 
 /// 写入翻译音频，翻译完/操作完后的音频需要携带原音频的音频类型 JLTranslateAudio 进行回复
 /// 此方案是采取无交互式的下发方法，根据数据对应可能需要的播放时长来进行直接下发，可能存在风险
-/// 当前默认的时长是 20ms 44 byte 的 jlv2 压缩数据，不支持修改
+/// 当前默认的时长是 20ms 42 byte 的 jlv2 压缩数据，不支持修改
 /// - Parameters:
 ///   - audio: JLTranslateAudio 原返回音频类型
 ///   - audioData: 处理完的音频数据
@@ -154,6 +218,25 @@ typedef void(^JLTranslationManagerSetBlock)(JLTranslateSetResultType status,NSEr
 /// 如果销毁，需要重新生成对象，此对象的回调将会失效
 /// Destroy, if it is destroyed, the callback of this object will be invalidated
 - (void)trDestory;
+
+#pragma mark - 同声翻译模式
+
+/// 是否支持同声翻译功能
+- (BOOL)trIsSupportSimultaneousMode;
+
+/// 进入同声翻译模式
+/// - Parameter completion: 完成回调
+- (void)trEnterSimultaneousMode:(void (^ _Nullable)(BOOL success, NSError *_Nullable error))completion;
+
+/// 退出同声翻译模式
+/// - Parameter completion: 完成回调
+- (void)trExitSimultaneousMode:(void (^ _Nullable)(void))completion;
+
+/// 暂停同声翻译
+- (void)trPauseSimultaneousMode:(void (^ _Nullable)(BOOL success, NSError *_Nullable error))completion;
+
+/// 恢复同声翻译
+- (void)trResumeSimultaneousMode:(void (^ _Nullable)(BOOL success, NSError *_Nullable error))completion;
 
 @end
 

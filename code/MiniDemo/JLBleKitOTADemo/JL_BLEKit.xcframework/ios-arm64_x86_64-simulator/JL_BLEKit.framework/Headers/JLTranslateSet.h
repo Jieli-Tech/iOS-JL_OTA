@@ -46,6 +46,12 @@ typedef NS_ENUM(NSUInteger, JLTranslateSetResultType) {
 ///   - cacheSize: 剩余缓存大小
 -(void)translateNoteCacheInfo:(JLTranslateAudioSourceType)sourceType cacheSize:(uint32_t)cacheSize;
 
+/// TWS 状态通知（cmd:0x8034, op:0x08）
+/// - Parameters:
+///   - isConnected: TWS 是否已连接
+///   - roleInfoData: 一个或多个设备角色信息原始数据
+-(void)translateNotifyTWSState:(BOOL)isConnected roleInfoData:(NSData *)roleInfoData;
+
 @end
 
 
@@ -55,6 +61,10 @@ typedef void(^JLTranslateGetModeInfoBlock)(JLTranslateSetMode *_Nullable mode,JL
 typedef void(^JLTranslateSetModeBlock)(JLTranslateSetResultType type,JL_CMDStatus status);
 
 typedef void(^JLTranslateGetCacheInfoBlock)(JL_CMDStatus status,JLTranslateAudioSourceType sourceType,uint32_t cacheSize);
+
+typedef void(^JLTranslateTWSSplitBlock)(JLTranslateSetResultType result,JL_CMDStatus status);
+
+typedef void(^JLTranslateTWSStateBlock)(BOOL isConnected, NSData *_Nullable roleInfoData, JL_CMDStatus status);
 
 /// 翻译交互 API
 @interface JLTranslateSet : ECOneToMorePtl
@@ -98,6 +108,27 @@ typedef void(^JLTranslateGetCacheInfoBlock)(JL_CMDStatus status,JLTranslateAudio
 ///   - manager: 设备
 -(void)cmdPushAudioMode:(JLTranslateAudio *)audio
                 Manager:(JL_ManagerM *)manager;
+
+/// 请求进入 TWS 分离模式（cmd:0xC034, op:0x06）
+/// - Parameters:
+///   - manager: 设备
+///   - result: 结果回调，result 字段为设备返回的结果码
+-(void)cmdEnterTWSSplitMode:(JL_ManagerM *)manager
+                     Result:(JLTranslateTWSSplitBlock)result;
+
+/// 请求退出 TWS 分离模式（cmd:0xC034, op:0x07）
+/// - Parameters:
+///   - manager: 设备
+///   - result: 结果回调
+-(void)cmdExitTWSSplitMode:(JL_ManagerM *)manager
+                    Result:(JLTranslateTWSSplitBlock)result;
+
+/// 获取 TWS 状态（cmd:0xC034, op:0x09）
+/// - Parameters:
+///   - manager: 设备
+///   - result: 结果回调
+-(void)cmdGetTWSState:(JL_ManagerM *)manager
+               Result:(JLTranslateTWSStateBlock)result;
 
 
 @end

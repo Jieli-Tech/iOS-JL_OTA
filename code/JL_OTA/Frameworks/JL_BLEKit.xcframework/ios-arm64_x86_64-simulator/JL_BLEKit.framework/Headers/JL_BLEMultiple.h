@@ -40,6 +40,9 @@ extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
 ///是否【开启认证】
 @property (assign, nonatomic) BOOL                 authEnable;
 @property (assign, nonatomic) int                  BLE_TIMEOUT;       //连接超时时间
+@property (assign, nonatomic) BOOL                 allowEmptyBleName; //是否允许设备名为空，默认NO（不允许）
+/// hash 适配配置，默认是需要 Hash 的
+@property (assign, nonatomic) BOOL                 emableHash;
 
 @property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr;   //发现的设备
 @property (strong, nonatomic) NSArray<CBPeripheral *> *bleAttDevices;      //ATT发现的设备
@@ -52,6 +55,21 @@ extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
 @property (strong, nonatomic) NSString             *JL_BLE_SERVICE;   //服务号
 @property (strong, nonatomic) NSString             *JL_BLE_RCSP_W;    //命令【写】通道
 @property (strong, nonatomic) NSString             *JL_BLE_RCSP_R;    //命令【读】通道
+@property (strong, nonatomic) NSString             *rcspStreamWrite; // 流数据写通道
+@property (strong, nonatomic) NSString             *rcspStreamNotify;// 流数据通知通道
+
+#pragma mark - Entity Pool & Search Configuration
+
+/// 对象池最大保留设备数，默认50
+@property(nonatomic, assign) NSInteger maxEntityPoolSize;
+/// 设备缓存时间（秒），默认300秒
+@property(nonatomic, assign) NSTimeInterval maxEntityCacheTime;
+/// 最大发现设备数（扫描列表上限），默认30
+@property(nonatomic, assign) NSInteger maxDiscoverDevices;
+/// 最小信号强度阈值（dBm），默认-90
+@property(nonatomic, assign) NSInteger minRSSIThreshold;
+/// 最小扫描间隔（秒），默认1.0
+@property(nonatomic, assign) NSTimeInterval minScanInterval;
 
 +(NSString*)versionOfSDK;
 

@@ -332,7 +332,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.subTableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([[JLBleManager sharedInstance] mBleManagerState] != CBManagerStatePoweredOn) {
-        [DFUITools showText:kJL_TXT("ble_not_open") onView:self.view delay:1.0];
+        [JLHUD showText:kJL_TXT("ble_not_open") onView:self.view delay:1.0];
         return;
     }
     if (_btEnityList.count == 0) return;

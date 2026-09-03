@@ -8,7 +8,6 @@
 
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <JL_BLEKit/JL_BLEKit.h>
-#import <DFUnits/DFUnits.h>
 #import <UIKit/UIKit.h>
 #import "JLBleEntity.h"
 #import "DeviceManager.h"
