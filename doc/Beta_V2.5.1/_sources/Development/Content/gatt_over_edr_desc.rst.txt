@@ -1,0 +1,148 @@
+5. GATT Over Edr 连接
+=============================
+
+在苹果生态中，“iOS GATT over EDR” 特指不需要 MFi 配件和 ExternalAccessory 框架来使用 EDR 通讯的一种模式。
+
+它的主要特点和目的是：
+
+- **为了兼容性**：让支持经典蓝牙需要高带宽的设备，也能使用为 BLE 设计的现代 GATT 数据模型。
+
+- **性能与功耗的折中**：
+
+  - **速度比 BLE 快**：利用 EDR 的带宽，传输大文件（如音频、固件更新）更快。
+  - **功耗比纯经典蓝牙低**：连接建立后，可以进入较省电的模式，不像持续流传输的 A2DP 那样耗电。
+
+- **统一开发模型**：开发者理论上可以用类似 BLE（CoreBluetooth 框架）的思维模型（服务、特征值）来开发配件，即使底层是经典蓝牙。
+
+**典型应用场景**
+
+- **高端音频配件**：需要传输高质量音频流（用 EDR 带宽），同时又需要传输控制命令（如播放/暂停、音量、电量查询）。控制信道就可以用 GATT over EDR 来实现，比传统的 AVRCP 更灵活。
+- **专业外设**：如医疗设备、POS 机、工业扫描枪。这些设备可能早已使用经典蓝牙，但现在希望采用更标准化、可扩展的 GATT 数据格式。
+- **需要高速数据传输的配件**：例如，需要快速同步大量数据的专业设备。
+
+5.1 使用规则与示例
+---------------------
+5.1.1 SDK 蓝牙连接接口
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- 若使用 JL_BLEKit.framework 所提供的蓝牙连接接口，则需要先进行特定的服务 ID 赋值，一般而言在公版的程序中我们使用的服务号是：
+
+  **AE00** 这个作为设备服务，既可用于 BLE 广播发现服务，也可用于 GATT over EDR 的发现服务。
+
+  若需要修改成其他的服务号，需要在调用连接接口之前，先调用如下接口进行赋值：
+
+  .. code-block:: objective-c
+
+      JL_BLEMultiple *bleMultiple = [[JL_BLEMultiple alloc] init];
+      bleMultiple.BLE_FILTER_ENABLE = NO;
+      bleMultiple.JL_BLE_SERVICE = @"XXXX";// 这个XXXX就是你需要修改的服务号，它既作为GATT over EDR的服务号，也作为BLE广播发现服务的服务号（如果存在）。
+
+
+5.1.2 搜索与发现
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: objective-c
+
+    [bleMultiple scanStart];
+    //@property (strong, nonatomic) NSArray<CBPeripheral *> *bleAttDevices;      //GATT over EDR发现的设备
+    // 这里需要对这个属性进行 KVO 监听，当发现新设备时，会触发回调。
+    [bleMultiple addObserver:self forKeyPath:@"bleAttDevices" options:NSKeyValueObservingOptionNew context:nil];
+    // 当发现新设备时，会触发回调。
+    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+        if ([keyPath isEqualToString:@"bleAttDevices"]) {
+            NSArray<CBPeripheral *> *newDevices = change[NSKeyValueChangeNewKey];
+            for (CBPeripheral *peripheral in newDevices) {
+                // 处理新发现的设备GATT OVER EDR
+
+            }
+        }
+    }
+
+
+5.1.3 SDK 蓝牙接口使用注意事项
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. warning::
+
+    1. GATT over EDR 发现的设备，与 BLE 发现的设备是分开的，互不干扰。
+    2. 若需要同时使用 BLE 和 GATT over EDR 发现设备，需要分别调用 `scanStart` 方法。
+    3. GATT over EDR 的设备需要先 **让用户对其进行配对，才能进行发现和连接。**
+
+
+5.1.4 自定义蓝牙连接管理
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**准备工作**
+
+在开始之前，请确保你的项目已经导入了 `CoreBluetooth` 框架，并且你已经在 Info.plist 文件中添加了必要的权限声明：
+
+.. code-block:: xml
+
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>我们需要您的许可来使用蓝牙功能。</string>
+
+
+这一步是必须的，因为从 iOS 13 开始，访问蓝牙需要用户的明确同意。
+
+5.1.5 注册连接事件监听器
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+首先，你需要创建一个 `CBCentralManager` 实例，并设置其代理。然后调用 `registerForConnectionEvents(options:)` 方法注册对连接事件的兴趣。以下是如何实现这一点的示例代码片段：
+
+.. code-block:: swift
+
+    cbManager = CBCentralManager(delegate: self, queue: nil)
+    // 在 centralManagerDidUpdateState(_:) 回调中检查中央管理器的状态是否为 poweredOn
+    if cbManager.state == .poweredOn {
+        let matchingOptions = [CBConnectionEventMatchingOption.serviceUUIDs: [BTConstants.sampleServiceUUID]]
+        cbManager.registerForConnectionEvents(options: matchingOptions)
+    }
+
+
+这里我们指定了一个服务 UUID 列表作为匹配选项，这意味着只有那些提供特定服务的外围设备的连接事件会被监听到。
+
+5.1.6 监听连接事件
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+一旦注册完成，每当有蓝牙设备连接或断开时，系统会调用 `centralManager(_:connectionEventDidOccur:for:)` 方法。下面是一个简单的实现例子：
+
+.. code-block:: swift
+
+    func centralManager(_ central: CBCentralManager, connectionEventDidOccur event: CBConnectionEvent, for peripheral: CBPeripheral) {
+        switch event {
+        case .peerConnected:
+            // 处理设备连接事件
+            os_log("Device %@ connected", peripheral)
+            cbPeripherals.append(peripheral)
+        case .peerDisconnected:
+            // 处理设备断开连接事件
+            os_log("Device %@ disconnected!", peripheral)
+            if let idx = cbPeripherals.firstIndex(where: { $0 === peripheral }) {
+                cbPeripherals.remove(at: idx)
+            }
+        @unknown default:
+            fatalError("Unhandled event type")
+        }
+        
+        tableView.reloadData()
+    }
+
+
+在这个回调函数中，你可以根据不同的连接事件类型执行相应的逻辑，比如更新用户界面、重新尝试连接等。
+
+5.1.7 自定义蓝牙注意事项
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- **性能影响**：频繁地接收连接事件可能会影响应用性能，因此应该谨慎选择监听哪些设备的连接事件。
+
+- **后台模式**：如果你的应用程序需要在后台处理蓝牙连接事件，记得在项目的 Info.plist 文件中配置适当的后台模式权限。
+
+.. warning::
+
+    苹果对于后台运行的程序有着严格的限制，就算用户打开了后台运行模式， **系统也会对传输速率进行限制（不超过 30kb/s）**，建议在后台运行时，只进行必要的操作，避免对用户体验造成影响。
+
+
+杰理提供的蓝牙连接示例：`demo <https://gitee.com/Jieli-Tech/ios-bt-demo/tree/main/UsingCoreBluetoothClassic>`_
+
+.. Note::
+
+    Note: This sample code project is associated with WWDC 2019 session `901: What's New in Core Bluetooth <https://developer.apple.com/videos/play/wwdc19/901/>`_.

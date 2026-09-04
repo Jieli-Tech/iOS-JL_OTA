@@ -19,6 +19,7 @@
     entity.pid = self.pid;
     entity.uid = self.uid;
     entity.mType = self.mType;
+    entity.isSystemConnected = self.isSystemConnected;
     return entity;
 }
 

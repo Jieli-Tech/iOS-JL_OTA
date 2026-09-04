@@ -8,6 +8,7 @@
 
 #import "JLBleHandler.h"
 #import "ToolsHelper.h"
+#import "SDKBleHelper.h"
 
 NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连接
 
@@ -99,6 +100,8 @@ NSString *kFLT_BLE_OTA_CALLBACK = @"kFLT_BLE_OTA_CALLBACK";     //BLE断开连�
 -(void)handleScanDevice{
     if([ToolsHelper isConnectBySDK]){
         [sdkManager scanStart];
+        /*--- 系统已连接设备兼容：SDK 扫描开始后主动上抛一次系统已连设备（兼容不广播场景） ---*/
+        [SDKBleHelper notifyConnectedPeripherals];
     }else{
         [userManager startScanBLE];
     }

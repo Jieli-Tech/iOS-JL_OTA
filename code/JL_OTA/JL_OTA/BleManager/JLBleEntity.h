@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) uint16_t pid;
 @property (assign, nonatomic) uint16_t uid;
 
+/// 系统已连接设备标记：由 retrieveConnectedPeripheralsWithServices: 获取，而非扫描发现。
+/// 用于设备列表把“系统已连”的设备固定在首位，并在其断开后从列表清理。
+@property (assign, nonatomic) BOOL isSystemConnected;
+
 @end
 
 NS_ASSUME_NONNULL_END

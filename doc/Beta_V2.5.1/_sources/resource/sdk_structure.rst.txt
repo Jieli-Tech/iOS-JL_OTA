@@ -1,0 +1,82 @@
+SDK开发包介绍
+=========================================
+
+1.1 开发资料文件结构
+------------------------------
+
+SDK资料包由 code、doc、libs 三部分组成：
+
+.. code-block:: sh
+
+  code --- 参考JL_OTA源码（发布时对应 Release/Code，与仓库源码一致）
+   ├──JL_OTA.xcworkspace --- CocoaPods 工作区，需通过工作区打开工程
+   ├──JL_OTA --- 示例工程源码（结构详见 1.2）
+   ├──OTAFiles --- OTA升级测试文件
+   ├──ThirdParty --- 第三方源码
+   ├──Pods --- CocoaPods 第三方库
+   ├──Sources --- 多语言文案、用户协议/隐私政策等资源
+   └──Frameworks --- 工程内嵌入引用的 OTA SDK xcframework（共 5 个，同 libs）
+  doc --- 开发文档
+   └──html --- 文档html格式（本文档源位于仓库 iOS/zh-cn/2.5.1/source，可构建生成）
+  libs --- OTA升级相关库（对应 Release/Libs，来源于 SDK 子模块 JL_BLEKit/XCFrameworks）
+   ├──JL_BLEKit.xcframework --- 蓝牙主业务库（扫描/连接/设备管理，含 JL_BLEMultiple、JL_Assist、JL_EntityM）
+   ├──JL_OTALib.xcframework --- OTA升级业务库（JL_OTAManager 升级状态机）
+   ├──JL_AdvParse.xcframework --- 杰理蓝牙设备广播包解析业务库
+   ├──JLLogHelper.xcframework --- 日志打印业务库
+   └──JL_HashPair.xcframework --- 设备认证业务库
+
+
+1.2 示例工程结构
+---------------------
+
+.. code-block:: sh
+
+  JL_OTA --- 主工程源码（App 名：杰理OTA，同时演示 SDK 提供的三种BLE接入方式）
+    ├───main.m / AppDelegate --- 程序入口：初始化多语言(JLLanguageManager)、日志(JLLogManager)、启动欢迎/协议声明页
+    ├───Assets.xcassets --- 图片资源
+    ├───BleManager --- 自定义 CoreBluetooth 连接，执行OTA升级（SDK 仅负责 OTA 数据解析），**二次开发推荐**
+    │     └──JLBleManager / JLBleEntity / SingleDataSender / HandleBroadcastPtl
+    ├───BleByAssist --- 半开放蓝牙连接：自行实现 CoreBluetooth 扫描/连接，内部经 JL_Assist 完成设备信息与 OTA 命令交互
+    │     └──JLBleAssistManager
+    ├───SDKBleManager --- SDK集成蓝牙控制：基于 JL_BLEMultiple 扫描/连接设备并执行OTA升级
+    │     └──JL_RunSDK / SDKBleHelper
+    ├───BleHandle --- 统筹上述蓝牙连接方式的统一接口，UI 通过它屏蔽路径差异
+    │     └──JLBleHandler
+    ├───BroadcastSpeakers --- 广播音箱多设备升级蓝牙控制，执行OTA升级
+    │     └──BroadcastBle --- 广播音箱专用BLE（BroadcastBleManager/BroadcastThread/DeviceManager）
+    ├───Tools --- 辅助工具类
+    │     ├──ToolsHelper --- 全局功能开关（连接方式/广播音箱/多选/自动测试/GATT Over EDR等）
+    │     ├──UfwConfig --- .ufw 固件信息(pid/uid)匹配校验
+    │     ├──LoopUpdateManager --- 循环/批量升级管理
+    │     ├──JLHUD --- 加载提示/弹窗HUD
+    │     ├──JLLanguageManager --- 多语言管理（替代原 DFUnits）
+    │     ├──JLFileTool --- 沙盒文件路径工具
+    │     ├──NSString+Size / UILabel+YBAttributeTextTapAction --- 分类扩展
+    │     └──SDKExtent.swift / AutoTestHelper --- Swift 扩展与自动化测试模型
+    └───Views --- 控件UI
+          ├──welcome --- 启动欢迎动画（OpenShowView）
+          ├──statement --- 用户协议/隐私政策声明页，同意后进入主界面
+          ├──ScanView --- 二维码扫描页（扫码获取升级文件，ScanQRCodeVC）
+          ├──CommonView --- 公共基础UI：主界面容器（Tab：设备/升级/设置）、导航与基类控制器、设备Cell
+          ├──AlertView --- 弹窗UI：升级进度/结果、文件下载/分享、Popover、GATT Over EDR 的 UUID 设置等
+          ├──NormalUpdate --- 普通OTA升级（单设备）：DeviceView(设备连接)/UpdateView(升级流程)/SettingView(设置)
+          ├──BroadcastUpdate --- 广播音箱多设备升级：ConnectView(连接)/FileView(文件)/UpdateViews(升级与状态)
+          └──AutoTestUpdate --- 自动化测试升级：AutoDevicesView(设备)/AutoUpdateView(升级)/AutoSettingView(设置)
+  OTAFiles --- OTA 升级测试文件（0.ufw/1.ufw/2.ufw）与沙盒文件管理 JLOtaFileManager
+  ThirdParty --- 第三方代码
+    ├──GCDWeb(GCDWebKit) --- 本地网络服务器（扫码/网页方式下载升级文件）
+    └──SGQRCode --- 二维码扫描/生成
+  Pods --- CocoaPods 第三方库引用
+    ├──AFNetworking
+    ├──Bugly
+    ├──Colours
+    ├──GCDWebServer
+    ├──Masonry
+    └──MJRefresh
+  Sources --- 本地化资源：zh-Hans/en/ko 多语言文案、PrefixHeader.pch、用户协议与隐私政策
+  Language --- 多语言工具：localizations.py（Excel 与 .strings 互转）
+
+
+1.3 功能实现参考
+--------------------------
+- `查看JL_OTA源码 <https://github.com/Jieli-Tech/iOS-JL_OTA>`_

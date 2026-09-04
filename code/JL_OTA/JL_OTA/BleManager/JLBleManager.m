@@ -93,6 +93,62 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
 
 #pragma mark - 扫描设备相关
 
+#pragma mark 系统已连接设备兼容
+/**
+ *  将系统当前已连接（服务号 AE00）的设备合并进设备列表并置顶。
+ *
+ *  背景：用户在系统设置里连上的杰理设备，可能已停止广播或广播很慢，
+ *  用 retrieveConnectedPeripheralsWithServices: 可直接拿到（系统级连接）。
+ *
+ *  - 每次向“发现设备”数组上抛前调用，保证这类设备稳定出现在列表首位；
+ *  - 若系统连接已断开，则把之前由本方法加入的条目从列表移除。
+ */
+- (void)syncSystemConnectedPeripherals {
+    if (!_bleManager || _bleManager.state != CBManagerStatePoweredOn) return;
+
+    NSArray<CBPeripheral *> *connectedList = [_bleManager retrieveConnectedPeripheralsWithServices:@[[CBUUID UUIDWithString:FLT_BLE_SERVICE]]];
+    NSMutableSet<NSString *> *connectedUUIDs = [NSMutableSet set];
+    for (CBPeripheral *pl in connectedList) {
+        if (pl.identifier) [connectedUUIDs addObject:pl.identifier.UUIDString];
+    }
+
+    /*--- 清理：已不在系统连接中的“系统已连”旧条目（正在使用的 currentEntity 保留） ---*/
+    NSMutableArray *toRemove = [NSMutableArray array];
+    for (JLBleEntity *entity in _blePeripheralArr) {
+        NSString *uuid = entity.mPeripheral.identifier.UUIDString;
+        if (entity.isSystemConnected
+            && entity != self.currentEntity
+            && (uuid == nil || ![connectedUUIDs containsObject:uuid])) {
+            [toRemove addObject:entity];
+        }
+    }
+    [_blePeripheralArr removeObjectsInArray:toRemove];
+
+    /*--- 置顶：倒序逐个插 0，保持系统返回顺序，且始终位于数组最前 ---*/
+    for (CBPeripheral *pl in [connectedList reverseObjectEnumerator]) {
+        JLBleEntity *existEntity = nil;
+        for (JLBleEntity *entity in _blePeripheralArr) {
+            if ([entity.mPeripheral.identifier.UUIDString isEqualToString:pl.identifier.UUIDString]) {
+                existEntity = entity;
+                break;
+            }
+        }
+        if (existEntity) {
+            [_blePeripheralArr removeObject:existEntity];
+        }
+        JLBleEntity *entity = existEntity;
+        if (!entity) {
+            entity = [JLBleEntity new];
+            entity.mName = pl.name ?: @"Unknow";
+            entity.mPeripheral = pl;
+        }
+        entity.isSystemConnected = YES;
+        /*--- RSSI 置 0：真实广播 RSSI 均为负值，0 可保证上层按信号降序排序时固定排最前 ---*/
+        entity.mRSSI = @(0);
+        [_blePeripheralArr insertObject:entity atIndex:0];
+    }
+}
+
 #pragma mark 开始扫描
 - (void)startScanBLE {
     kJLLog(JLLOG_DEBUG, @"BLE ---> startScanBLE.");
@@ -101,12 +157,21 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         if (_bleManager.state == CBManagerStatePoweredOn) {
             [self scanGattOverEdr];
             [_bleManager scanForPeripheralsWithServices:nil options:nil];
+            /*--- 系统已连接设备兼容：合并后立即上抛一次，设备不广播也能出现在列表首位 ---*/
+            [self syncSystemConnectedPeripherals];
+            if (_blePeripheralArr.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_FOUND object:_blePeripheralArr userInfo:nil];
+            }
         } else {
             __weak typeof(self) weakSelf = self;
             dispatch_after(0.5, dispatch_get_main_queue(), ^{
                 if (weakSelf.bleManager.state == CBManagerStatePoweredOn) {
                     [self scanGattOverEdr];
                     [weakSelf.bleManager scanForPeripheralsWithServices:nil options:nil];
+                    [self syncSystemConnectedPeripherals];
+                    if (self->_blePeripheralArr.count > 0) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_FOUND object:self->_blePeripheralArr userInfo:nil];
+                    }
                 }
             });
         }
@@ -275,6 +340,8 @@ NSString *FLT_BLE_RCSP_R  = @"AE02"; //命令“读”通道
         }
     }
 
+    /*--- 系统已连接设备兼容：上抛前同步，保证系统已连设备稳定在列表首位 ---*/
+    [self syncSystemConnectedPeripherals];
     [[NSNotificationCenter defaultCenter] postNotificationName:kFLT_BLE_FOUND object:_blePeripheralArr userInfo:nil];
     
     // ota升级过程，回连使用

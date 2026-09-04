@@ -1,0 +1,6 @@
+framework module JL_AdvParse {
+  umbrella header "JL_AdvParse.h"
+  export *
+
+  module * { export * }
+}

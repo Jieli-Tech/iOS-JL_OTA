@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDK开发包介绍 &mdash; 杰理OTA升级开发文档(iOS) v2.4.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=873fbbe3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+      <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1.项目配置" href="../Development/Content/import.html" />
+    <link rel="prev" title="SDK架构" href="../Framework/framework.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SDK开发包介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.1 开发资料文件结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.2 示例工程结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.3 功能实现参考</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Development/Content/import.html">1.项目配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Development/Content/function_desc.html">2.使用自定义的蓝牙连接API进行OTA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Development/Content/api_desc.html">3.使用JL_BLEKit.xcframework蓝牙连接方式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Development/Content/API/api_docs.html">4. API 说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Development/Content/gatt_over_edr_desc.html">5. GATT Over Edr 连接</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/jl_ota_sdk_qa.html">1. 前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/jl_ota_sdk_qa.html#id2">2. 常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/contactUs.html">开源社区</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/version.html">发布记录</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">杰理OTA升级开发文档(iOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SDK开发包介绍</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sdk">
+<h1>SDK开发包介绍<a class="headerlink" href="#sdk" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>1.1 开发资料文件结构<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>SDK资料包由 code、doc、libs 三部分组成：</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>code<span class="w"> </span>---<span class="w"> </span>参考JL_OTA源码（发布时对应<span class="w"> </span>Release/Code，与仓库源码一致）
+<span class="w"> </span>├──JL_OTA.xcworkspace<span class="w"> </span>---<span class="w"> </span>CocoaPods<span class="w"> </span>工作区，需通过工作区打开工程
+<span class="w"> </span>├──JL_OTA<span class="w"> </span>---<span class="w"> </span>示例工程源码（结构详见<span class="w"> </span><span class="m">1</span>.2）
+<span class="w"> </span>├──OTAFiles<span class="w"> </span>---<span class="w"> </span>OTA升级测试文件
+<span class="w"> </span>├──ThirdParty<span class="w"> </span>---<span class="w"> </span>第三方源码
+<span class="w"> </span>├──Pods<span class="w"> </span>---<span class="w"> </span>CocoaPods<span class="w"> </span>第三方库
+<span class="w"> </span>├──Sources<span class="w"> </span>---<span class="w"> </span>多语言文案、用户协议/隐私政策等资源
+<span class="w"> </span>└──Frameworks<span class="w"> </span>---<span class="w"> </span>工程内嵌入引用的<span class="w"> </span>OTA<span class="w"> </span>SDK<span class="w"> </span>xcframework（共<span class="w"> </span><span class="m">5</span><span class="w"> </span>个，同<span class="w"> </span>libs）
+doc<span class="w"> </span>---<span class="w"> </span>开发文档
+<span class="w"> </span>└──html<span class="w"> </span>---<span class="w"> </span>文档html格式（本文档源位于仓库<span class="w"> </span>iOS/zh-cn/2.5.1/source，可构建生成）
+libs<span class="w"> </span>---<span class="w"> </span>OTA升级相关库（对应<span class="w"> </span>Release/Libs，来源于<span class="w"> </span>SDK<span class="w"> </span>子模块<span class="w"> </span>JL_BLEKit/XCFrameworks）
+<span class="w"> </span>├──JL_BLEKit.xcframework<span class="w"> </span>---<span class="w"> </span>蓝牙主业务库（扫描/连接/设备管理，含<span class="w"> </span>JL_BLEMultiple、JL_Assist、JL_EntityM）
+<span class="w"> </span>├──JL_OTALib.xcframework<span class="w"> </span>---<span class="w"> </span>OTA升级业务库（JL_OTAManager<span class="w"> </span>升级状态机）
+<span class="w"> </span>├──JL_AdvParse.xcframework<span class="w"> </span>---<span class="w"> </span>杰理蓝牙设备广播包解析业务库
+<span class="w"> </span>├──JLLogHelper.xcframework<span class="w"> </span>---<span class="w"> </span>日志打印业务库
+<span class="w"> </span>└──JL_HashPair.xcframework<span class="w"> </span>---<span class="w"> </span>设备认证业务库
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>1.2 示例工程结构<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>JL_OTA<span class="w"> </span>---<span class="w"> </span>主工程源码（App<span class="w"> </span>名：杰理OTA，同时演示<span class="w"> </span>SDK<span class="w"> </span>提供的三种BLE接入方式）
+<span class="w">  </span>├───main.m<span class="w"> </span>/<span class="w"> </span>AppDelegate<span class="w"> </span>---<span class="w"> </span>程序入口：初始化多语言<span class="o">(</span>JLLanguageManager<span class="o">)</span>、日志<span class="o">(</span>JLLogManager<span class="o">)</span>、启动欢迎/协议声明页
+<span class="w">  </span>├───Assets.xcassets<span class="w"> </span>---<span class="w"> </span>图片资源
+<span class="w">  </span>├───BleManager<span class="w"> </span>---<span class="w"> </span>自定义<span class="w"> </span>CoreBluetooth<span class="w"> </span>连接，执行OTA升级（SDK<span class="w"> </span>仅负责<span class="w"> </span>OTA<span class="w"> </span>数据解析），**二次开发推荐**
+<span class="w">  </span>│<span class="w">     </span>└──JLBleManager<span class="w"> </span>/<span class="w"> </span>JLBleEntity<span class="w"> </span>/<span class="w"> </span>SingleDataSender<span class="w"> </span>/<span class="w"> </span>HandleBroadcastPtl
+<span class="w">  </span>├───BleByAssist<span class="w"> </span>---<span class="w"> </span>半开放蓝牙连接：自行实现<span class="w"> </span>CoreBluetooth<span class="w"> </span>扫描/连接，内部经<span class="w"> </span>JL_Assist<span class="w"> </span>完成设备信息与<span class="w"> </span>OTA<span class="w"> </span>命令交互
+<span class="w">  </span>│<span class="w">     </span>└──JLBleAssistManager
+<span class="w">  </span>├───SDKBleManager<span class="w"> </span>---<span class="w"> </span>SDK集成蓝牙控制：基于<span class="w"> </span>JL_BLEMultiple<span class="w"> </span>扫描/连接设备并执行OTA升级
+<span class="w">  </span>│<span class="w">     </span>└──JL_RunSDK<span class="w"> </span>/<span class="w"> </span>SDKBleHelper
+<span class="w">  </span>├───BleHandle<span class="w"> </span>---<span class="w"> </span>统筹上述蓝牙连接方式的统一接口，UI<span class="w"> </span>通过它屏蔽路径差异
+<span class="w">  </span>│<span class="w">     </span>└──JLBleHandler
+<span class="w">  </span>├───BroadcastSpeakers<span class="w"> </span>---<span class="w"> </span>广播音箱多设备升级蓝牙控制，执行OTA升级
+<span class="w">  </span>│<span class="w">     </span>└──BroadcastBle<span class="w"> </span>---<span class="w"> </span>广播音箱专用BLE（BroadcastBleManager/BroadcastThread/DeviceManager）
+<span class="w">  </span>├───Tools<span class="w"> </span>---<span class="w"> </span>辅助工具类
+<span class="w">  </span>│<span class="w">     </span>├──ToolsHelper<span class="w"> </span>---<span class="w"> </span>全局功能开关（连接方式/广播音箱/多选/自动测试/GATT<span class="w"> </span>Over<span class="w"> </span>EDR等）
+<span class="w">  </span>│<span class="w">     </span>├──UfwConfig<span class="w"> </span>---<span class="w"> </span>.ufw<span class="w"> </span>固件信息<span class="o">(</span>pid/uid<span class="o">)</span>匹配校验
+<span class="w">  </span>│<span class="w">     </span>├──LoopUpdateManager<span class="w"> </span>---<span class="w"> </span>循环/批量升级管理
+<span class="w">  </span>│<span class="w">     </span>├──JLHUD<span class="w"> </span>---<span class="w"> </span>加载提示/弹窗HUD
+<span class="w">  </span>│<span class="w">     </span>├──JLLanguageManager<span class="w"> </span>---<span class="w"> </span>多语言管理（替代原<span class="w"> </span>DFUnits）
+<span class="w">  </span>│<span class="w">     </span>├──JLFileTool<span class="w"> </span>---<span class="w"> </span>沙盒文件路径工具
+<span class="w">  </span>│<span class="w">     </span>├──NSString+Size<span class="w"> </span>/<span class="w"> </span>UILabel+YBAttributeTextTapAction<span class="w"> </span>---<span class="w"> </span>分类扩展
+<span class="w">  </span>│<span class="w">     </span>└──SDKExtent.swift<span class="w"> </span>/<span class="w"> </span>AutoTestHelper<span class="w"> </span>---<span class="w"> </span>Swift<span class="w"> </span>扩展与自动化测试模型
+<span class="w">  </span>└───Views<span class="w"> </span>---<span class="w"> </span>控件UI
+<span class="w">        </span>├──welcome<span class="w"> </span>---<span class="w"> </span>启动欢迎动画（OpenShowView）
+<span class="w">        </span>├──statement<span class="w"> </span>---<span class="w"> </span>用户协议/隐私政策声明页，同意后进入主界面
+<span class="w">        </span>├──ScanView<span class="w"> </span>---<span class="w"> </span>二维码扫描页（扫码获取升级文件，ScanQRCodeVC）
+<span class="w">        </span>├──CommonView<span class="w"> </span>---<span class="w"> </span>公共基础UI：主界面容器（Tab：设备/升级/设置）、导航与基类控制器、设备Cell
+<span class="w">        </span>├──AlertView<span class="w"> </span>---<span class="w"> </span>弹窗UI：升级进度/结果、文件下载/分享、Popover、GATT<span class="w"> </span>Over<span class="w"> </span>EDR<span class="w"> </span>的<span class="w"> </span>UUID<span class="w"> </span>设置等
+<span class="w">        </span>├──NormalUpdate<span class="w"> </span>---<span class="w"> </span>普通OTA升级（单设备）：DeviceView<span class="o">(</span>设备连接<span class="o">)</span>/UpdateView<span class="o">(</span>升级流程<span class="o">)</span>/SettingView<span class="o">(</span>设置<span class="o">)</span>
+<span class="w">        </span>├──BroadcastUpdate<span class="w"> </span>---<span class="w"> </span>广播音箱多设备升级：ConnectView<span class="o">(</span>连接<span class="o">)</span>/FileView<span class="o">(</span>文件<span class="o">)</span>/UpdateViews<span class="o">(</span>升级与状态<span class="o">)</span>
+<span class="w">        </span>└──AutoTestUpdate<span class="w"> </span>---<span class="w"> </span>自动化测试升级：AutoDevicesView<span class="o">(</span>设备<span class="o">)</span>/AutoUpdateView<span class="o">(</span>升级<span class="o">)</span>/AutoSettingView<span class="o">(</span>设置<span class="o">)</span>
+OTAFiles<span class="w"> </span>---<span class="w"> </span>OTA<span class="w"> </span>升级测试文件（0.ufw/1.ufw/2.ufw）与沙盒文件管理<span class="w"> </span>JLOtaFileManager
+ThirdParty<span class="w"> </span>---<span class="w"> </span>第三方代码
+<span class="w">  </span>├──GCDWeb<span class="o">(</span>GCDWebKit<span class="o">)</span><span class="w"> </span>---<span class="w"> </span>本地网络服务器（扫码/网页方式下载升级文件）
+<span class="w">  </span>└──SGQRCode<span class="w"> </span>---<span class="w"> </span>二维码扫描/生成
+Pods<span class="w"> </span>---<span class="w"> </span>CocoaPods<span class="w"> </span>第三方库引用
+<span class="w">  </span>├──AFNetworking
+<span class="w">  </span>├──Bugly
+<span class="w">  </span>├──Colours
+<span class="w">  </span>├──GCDWebServer
+<span class="w">  </span>├──Masonry
+<span class="w">  </span>└──MJRefresh
+Sources<span class="w"> </span>---<span class="w"> </span>本地化资源：zh-Hans/en/ko<span class="w"> </span>多语言文案、PrefixHeader.pch、用户协议与隐私政策
+Language<span class="w"> </span>---<span class="w"> </span>多语言工具：localizations.py（Excel<span class="w"> </span>与<span class="w"> </span>.strings<span class="w"> </span>互转）
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>1.3 功能实现参考<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/Jieli-Tech/iOS-JL_OTA">查看JL_OTA源码</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../Framework/framework.html" class="btn btn-neutral float-left" title="SDK架构" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../Development/Content/import.html" class="btn btn-neutral float-right" title="1.项目配置" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, Zhuhai Jieli Technology.,Ltd。
+      <span class="lastupdated">最后更新于 9月 04, 2026.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

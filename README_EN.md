@@ -126,7 +126,7 @@ iOS-JL_OTA/
 │   ├── JL_BLEKit.xcframework       #   Bluetooth connection core library (optional)
 │   └── JLLogHelper.xcframework     #   Log helper library
 └── docs/                           # Documentation resources
-    └── html/                       #   HTML format documentation
+    └── Beta_V2.5.1/             #   HTML format documentation
 ```
 
 ### 4.1 Key Directory Description
@@ -225,6 +225,7 @@ JLLogManager.logSomething("abcd")
 
 | Version | Release Date | Major Updates |
 |---------|--------------|---------------|
+| **v2.5.1_Beta** | 2026/09/04 | 1. Fixed CRC checksum issue |
 | **v2.5.0** | 2026/02/04 | 1. Added GATT Over BR/EDR device OTA upgrade support<br/>2. Fixed OTA reconnection timeout issue |
 | **v2.4.0** | 2025/10/13 | 1. OTA timeout handling logic optimization<br/>2. Added duplicate sequence number error handling<br/>3. Added special space reuse upgrade support<br/>4. Added single backup SDK internal auto-reconnect interface |
 | **v2.3.1** | 2024/12/12 | 1. Separated log printing library as independent module<br/>2. Added timeout detection for all commands<br/>3. Added OTA upgrade error callback<br/>4. Added OTA object management fault tolerance |
@@ -235,6 +236,7 @@ JLLogManager.logSomething("abcd")
 
 | Version | Release Date | Major Updates |
 |---------|--------------|---------------|
+| **v3.5.3** | 2026/09/04 | Fixed known issues; using new SDK v2.5.1_Beta |
 | **v3.5.2** | 2026/02/04 | Fixed known issues; using new SDK v2.5.0 |
 | **v3.5.1** | 2025/10/13 | Fixed known issues; using new SDK v2.4.0 |
 | **v3.5.0** | 2024/12/13 | Adapted to new SDK 2.3.1 |

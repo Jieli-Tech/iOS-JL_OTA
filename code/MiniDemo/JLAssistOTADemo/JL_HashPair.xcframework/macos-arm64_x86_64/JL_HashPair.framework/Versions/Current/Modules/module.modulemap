@@ -1,0 +1,6 @@
+framework module JL_HashPair {
+  umbrella header "JL_HashPair.h"
+  export *
+
+  module * { export * }
+}
